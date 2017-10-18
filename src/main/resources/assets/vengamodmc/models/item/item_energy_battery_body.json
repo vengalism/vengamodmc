@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "vengamodmc:items/item_energy_battery_body"
+  }
+}

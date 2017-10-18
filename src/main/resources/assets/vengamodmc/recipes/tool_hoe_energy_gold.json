@@ -1,0 +1,24 @@
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "group" : "vengamodmc:tools",
+
+  "pattern" : [
+    "I",
+    "S"
+  ],
+
+  "key" : {
+    "I" : {
+      "item" : "minecraft:golden_hoe"
+    },
+    "S" : {
+      "item" : "vengamodmc:item_energy_battery"
+    }
+  },
+
+  "result" : {
+    "item" : "vengamodmc:tool_hoe_energy_gold",
+    "count" : 1
+  }
+}

@@ -1,0 +1,13 @@
+//TODO a block to machine the parts for the battery, get extra results for battery parts and more batteries when using the machine.
+set default vaules to 1 for crafting, -- DONE
+but buff to 2 for using the machine
+
+Circuit Assembler
+3x3 grid
+
+button to start processing
+if invalid say so,
+else
+use power to make
+
+

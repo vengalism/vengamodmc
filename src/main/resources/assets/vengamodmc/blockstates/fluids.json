@@ -1,0 +1,13 @@
+{
+  "forge_marker":1,
+  "variants":{
+    "nutrient_fluid":{
+      "model": "forge:fluid",
+      "custom": {"fluid": "nutrient_fluid"}
+    },
+    "oxygenated_nutrient_fluid":{
+      "model": "forge:fluid",
+      "custom": {"fluid": "oxygenated_nutrient_fluid"}
+    }
+  }
+}
