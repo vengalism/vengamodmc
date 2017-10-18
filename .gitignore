@@ -1,0 +1,29 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+*.gradle
+Paulscode SoundSystem CodecIBXM License.txt
+Paulscode IBXM Library License.txt
+MinecraftForge-Credits.txt
+*.mcmeta
+classes/production/vengamodmc-1.12.2_main/mcmod.info
+classes/production/vengamodmc-1.12.2_main/com/example/examplemod/ExampleMod.class
