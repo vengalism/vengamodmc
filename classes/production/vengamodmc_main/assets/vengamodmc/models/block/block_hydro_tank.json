@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "vengamodmc:blocks/hydro_tank_block"
+    "all": "vengamodmc:blocks/block_hydro_tank"
   }
 }

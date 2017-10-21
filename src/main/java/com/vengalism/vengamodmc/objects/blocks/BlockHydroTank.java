@@ -27,7 +27,7 @@ public class BlockHydroTank extends BlockBase implements ITileEntityProvider {
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null;
+        return new TileEntityHydroTank();
     }
 
     @Override

@@ -6,7 +6,9 @@ import com.vengalism.vengamodmc.objects.fluid.CustomFluidTank;
 import com.vengalism.vengamodmc.objects.fluid.FluidNutrient;
 import com.vengalism.vengamodmc.objects.items.ItemHydroAirStone;
 import com.vengalism.vengamodmc.objects.items.ItemNutrientMixture;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
@@ -17,6 +19,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 /**
  * Created by vengada at 20/10/2017
@@ -25,8 +28,7 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
 
     private ItemStackHandler invHandler;
     private CustomFluidTank nutrientTank;
-    private final int AIRSTONESLOT = 0, NUTRIENTMIXTURESLOT = 1;
-    private boolean hasAirStone = false, hasNutrientMixture = false;
+    private final int AIRSTONESLOT = 1, NUTRIENTMIXTURESLOT = 0;
 
     public TileEntityHydroTank() {
         this(Fluid.BUCKET_VOLUME * 2, new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
@@ -38,9 +40,15 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
         this.fluidTank.setCanFill(true);
         this.fluidTank.setCanDrain(false);
 
-        this.nutrientTank = new CustomFluidTank(new FluidStack(FluidInit.fluid_nutrient, 0),Fluid.BUCKET_VOLUME * 6);
+        this.nutrientTank = new CustomFluidTank(Fluid.BUCKET_VOLUME * 6){
+            @Override
+            public boolean canFillFluidType(FluidStack fluid) {
+                return fluid.getFluid() == FluidInit.fluid_nutrient_oxygenated || fluid.getFluid() == FluidInit.fluid_nutrient;
+            }
+        };
         this.nutrientTank.setCanFill(false);
         this.nutrientTank.setCanDrain(true);
+
 
     }
 
@@ -70,66 +78,109 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
         sync++;
         sync %= 20;
         if(sync == 0){
-            /*
+
             if(this.fluidTank.canFill()){ //auto fill water tank
                 this.fluidTank.fillInternal(new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
             }
-            */
-
             //processing
             if(hasNutrientMixture()){
-                FluidStack proNutrient = null;
+//                ItemNutrientMixture mixture = getNutrientMixture();
+                FluidStack proNutrient;
                 if(hasAirStone()){ //fill with oxygenated nutrient fluid
-                    //proNutrient = new FluidStack(FluidInit.fluid_nutrient_oxygenated, 50);
-                    if(getHydroAirStone() != null) {
-                        getHydroAirStone().doUpkeep();
-                    }else{
-                        System.out.println("ERRO ERRRROOOOO Hydro Air Stone");
-                    }
+                    proNutrient = new FluidStack(FluidInit.fluid_nutrient_oxygenated, 50);
                 }else{ //fill with regular nutrient fluid
                     proNutrient = new FluidStack(FluidInit.fluid_nutrient, 50);
                 }
-                if(this.fluidTank.getFluidAmount() >= 50) {
-                    this.fluidTank.drain(50, true);
-                    this.nutrientTank.fill(proNutrient, true);
-                    getNutrientMixture().drainFluid(this.invHandler.getStackInSlot(NUTRIENTMIXTURESLOT), 1);
-                }
-                if(getHydroAirStone() != null) {
-                    if (getHydroAirStone().getLifespan() <= 0) {
-                        this.invHandler.getStackInSlot(AIRSTONESLOT).shrink(1);
+
+                if (this.fluidTank.getFluidAmount() >= 50) {
+
+                    int after = this.nutrientTank.fillInternal(proNutrient.copy(), false);
+                    //if 0 it didnt add more to the tank, so dont do upkeep
+                    if(after != 0){
+                        this.nutrientTank.fillInternal(proNutrient.copy(), true);
+                        this.fluidTank.drain(50, true);
+                        Fluid currFluid;
+                        int amount = 1;
+                        if(getNutrientMixture() != null){
+                            currFluid  = getNutrientMixture().getFluidType();
+                            amount = getNutrientMixture().getCurrentFluidStored(getStackInSlot(NUTRIENTMIXTURESLOT));
+                            getNutrientMixture().setFluid(getStackInSlot(NUTRIENTMIXTURESLOT), new FluidStack(currFluid, amount - 1).copy());
+                        }
+
+                        if(hasAirStone()) {
+                            if (getHydroAirStone() != Items.AIR) {
+                                if (getHydroAirStone() != null) {
+                                    int currEnergy = getHydroAirStone().getEnergyStored(getStackInSlot(AIRSTONESLOT));
+                                    if(currEnergy > 0){
+                                        System.out.println(currEnergy + " curren");
+                                        getHydroAirStone().setEnergy(getStackInSlot(AIRSTONESLOT), currEnergy - 1);
+                                    }
+                                }
+                            }
+                        }
                     }
-                }else{
-                    System.out.println("Error error hydro stone ");
+
+                }
+
+
+
+                if(getNutrientMixture() != null) {
+                    if (getNutrientMixture().getCurrentFluidStored(getStackInSlot(NUTRIENTMIXTURESLOT)) <= 0) {
+                        getStackInSlot(NUTRIENTMIXTURESLOT).shrink(1);
+                    }
                 }
             }
 
         }
     }
+
+    private ItemStack getStackInSlot(int slot){
+        return this.invHandler.getStackInSlot(slot);
+    }
+
+    public CustomFluidTank getNutrientTank() {
+        return this.nutrientTank;
+    }
+
     //AIR STONE
     private boolean hasAirStone(){
-        return this.invHandler.getStackInSlot(AIRSTONESLOT) != ItemStack.EMPTY;
+        return getStackInSlot(AIRSTONESLOT) != ItemStack.EMPTY;
     }
 
     private ItemHydroAirStone getHydroAirStone(){
         if(hasAirStone()){
-            return (ItemHydroAirStone) this.invHandler.getStackInSlot(AIRSTONESLOT).getItem();
+            return (ItemHydroAirStone) getStackInSlot(AIRSTONESLOT).getItem();
         }
         return null;
     }
 
     //NUTRIENT MIXTURE ITEM
     private boolean hasNutrientMixture(){
-        return this.invHandler.getStackInSlot(NUTRIENTMIXTURESLOT) != ItemStack.EMPTY;
+        return getStackInSlot(NUTRIENTMIXTURESLOT) != ItemStack.EMPTY;
     }
 
     private ItemNutrientMixture getNutrientMixture(){
         if(hasNutrientMixture()){
-            return (ItemNutrientMixture) this.invHandler.getStackInSlot(NUTRIENTMIXTURESLOT).getItem();
+            return (ItemNutrientMixture) getStackInSlot(NUTRIENTMIXTURESLOT).getItem();
         }
         return null;
     }
 
 
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        this.invHandler.deserializeNBT(compound.getCompoundTag("invHandler"));
+        this.nutrientTank.readFromNBT(compound);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setTag("invHandler", this.invHandler.serializeNBT());
+        this.nutrientTank.writeToNBT(compound);
+        return super.writeToNBT(compound);
+    }
 
 
 

@@ -8,10 +8,12 @@ import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.client.gui.GUIEnergyFurnace;
 import com.vengalism.vengamodmc.client.gui.GUIEnergyGenerator;
 import com.vengalism.vengamodmc.client.gui.GUIEnergyStorage;
+import com.vengalism.vengamodmc.client.gui.GUIHydroTank;
 import com.vengalism.vengamodmc.container.*;
 import com.vengalism.vengamodmc.tileentities.TileEntityEnergyFurnace;
 import com.vengalism.vengamodmc.tileentities.TileEntityEnergyGenerator;
 import com.vengalism.vengamodmc.tileentities.TileEntityEnergyStorage;
+import com.vengalism.vengamodmc.tileentities.TileEntityHydroTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -44,13 +46,14 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerEnergyGenerator(player.inventory, (TileEntityEnergyGenerator) te);
             case energyFurnaceContainerID:
                 return new ContainerEnergyFurnace(player.inventory, (TileEntityEnergyFurnace) te);
+            case hydroTankContainerID:
+                return new ContainerHydroTank(player.inventory, (TileEntityHydroTank) te);
             /*
             case energyVaultMultiID:
                 return new DynamicEnergyVaultMultiContainer(player.inventory, (DynamicEnergyVaultMultiTileEntity) te);
             case hydroTubContainerID:
                 return new HydroTubContainer(player.inventory, (HydroTubTileEntity) te);
-            case hydroTankContainerID:
-                return new HydroTankContainer(player.inventory, (HydroTankTileEntity) te);
+
             */
             default:
                 return null;
@@ -68,13 +71,14 @@ public class GuiHandler implements IGuiHandler {
                 return new GUIEnergyGenerator(player.inventory, (TileEntityEnergyGenerator) te);
             case energyFurnaceContainerID:
                 return new GUIEnergyFurnace(player.inventory, (TileEntityEnergyFurnace) te);
+            case hydroTankContainerID:
+                return new GUIHydroTank(player.inventory, (TileEntityHydroTank) te);
             /*
             case energyVaultMultiID:
                 return new DynamicEnergyVaultMultiGui(player.inventory, (DynamicEnergyVaultMultiTileEntity) te);
             case hydroTubContainerID:
                 return new HydroTubGui(player.inventory, (HydroTubTileEntity) te);
-            case hydroTankContainerID:
-                return new HydroTankGui(player.inventory, (HydroTankTileEntity) te);
+
             */
             default:
                 return null;

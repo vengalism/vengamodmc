@@ -4,6 +4,7 @@
 
 package com.vengalism.vengamodmc.container.slots;
 
+import com.vengalism.vengamodmc.init.ItemInit;
 import com.vengalism.vengamodmc.objects.items.ItemHydroAirStone;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -19,6 +20,11 @@ public class SlotItemHydroAirStone extends SlotItemHandler {
 
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack) {
-        return stack.getItem() instanceof ItemHydroAirStone;
+        if(stack.getItem() == ItemInit.item_hydro_air_stone){
+            return true;
+        }else if(stack.getItem() instanceof ItemHydroAirStone){
+            return true;
+        }
+        return false;
     }
 }

@@ -1,7 +1,7 @@
 {
   "variants": {
     "normal": {
-      "model": "vengamodmc:hydro_tank_block"
+      "model": "vengamodmc:block_hydro_tank"
     }
   }
 }

@@ -14,33 +14,21 @@ import java.util.List;
 /**
  * Created by vengada at 15/10/2017
  */
-public class ItemHydroAirStone extends ItemBase {
-    private int lifespan;
+public class ItemHydroAirStone extends ItemEnergy{
     private int upkeepCost;
 
     public ItemHydroAirStone(String name, int lifespan, int upkeepCost) {
-        super(name);
-        this.lifespan = lifespan;
+        super(name, lifespan, 0, 1, lifespan);
         this.upkeepCost = upkeepCost;
         this.setMaxStackSize(1);
     }
 
-    public int getLifespan() {
-        return this.lifespan;
-    }
-
-    //repair/clean
-    public void setLifespan(int lifespan) {
-        this.lifespan = lifespan;
-    }
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add("Lifespan: " + this.lifespan);
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
-    public void doUpkeep(){
-        this.lifespan -= upkeepCost;
-    }
+
+
+
 }

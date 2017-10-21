@@ -1,9 +1,14 @@
 {
   "forge_marker":1,
+  "defaults" : {
+    "model" : "forge:fluid"
+  },
   "variants":{
-    "block_fluid_nutrient":{
-      "model": "forge:fluid",
+    "block_fluid_nutrient":[{
       "custom": {"fluid": "block_fluid_nutrient"}
-    }
+    }],
+    "block_fluid_nutrient_oxygenated":[{
+      "custom": {"fluid": "block_fluid_nutrient_oxygenated"}
+    }]
   }
 }

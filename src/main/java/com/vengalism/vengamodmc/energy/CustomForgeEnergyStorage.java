@@ -26,6 +26,7 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
 
     public CustomForgeEnergyStorage(int capacity, int maxReceive, int maxExtract, int energy) {
         super(capacity, maxReceive, maxExtract, energy);
+        this.setEnergy(energy);
 
     }
 

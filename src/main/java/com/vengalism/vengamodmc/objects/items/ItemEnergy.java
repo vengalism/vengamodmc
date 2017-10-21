@@ -8,9 +8,11 @@ import com.vengalism.vengamodmc.capabilities.EnergyCapabilityProvider;
 import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * Created by vengada at 15/10/2017
  */
-public class ItemEnergy extends ItemBase {
+public class ItemEnergy extends ItemBase{
 
     public int capacity;
     public int maxExtract, maxReceive;
@@ -102,5 +104,15 @@ public class ItemEnergy extends ItemBase {
     private int getMaxEnergyStored(ItemStack itemStack) {
         return getCustStorage(getIStorage(itemStack)).getMaxEnergyStored();
 
+    }
+
+    @Override
+    public boolean getShareTag() {
+        return true;
+    }
+
+    @Override
+    public boolean updateItemStackNBT(NBTTagCompound nbt) {
+        return true;
     }
 }
