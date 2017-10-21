@@ -4,7 +4,7 @@
 
 package com.vengalism.vengamodmc.capabilities;
 
-import com.vengalism.vengamodmc.fluid.CustomFluidTank;
+import com.vengalism.vengamodmc.objects.fluid.CustomFluidTank;
 
 import com.vengalism.vengamodmc.hydro.INutrientMixture;
 import com.vengalism.vengamodmc.objects.items.ItemFluid;

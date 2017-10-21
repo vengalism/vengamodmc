@@ -96,7 +96,7 @@ public class ItemNutrientMixture extends ItemFluid implements INutrientMixture {
 
     @Override
     public Fluid getFluidType() {
-        return FluidRegistry.WATER;//TODO fix this, do FLuids
+        return FluidInit.fluid_nutrient;
         //return FluidInit.nutrientFluid;
     }
 }

@@ -1,0 +1,29 @@
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "group" : "vengamodmc:energy",
+
+  "pattern" : [
+    "RGR",
+    "DDD",
+    "RGR"
+  ],
+
+  "key" : {
+    "D" : {
+      "item" : "vengamodmc:item_energy_battery_part_1"
+    },
+    "G" : {
+      "item" : "minecraft:gold_nugget"
+    },
+    "R" : {
+      "item" : "minecraft:quartz"
+    }
+
+  },
+
+  "result" : {
+    "item" : "vengamodmc:item_energy_battery_part_2",
+    "count" : 1
+  }
+}

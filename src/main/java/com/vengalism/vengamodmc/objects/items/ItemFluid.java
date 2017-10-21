@@ -5,7 +5,7 @@
 package com.vengalism.vengamodmc.objects.items;
 
 import com.vengalism.vengamodmc.capabilities.FluidCapabilityProvider;
-import com.vengalism.vengamodmc.fluid.CustomFluidTank;
+import com.vengalism.vengamodmc.objects.fluid.CustomFluidTank;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

@@ -1,0 +1,29 @@
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "group" : "vengamodmc:energy",
+
+  "pattern" : [
+    "G",
+    "H",
+    "V"
+  ],
+
+  "key" : {
+    "G" : {
+      "item" : "vengamodmc:item_energy_battery_cap"
+    },
+    "H" : {
+      "item" : "vengamodmc:item_energy_battery_body"
+
+    },
+    "V" : {
+      "item" : "vengamodmc:item_energy_battery_base"
+    }
+  },
+
+  "result" : {
+    "item" : "vengamodmc:item_energy_battery",
+    "count" : 1
+  }
+}

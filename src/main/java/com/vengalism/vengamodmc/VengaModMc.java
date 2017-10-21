@@ -7,12 +7,10 @@ package com.vengalism.vengamodmc;
 import com.vengalism.vengamodmc.handlers.GuiHandler;
 import com.vengalism.vengamodmc.handlers.PacketHandler;
 import com.vengalism.vengamodmc.handlers.RegistryHandler;
+import com.vengalism.vengamodmc.init.FluidInit;
 import com.vengalism.vengamodmc.proxy.prox;
 import com.vengalism.vengamodmc.tabs.VengamodmcTab;
-import com.vengalism.vengamodmc.tileentities.TileEntityEnergyBase;
-import com.vengalism.vengamodmc.tileentities.TileEntityEnergyFurnace;
-import com.vengalism.vengamodmc.tileentities.TileEntityEnergyGenerator;
-import com.vengalism.vengamodmc.tileentities.TileEntityEnergyStorage;
+import com.vengalism.vengamodmc.tileentities.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -38,19 +36,20 @@ public class VengaModMc {
     public static void preInit(FMLPreInitializationEvent event){
         MinecraftForge.EVENT_BUS.register(new RegistryHandler());
         PacketHandler.init();
+        FluidInit.init();
         proxy.preInit(event);
+
     }
 
     @Mod.EventHandler
     public static void init(FMLInitializationEvent event){
 
-        //RegistryHandler.BLOCKSTOREGISTER.clear();
-        //RegistryHandler.ITEMSTOREGISTER.clear();
         GuiHandler.init();
         GameRegistry.registerTileEntity(TileEntityEnergyStorage.class, Reference.MODID + "TileEntityEnergyVault");
         GameRegistry.registerTileEntity(TileEntityEnergyBase.class, Reference.MODID + "TileEntityEnergyBase");
         GameRegistry.registerTileEntity(TileEntityEnergyFurnace.class, Reference.MODID + "TileEntityEnergyFurnace");
         GameRegistry.registerTileEntity(TileEntityEnergyGenerator.class, Reference.MODID + "TileEntityEnergyGenerator");
+        GameRegistry.registerTileEntity(TileEntityHydroTank.class, Reference.MODID + "TileEntityHydroTank");
         proxy.init(event);
     }
 

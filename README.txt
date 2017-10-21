@@ -1,1 +1,1 @@
-Blah! coming soon
+In the process of re-writing the mod again.... so expect alot of things to change as that happens.

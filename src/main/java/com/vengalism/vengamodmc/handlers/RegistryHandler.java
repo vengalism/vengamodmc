@@ -5,13 +5,20 @@
 package com.vengalism.vengamodmc.handlers;
 
 import com.vengalism.vengamodmc.init.BlockInit;
+import com.vengalism.vengamodmc.init.FluidInit;
 import com.vengalism.vengamodmc.init.ItemInit;
+import com.vengalism.vengamodmc.objects.blocks.BlockFluidBase;
+import com.vengalism.vengamodmc.objects.fluid.FluidStateMapper;
 import com.vengalism.vengamodmc.util.IHasModel;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -22,27 +29,30 @@ public class RegistryHandler {
 
     public static final ArrayList<Item> ITEMSTOREGISTER = new ArrayList<>();
     public static final ArrayList<Block> BLOCKSTOREGISTER = new ArrayList<>();
+    public static final ArrayList<Fluid> FLUIDSTOREGISTER = new ArrayList<>();
 
     public static void Client(){}
 
     @SubscribeEvent
     public void onItemRegistry(RegistryEvent.Register<Item> event){
         ItemInit.init();
-        /*for(Item item : ITEMSTOREGISTER){
-            event.getRegistry().register(item);
-        }*/
         event.getRegistry().registerAll(ITEMSTOREGISTER.toArray(new Item[0]));
-        //ITEMSTOREGISTER.clear();
     }
 
 
     @SubscribeEvent
     public void onBlockRegistry(RegistryEvent.Register<Block> event){
         BlockInit.init();
-        /*for(Block block : BLOCKSTOREGISTER){
-            event.getRegistry().register(block);
-        }*/
+
         event.getRegistry().registerAll(BLOCKSTOREGISTER.toArray(new Block[0]));
+    }
+
+
+    @SubscribeEvent
+    public static void onFluidRegister(ModelRegistryEvent event){
+        //FluidInit.init();
+        //for(Fluid fluid : FLUIDSTOREGISTER){}
+        //event.getRegistry().registerAll(FLUIDSTOREGISTER.toArray(new Block[0]));
     }
 
     @SubscribeEvent
@@ -63,5 +73,24 @@ public class RegistryHandler {
                 ((IHasModel)block).registerModels();
             }
         }
+
+        for(Fluid fluid : FLUIDSTOREGISTER){
+           if(fluid instanceof IHasModel){
+               ((IHasModel) fluid).registerModels();
+               registerCustomFluidBlockRenderer(fluid);
+               FluidRegistry.addBucketForFluid(fluid);
+
+           }
+        }
     }
+
+    private static void registerCustomFluidBlockRenderer(Fluid fluid){
+        Block block = fluid.getBlock();
+        Item item = Item.getItemFromBlock(block);
+        FluidStateMapper mapper = new FluidStateMapper(fluid);
+        ModelLoader.registerItemVariants(item);
+        ModelLoader.setCustomMeshDefinition(item, mapper);
+        ModelLoader.setCustomStateMapper(block, mapper);
+    }
+
 }

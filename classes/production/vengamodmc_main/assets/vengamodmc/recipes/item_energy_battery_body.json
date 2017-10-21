@@ -1,0 +1,29 @@
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "group" : "vengamodmc:energy",
+
+  "pattern" : [
+    "BRB",
+    "BHB",
+    "BRB"
+  ],
+
+  "key" : {
+    "B" : {
+      "item" : "minecraft:obsidian"
+    },
+    "H" : {
+      "item" : "vengamodmc:item_energy_circuit"
+
+    },
+    "R" : {
+      "item" : "minecraft:redstone"
+    }
+  },
+
+  "result" : {
+    "item" : "vengamodmc:item_energy_battery_body",
+    "count" : 1
+  }
+}
