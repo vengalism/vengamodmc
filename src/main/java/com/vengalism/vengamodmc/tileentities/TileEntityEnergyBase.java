@@ -87,11 +87,6 @@ public class TileEntityEnergyBase extends TileEntityBase {
         for(IEnergyStorage ies : getIESTilesAdjacent()){
             if(ies.canExtract()){
                 exchangeEnergy(ies, this.storage, this.storage.getMaxCanReceive());
-                /*
-                int availFromIES = ies.extractEnergy(this.storage.getMaxCanReceive(), true);
-                int leftover = this.storage.receiveEnergy(availFromIES, false);
-                ies.extractEnergy(leftover, false);
-                */
             }
         }
     }
