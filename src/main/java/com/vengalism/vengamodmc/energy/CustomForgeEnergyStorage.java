@@ -26,8 +26,7 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
 
     public CustomForgeEnergyStorage(int capacity, int maxReceive, int maxExtract, int energy) {
         super(capacity, maxReceive, maxExtract, energy);
-        this.setEnergy(energy);
-
+        //this.setEnergy(energy);
     }
 
     public int getMaxCanExtract() {
@@ -132,10 +131,12 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
     }
 
     public void readFromNBT(NBTTagCompound nbt) {
-        this.setEnergy(nbt.getInteger("Energy"));
+        this.setEnergy(nbt.getInteger("myEnergy"));
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
-        nbt.setInteger("Energy", this.getEnergyStored());
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        nbt.setInteger("myEnergy", this.getEnergyStored());
+        return nbt;
     }
+
 }

@@ -45,7 +45,7 @@ public class ItemEnergy extends ItemBase{
         this.capacity = capacity;
         this.maxExtract = maxExtract;
         this.maxReceive = maxReceive;
-        this.energy = energy;
+        //setEnergy(this.get, energy); seems to cause issues with nbt, probs cos previous constructor sets it to 0 all the time
     }
 
     @Override
@@ -61,6 +61,11 @@ public class ItemEnergy extends ItemBase{
     }
 
     @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return true;
+    }
+
+    @Override
     public double getDurabilityForDisplay(ItemStack stack) {
         if(stack.hasCapability(CapabilityEnergy.ENERGY, null)){
             IEnergyStorage storage = stack.getCapability(CapabilityEnergy.ENERGY, null);
@@ -73,37 +78,74 @@ public class ItemEnergy extends ItemBase{
         return super.getDurabilityForDisplay(stack);
     }
 
-    private IEnergyStorage getIStorage(ItemStack itemStack){
-        if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)) {
-            return itemStack.getCapability(CapabilityEnergy.ENERGY, null);
-        }
-        return null;
-    }
-
-    private CustomForgeEnergyStorage getCustStorage(IEnergyStorage storage){
-        if(storage != null) {
-            if (storage instanceof CustomForgeEnergyStorage) {
-                return (CustomForgeEnergyStorage) storage;
+    public void setEnergy(ItemStack itemStack, int energy){
+        if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)){
+            IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+            if(storage instanceof CustomForgeEnergyStorage){
+                ((CustomForgeEnergyStorage)storage).setEnergy(energy);
             }
         }
-        return new CustomForgeEnergyStorage(0, 0,0);
     }
 
-    public void setEnergy(ItemStack itemStack, int energy){
-        getCustStorage(getIStorage(itemStack)).setEnergy(energy);
+
+    public int receiveEnergy(ItemStack itemStack, int maxReceive, boolean simulate) {
+        if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)){
+            IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+            if(storage != null){
+                return storage.receiveEnergy(maxReceive, simulate);
+            }
+        }
+        return 0;
+    }
+
+    public int extractEnergy(ItemStack itemStack, int maxExtract, boolean simulate) {
+        if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)){
+            IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+            if(storage != null){
+                return storage.extractEnergy(maxExtract, simulate);
+            }
+        }
+        return 0;
     }
 
     public int extractInternalEnergy(ItemStack itemStack, int maxExtract, boolean simulate) {
-        return getCustStorage(getIStorage(itemStack)).extractInternalEnergy(maxExtract, simulate);
+        if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)){
+            IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+            if(storage instanceof CustomForgeEnergyStorage){
+                return ((CustomForgeEnergyStorage)storage).extractInternalEnergy(maxExtract, simulate);
+            }
+        }
+        return 0;
+    }
+
+    public int receiveInternalEnergy(ItemStack itemStack, int maxReceive, boolean simulate) {
+        if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)){
+            IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+            if(storage instanceof CustomForgeEnergyStorage){
+                return ((CustomForgeEnergyStorage)storage).receiveInternalEnergy(maxReceive, simulate);
+            }
+        }
+        return 0;
     }
 
     public int getEnergyStored(ItemStack itemStack){
-        return getCustStorage(getIStorage(itemStack)).getEnergyStored();
+        if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)){
+            IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+            if(storage != null){
+                return storage.getEnergyStored();
+            }
+        }
+        return 0;
     }
 
-    private int getMaxEnergyStored(ItemStack itemStack) {
-        return getCustStorage(getIStorage(itemStack)).getMaxEnergyStored();
-
+    public int getMaxEnergyStored(ItemStack itemStack) {
+        if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)){
+            IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+            if(storage != null){
+                return storage.getMaxEnergyStored();
+            }
+        }
+        return 0;
     }
 
     @Override

@@ -132,13 +132,13 @@ public class TileEntityEnergyBase extends TileEntityBase {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.storage.setEnergy(compound.getInteger("Energy"));
+        this.storage.readFromNBT(compound);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("Energy", this.storage.getEnergyStored());
+        this.storage.writeToNBT(compound);
         return compound;
     }
 

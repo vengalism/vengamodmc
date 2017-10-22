@@ -38,6 +38,7 @@ public class EnergyCapabilityProvider implements ICapabilityProvider {
                 if(!itemStack.hasTagCompound()){
                     itemStack.setTagCompound(new NBTTagCompound());
                 }
+
                 itemStack.getTagCompound().setInteger("Energy", energy);
             }
         };

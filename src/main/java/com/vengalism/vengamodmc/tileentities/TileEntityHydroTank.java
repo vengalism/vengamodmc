@@ -7,6 +7,7 @@ import com.vengalism.vengamodmc.objects.fluid.FluidNutrient;
 import com.vengalism.vengamodmc.objects.items.ItemHydroAirStone;
 import com.vengalism.vengamodmc.objects.items.ItemNutrientMixture;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -93,7 +94,6 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
                 }
 
                 if (this.fluidTank.getFluidAmount() >= 50) {
-
                     int after = this.nutrientTank.fillInternal(proNutrient.copy(), false);
                     //if 0 it didnt add more to the tank, so dont do upkeep
                     if(after != 0){
@@ -108,21 +108,17 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
                         }
 
                         if(hasAirStone()) {
-                            if (getHydroAirStone() != Items.AIR) {
-                                if (getHydroAirStone() != null) {
-                                    int currEnergy = getHydroAirStone().getEnergyStored(getStackInSlot(AIRSTONESLOT));
-                                    if(currEnergy > 0){
-                                        System.out.println(currEnergy + " curren");
-                                        getHydroAirStone().setEnergy(getStackInSlot(AIRSTONESLOT), currEnergy - 1);
-                                    }
+                            if (getHydroAirStone() != null) {
+                                int currEnergy = getHydroAirStone().getEnergyStored(getStackInSlot(AIRSTONESLOT));
+                                if(currEnergy > 0){
+                                    //System.out.println(currEnergy + " curren");
+                                    getHydroAirStone().setEnergy(getStackInSlot(AIRSTONESLOT), currEnergy - 1);
                                 }
                             }
                         }
                     }
 
                 }
-
-
 
                 if(getNutrientMixture() != null) {
                     if (getNutrientMixture().getCurrentFluidStored(getStackInSlot(NUTRIENTMIXTURESLOT)) <= 0) {
@@ -149,7 +145,10 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
 
     private ItemHydroAirStone getHydroAirStone(){
         if(hasAirStone()){
-            return (ItemHydroAirStone) getStackInSlot(AIRSTONESLOT).getItem();
+            Item item = getStackInSlot(AIRSTONESLOT).getItem();
+            if(item instanceof ItemHydroAirStone){
+                return (ItemHydroAirStone) item;
+            }
         }
         return null;
     }
@@ -161,11 +160,13 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
 
     private ItemNutrientMixture getNutrientMixture(){
         if(hasNutrientMixture()){
-            return (ItemNutrientMixture) getStackInSlot(NUTRIENTMIXTURESLOT).getItem();
+            Item item = getStackInSlot(NUTRIENTMIXTURESLOT).getItem();
+            if(item instanceof ItemNutrientMixture) {
+                return (ItemNutrientMixture) item;
+            }
         }
         return null;
     }
-
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -179,7 +180,7 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
         super.writeToNBT(compound);
         compound.setTag("invHandler", this.invHandler.serializeNBT());
         this.nutrientTank.writeToNBT(compound);
-        return super.writeToNBT(compound);
+        return compound;
     }
 
 

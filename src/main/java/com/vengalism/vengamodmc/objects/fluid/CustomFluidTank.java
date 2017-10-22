@@ -19,9 +19,11 @@ public class CustomFluidTank extends FluidTank {
     }
     public CustomFluidTank(int capacity, boolean startMax) {
         super(capacity);
+        /*
         if(startMax){
             this.setFluid(new FluidStack(FluidRegistry.WATER, capacity));
         }
+        */
     }
 
     public CustomFluidTank(@Nullable FluidStack fluidStack, int capacity){
@@ -49,4 +51,6 @@ public class CustomFluidTank extends FluidTank {
                 this.getCapacity() - this.getFluidAmount() : Fluid.BUCKET_VOLUME;
         return this.fluid != null ? new FluidStack(this.fluid, amt) : new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
     }
+
+    //NBT done in super by default seems ok
 }
