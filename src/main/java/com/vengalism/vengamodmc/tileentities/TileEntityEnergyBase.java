@@ -98,21 +98,15 @@ public class TileEntityEnergyBase extends TileEntityBase {
 
     public void extractToItem(ItemStack itemStack){
         if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)){
-            IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
-            if(storage instanceof CustomForgeEnergyStorage){
-                CustomForgeEnergyStorage forgeEnergyStorage = (CustomForgeEnergyStorage) storage;
-                forgeEnergyStorage.extractInternalEnergy(this.storage.getMaxCanExtract(), false);
-            }
+            IEnergyStorage itemsStorage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+            exchangeEnergy(this.storage, itemsStorage, this.storage.getMaxCanExtract());
         }
     }
 
     public void receiveFromItem(ItemStack itemStack){
         if(itemStack.hasCapability(CapabilityEnergy.ENERGY, null)){
-            IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
-            if(storage instanceof CustomForgeEnergyStorage){
-                CustomForgeEnergyStorage forgeEnergyStorage = (CustomForgeEnergyStorage) storage;
-                forgeEnergyStorage.receiveInternalEnergy(this.storage.getMaxCanReceive(), false);
-            }
+            IEnergyStorage itemsStorage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+            exchangeEnergy(itemsStorage, this.storage, this.storage.getMaxCanReceive());
         }
     }
 
