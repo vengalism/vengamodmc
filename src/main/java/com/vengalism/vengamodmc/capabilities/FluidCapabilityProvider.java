@@ -27,6 +27,7 @@ public class FluidCapabilityProvider implements ICapabilityProvider {
         boolean startMax = false;
         if(fluidItem instanceof INutrientMixture) {
             startMax = true;
+
         }
 
         this.fluidTank = new CustomFluidTank(fluidItem.maxFluid, startMax) {
@@ -44,8 +45,11 @@ public class FluidCapabilityProvider implements ICapabilityProvider {
                 if(fluid != null && itemStack != null) {
                     if (!itemStack.hasTagCompound()) {
                         itemStack.setTagCompound(new NBTTagCompound());
+                        justMade = false;
                     }
-                    itemStack.getTagCompound().setInteger("Fluid", fluid.amount);
+                    if(!justMade) {
+                        itemStack.getTagCompound().setInteger("Fluid", fluid.amount);
+                    }
                 }
             }
         };

@@ -8,6 +8,7 @@ import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.util.BlockUtil;
 import com.vengalism.vengamodmc.util.IHasModel;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
@@ -19,7 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class BlockBase extends Block implements IHasModel{
+import javax.annotation.Nullable;
+
+public class BlockBase extends Block implements IHasModel, ITileEntityProvider{
 
     private boolean keepInventory = false;
 
@@ -63,5 +66,11 @@ public class BlockBase extends Block implements IHasModel{
 
     public void setKeepInventory(boolean keepInventory) {
         this.keepInventory = keepInventory;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return null;
     }
 }

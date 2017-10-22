@@ -3,6 +3,8 @@ package com.vengalism.vengamodmc.objects.blocks;
 import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.util.BlockUtil;
 import com.vengalism.vengamodmc.util.IHasModel;
+import com.vengalism.vengamodmc.util.ItemUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -13,7 +15,7 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public class BlockFluidBase extends BlockFluidClassic implements IHasModel{
+public class BlockFluidBase extends BlockFluidClassic{
 
     private final String name;
 
@@ -21,9 +23,18 @@ public class BlockFluidBase extends BlockFluidClassic implements IHasModel{
         super(fluid, material);
         this.name = name;
         this.displacements.put(this, false);
-        BlockUtil.registerBlock(this, new ItemBlock(this), name, true);
-        setCreativeTab(VengaModMc.vengamodmctab);
+        //BlockUtil.registerBlock(this, new ItemBlock(this), name, true);
+        //setCreativeTab(VengaModMc.vengamodmctab);
+        this.register();
 
+    }
+
+    private void register(){
+        BlockUtil.registerBlock(this, getItemBlock(this), this.name, true);
+    }
+
+    private Item getItemBlock(Block block){
+        return new ItemBlock(block);
     }
 
     @Override
@@ -36,10 +47,11 @@ public class BlockFluidBase extends BlockFluidClassic implements IHasModel{
         return !world.getBlockState(pos).getMaterial().isLiquid() && super.displaceIfPossible(world, pos);
     }
 
+    /*
     @Override
     public void registerModels() {
         VengaModMc.proxy.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");
-    }
+    }*/
 
 
     @Override

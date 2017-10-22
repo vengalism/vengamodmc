@@ -35,7 +35,6 @@ public class ItemNutrientMixture extends ItemFluid implements INutrientMixture {
         }else{
             this.setFluid(new ItemStack(this, 1, 1), new FluidStack(FluidRegistry.WATER, 100));
         }
-
     }
 
     @Override
@@ -80,10 +79,7 @@ public class ItemNutrientMixture extends ItemFluid implements INutrientMixture {
 
     @Override
     public int getCurrentFluidStored(ItemStack stack) {
-        if(isValidMixture()) {
-            return this.getFluidAmount(stack);
-        }
-        return 0;
+        return this.getFluidAmount(stack);
     }
 
     @Override

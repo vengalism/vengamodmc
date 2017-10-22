@@ -21,6 +21,7 @@ public class ItemHydroAirStone extends ItemEnergy{
         super(name, lifespan, 0, 1, lifespan);
         this.upkeepCost = upkeepCost;
         this.setMaxStackSize(1);
+        this.setEnergy(new ItemStack(this), lifespan);
     }
 
     @Override

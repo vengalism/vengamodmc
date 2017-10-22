@@ -11,6 +11,7 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class CustomForgeEnergyStorage extends EnergyStorage{
+    public boolean justMade = true;
 
     public CustomForgeEnergyStorage(int capacity) {
         this(capacity, 1000);
@@ -26,7 +27,14 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
 
     public CustomForgeEnergyStorage(int capacity, int maxReceive, int maxExtract, int energy) {
         super(capacity, maxReceive, maxExtract, energy);
-        //this.setEnergy(energy);
+        if(this.justMade){
+            if(energy > 0) {
+                this.setEnergy(energy);
+                this.energy = energy;
+            }
+            this.justMade = false;
+        }
+
     }
 
     public int getMaxCanExtract() {
@@ -131,11 +139,16 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
     }
 
     public void readFromNBT(NBTTagCompound nbt) {
-        this.setEnergy(nbt.getInteger("myEnergy"));
+        this.justMade = nbt.getBoolean("justMadEe");
+        if(!this.justMade){
+            this.setEnergy(nbt.getInteger("myEnergy"));
+        }
+        //this.setEnergy(nbt.getInteger("myEnergy"));
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setInteger("myEnergy", this.getEnergyStored());
+        nbt.setBoolean("justMadEe", this.justMade);
         return nbt;
     }
 

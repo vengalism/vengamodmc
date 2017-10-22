@@ -15,6 +15,7 @@ public class BlockInit {
     public static final BlockEnergyFurnace block_energy_furnace = new BlockEnergyFurnace("block_energy_furnace", false);
     public static final BlockEnergyGenerator block_energy_generator = new BlockEnergyGenerator("block_energy_generator");
     public static final BlockHydroTank block_hydro_tank = new BlockHydroTank("block_hydro_tank");
+    public static final BlockHydroCropTub block_hydro_crop_tub = new BlockHydroCropTub("block_hydro_crop_tub");
 
 
 

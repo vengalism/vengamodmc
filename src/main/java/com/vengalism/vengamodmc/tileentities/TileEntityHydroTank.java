@@ -20,6 +20,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -36,17 +37,16 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
     }
 
     public TileEntityHydroTank(int capacity, FluidStack afluid){
+        super(capacity, afluid);
         this.invHandler = new ItemStackHandler(2);
-        this.fluidTank = new CustomFluidTank(afluid, capacity);
-        this.fluidTank.setCanFill(true);
-        this.fluidTank.setCanDrain(false);
+        setCanFill(true);
+        setCanDrain(false);
 
-        this.nutrientTank = new CustomFluidTank(Fluid.BUCKET_VOLUME * 6){
-            @Override
-            public boolean canFillFluidType(FluidStack fluid) {
-                return fluid.getFluid() == FluidInit.fluid_nutrient_oxygenated || fluid.getFluid() == FluidInit.fluid_nutrient;
-            }
-        };
+        this.nutrientTank = new CustomFluidTank(Fluid.BUCKET_VOLUME * 6);
+        ArrayList<Fluid> stacks = new ArrayList<>();
+        stacks.add(FluidInit.fluid_nutrient_oxygenated);
+        stacks.add(FluidInit.fluid_nutrient);
+        this.nutrientTank.setFluidTypes(stacks);
         this.nutrientTank.setCanFill(false);
         this.nutrientTank.setCanDrain(true);
 
@@ -70,10 +70,30 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
         return super.getCapability(capability, facing);
     }
 
+    private void upkeep(){
+        Fluid currFluid;
+        int amount = 1;
+        if(getNutrientMixture() != null){
+            currFluid  = getNutrientMixture().getFluidType();
+            amount = getNutrientMixture().getCurrentFluidStored(getStackInSlot(NUTRIENTMIXTURESLOT));
+            getNutrientMixture().setFluid(getStackInSlot(NUTRIENTMIXTURESLOT), new FluidStack(currFluid, amount - 1).copy());
+        }
+
+        if(hasAirStone()) {
+            if (getHydroAirStone() != null) {
+                int currEnergy = getHydroAirStone().getEnergyStored(getStackInSlot(AIRSTONESLOT));
+                if(currEnergy > 0){
+                    //System.out.println(currEnergy + " curren");
+                    getHydroAirStone().setEnergy(getStackInSlot(AIRSTONESLOT), currEnergy - 1);
+                }
+            }
+        }
+    }
+
     @Override
     public void update() {
         //take in water
-        receiveFromAdjacent();
+        //receiveFromAdjacent();
         //give out nutrients
         extractToAdjacent(this.nutrientTank);
         sync++;
@@ -99,29 +119,14 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
                     if(after != 0){
                         this.nutrientTank.fillInternal(proNutrient.copy(), true);
                         this.fluidTank.drain(50, true);
-                        Fluid currFluid;
-                        int amount = 1;
-                        if(getNutrientMixture() != null){
-                            currFluid  = getNutrientMixture().getFluidType();
-                            amount = getNutrientMixture().getCurrentFluidStored(getStackInSlot(NUTRIENTMIXTURESLOT));
-                            getNutrientMixture().setFluid(getStackInSlot(NUTRIENTMIXTURESLOT), new FluidStack(currFluid, amount - 1).copy());
-                        }
-
-                        if(hasAirStone()) {
-                            if (getHydroAirStone() != null) {
-                                int currEnergy = getHydroAirStone().getEnergyStored(getStackInSlot(AIRSTONESLOT));
-                                if(currEnergy > 0){
-                                    //System.out.println(currEnergy + " curren");
-                                    getHydroAirStone().setEnergy(getStackInSlot(AIRSTONESLOT), currEnergy - 1);
-                                }
-                            }
-                        }
+                        upkeep();
                     }
 
                 }
 
                 if(getNutrientMixture() != null) {
                     if (getNutrientMixture().getCurrentFluidStored(getStackInSlot(NUTRIENTMIXTURESLOT)) <= 0) {
+                        System.out.println("less then 0, removing mixture");
                         getStackInSlot(NUTRIENTMIXTURESLOT).shrink(1);
                     }
                 }

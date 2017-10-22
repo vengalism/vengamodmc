@@ -14,6 +14,6 @@ public class FluidNutrient extends FluidBase{
 
     @Override
     public String getUnlocalizedName(){
-        return Reference.MODID + ":" + this.unlocalizedName;
+        return "fluid." + Reference.MODID + ":" + this.unlocalizedName;
     }
 }

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "fluidlevel=0": { "model": "vengamodmc:block_hydro_crop_tub_level_0" },
+    "fluidlevel=1": { "model": "vengamodmc:block_hydro_crop_tub_level_1" },
+    "fluidlevel=2": { "model": "vengamodmc:block_hydro_crop_tub_level_2" },
+    "fluidlevel=3": { "model": "vengamodmc:block_hydro_crop_tub_level_3" }
+  }
+}

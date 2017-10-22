@@ -26,7 +26,7 @@ public class ItemEnergy extends ItemBase{
 
     public int capacity;
     public int maxExtract, maxReceive;
-    public int energy;
+    //public int energy;
 
     public ItemEnergy(String name, int capacity) {
         this(name, capacity, 1000);
@@ -45,7 +45,7 @@ public class ItemEnergy extends ItemBase{
         this.capacity = capacity;
         this.maxExtract = maxExtract;
         this.maxReceive = maxReceive;
-        //setEnergy(this.get, energy); seems to cause issues with nbt, probs cos previous constructor sets it to 0 all the time
+        this.setEnergy(new ItemStack(this), energy);
     }
 
     @Override

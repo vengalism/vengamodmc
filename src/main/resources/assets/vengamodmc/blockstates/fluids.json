@@ -4,11 +4,11 @@
     "model" : "forge:fluid"
   },
   "variants":{
-    "block_fluid_nutrient":[{
-      "custom": {"fluid": "block_fluid_nutrient"}
+    "fluid_nutrient":[{
+      "custom": {"fluid": "fluid_nutrient"}
     }],
-    "block_fluid_nutrient_oxygenated":[{
-      "custom": {"fluid": "block_fluid_nutrient_oxygenated"}
+    "fluid_nutrient_oxygenated":[{
+      "custom": {"fluid": "fluid_nutrient_oxygenated"}
     }]
   }
 }

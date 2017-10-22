@@ -7,11 +7,9 @@ package com.vengalism.vengamodmc.handlers;
 import com.vengalism.vengamodmc.init.BlockInit;
 import com.vengalism.vengamodmc.init.FluidInit;
 import com.vengalism.vengamodmc.init.ItemInit;
-import com.vengalism.vengamodmc.objects.blocks.BlockFluidBase;
 import com.vengalism.vengamodmc.objects.fluid.FluidStateMapper;
 import com.vengalism.vengamodmc.util.IHasModel;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -47,13 +45,14 @@ public class RegistryHandler {
         event.getRegistry().registerAll(BLOCKSTOREGISTER.toArray(new Block[0]));
     }
 
-
+    /*
     @SubscribeEvent
-    public static void onFluidRegister(ModelRegistryEvent event){
-        //FluidInit.init();
+    public void onFluidRegistry(FluidRegistry.FluidRegisterEvent event){
+        FluidInit.init();
         //for(Fluid fluid : FLUIDSTOREGISTER){}
-        //event.getRegistry().registerAll(FLUIDSTOREGISTER.toArray(new Block[0]));
-    }
+
+        event.getRegistry().registerAll(FLUIDSTOREGISTER.toArray(new Block[0]));
+    }*/
 
     @SubscribeEvent
     public void onCraftingRegistry(RegistryEvent.Register<IRecipe> event){
@@ -77,8 +76,9 @@ public class RegistryHandler {
         for(Fluid fluid : FLUIDSTOREGISTER){
            if(fluid instanceof IHasModel){
                ((IHasModel) fluid).registerModels();
-               registerCustomFluidBlockRenderer(fluid);
+               //FluidRegistry.registerFluid(fluid);
                FluidRegistry.addBucketForFluid(fluid);
+               registerCustomFluidBlockRenderer(fluid);
 
            }
         }

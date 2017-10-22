@@ -8,10 +8,13 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by vengada at 19/10/2017
  */
+@SideOnly(Side.CLIENT)
 public class FluidStateMapper extends StateMapperBase implements ItemMeshDefinition {
 
     public final Fluid fluid;

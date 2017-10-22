@@ -6,6 +6,7 @@ package com.vengalism.vengamodmc.capabilities;
 
 import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import com.vengalism.vengamodmc.objects.items.ItemEnergy;
+import com.vengalism.vengamodmc.objects.items.ItemHydroAirStone;
 import com.vengalism.vengamodmc.objects.tools.ToolEnergy;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,15 +39,19 @@ public class EnergyCapabilityProvider implements ICapabilityProvider {
                 if(!itemStack.hasTagCompound()){
                     itemStack.setTagCompound(new NBTTagCompound());
                 }
-
-                itemStack.getTagCompound().setInteger("Energy", energy);
+                if(!justMade) {
+                    itemStack.getTagCompound().setInteger("Energy", energy);
+                }
             }
         };
     }
 
-    public EnergyCapabilityProvider(ItemStack itemStack, ItemEnergy energyTool){
-
-        this.storage = new CustomForgeEnergyStorage(energyTool.capacity, energyTool.maxReceive, energyTool.maxExtract, energyTool.energy) {
+    public EnergyCapabilityProvider(ItemStack itemStack, ItemEnergy itemEnergy){
+        int startMax = 0;
+        if(itemEnergy instanceof ItemHydroAirStone){
+            startMax = 1000;
+        }
+        this.storage = new CustomForgeEnergyStorage(itemEnergy.capacity, itemEnergy.maxReceive, itemEnergy.maxExtract, startMax) {
             @Override
             public int getEnergyStored() {
                 if (itemStack.hasTagCompound()) {
@@ -60,8 +65,11 @@ public class EnergyCapabilityProvider implements ICapabilityProvider {
             public void setEnergy(int energy) {
                 if (!itemStack.hasTagCompound()) {
                     itemStack.setTagCompound(new NBTTagCompound());
+                    justMade = false;
                 }
-                itemStack.getTagCompound().setInteger("Energy", energy);
+                if(!justMade) {
+                    itemStack.getTagCompound().setInteger("Energy", energy);
+                }
             }
         };
     }
