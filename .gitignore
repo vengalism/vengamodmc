@@ -19,6 +19,7 @@ build
 
 # other
 eclipse
+classes
 run
 *.gradle
 Paulscode SoundSystem CodecIBXM License.txt
@@ -27,3 +28,4 @@ MinecraftForge-Credits.txt
 *.mcmeta
 classes/production/vengamodmc-1.12.2_main/mcmod.info
 classes/production/vengamodmc-1.12.2_main/com/example/examplemod/ExampleMod.class
+*.class
