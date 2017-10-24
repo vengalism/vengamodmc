@@ -26,17 +26,17 @@ import java.util.Objects;
 /**
  * Created by vengada at 20/10/2017
  */
-public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITickable{
+public class TileEntityHydroNutrientTank extends  TileEntityFluidTankBase implements ITickable{
 
-    private ItemStackHandler invHandler;
+    ItemStackHandler invHandler;
     private CustomFluidTank nutrientTank;
     private final int AIRSTONESLOT = 1, NUTRIENTMIXTURESLOT = 0;
 
-    public TileEntityHydroTank() {
+    public TileEntityHydroNutrientTank() {
         this(Fluid.BUCKET_VOLUME * 2, new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
     }
 
-    public TileEntityHydroTank(int capacity, FluidStack afluid){
+    public TileEntityHydroNutrientTank(int capacity, FluidStack afluid){
         super(capacity, afluid);
         this.invHandler = new ItemStackHandler(2);
         setCanFill(true);
@@ -92,47 +92,54 @@ public class TileEntityHydroTank extends  TileEntityFluidTankBase implements ITi
 
     @Override
     public void update() {
-        //take in water
-        //receiveFromAdjacent();
-        //give out nutrients
-        extractToAdjacent(this.nutrientTank);
-        sync++;
-        sync %= 20;
-        if(sync == 0){
+        if (this.world != null) {
 
-            if(this.fluidTank.canFill()){ //auto fill water tank
-                this.fluidTank.fillInternal(new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
-            }
-            //processing
-            if(hasNutrientMixture()){
+            if (!this.world.isRemote) {
+                //take in water
+                //receiveFromAdjacent();
+                //give out nutrients
+                extractToAdjacent(this.nutrientTank);
+                sync++;
+                sync %= 20;
+                if(sync == 0){
+
+                    if(this.fluidTank.canFill()){ //auto fill water tank
+                        this.fluidTank.fillInternal(new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
+                    }
+                    //processing
+                    if(hasNutrientMixture()){
 //                ItemNutrientMixture mixture = getNutrientMixture();
-                FluidStack proNutrient;
-                if(hasAirStone()){ //fill with oxygenated nutrient fluid
-                    proNutrient = new FluidStack(FluidInit.fluid_nutrient_oxygenated, 50);
-                }else{ //fill with regular nutrient fluid
-                    proNutrient = new FluidStack(FluidInit.fluid_nutrient, 50);
-                }
+                        FluidStack proNutrient;
+                        if(hasAirStone()){ //fill with oxygenated nutrient fluid
+                            proNutrient = new FluidStack(FluidInit.fluid_nutrient_oxygenated, 50);
+                        }else{ //fill with regular nutrient fluid
+                            proNutrient = new FluidStack(FluidInit.fluid_nutrient, 50);
+                        }
 
-                if (this.fluidTank.getFluidAmount() >= 50) {
-                    int after = this.nutrientTank.fillInternal(proNutrient.copy(), false);
-                    //if 0 it didnt add more to the tank, so dont do upkeep
-                    if(after != 0){
-                        this.nutrientTank.fillInternal(proNutrient.copy(), true);
-                        this.fluidTank.drain(50, true);
-                        upkeep();
+                        if (this.fluidTank.getFluidAmount() >= 50) {
+                            int after = this.nutrientTank.fillInternal(proNutrient.copy(), false);
+                            //if 0 it didnt add more to the tank, so dont do upkeep
+                            if(after != 0){
+                                this.nutrientTank.fillInternal(proNutrient.copy(), true);
+                                this.fluidTank.drain(50, true);
+                                upkeep();
+                            }
+
+                        }
+
+                        if(getNutrientMixture() != null) {
+                            if (getNutrientMixture().getCurrentFluidStored(getStackInSlot(NUTRIENTMIXTURESLOT)) <= 0) {
+                                System.out.println("less then 0, removing mixture");
+                                getStackInSlot(NUTRIENTMIXTURESLOT).shrink(1);
+                            }
+                        }
                     }
 
                 }
 
-                if(getNutrientMixture() != null) {
-                    if (getNutrientMixture().getCurrentFluidStored(getStackInSlot(NUTRIENTMIXTURESLOT)) <= 0) {
-                        System.out.println("less then 0, removing mixture");
-                        getStackInSlot(NUTRIENTMIXTURESLOT).shrink(1);
-                    }
-                }
             }
-
         }
+
     }
 
     private ItemStack getStackInSlot(int slot){

@@ -23,6 +23,6 @@ public class VengamodmcTab extends CreativeTabs {
 
     @Override
     public ItemStack getTabIconItem() {
-        return new ItemStack(Item.getItemFromBlock(Blocks.IRON_DOOR));
+        return new ItemStack(Item.getItemFromBlock(BlockInit.block_energy_storage));
     }
 }

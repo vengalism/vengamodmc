@@ -91,6 +91,8 @@ public class PacketReturnFluid implements IMessage {
                 fluidTypeFiled.setInt(clazz, message.fluidType);
             } catch (Exception e) {
                 System.out.println("You Stuffed it " + e.getMessage());
+                System.out.println(e.getCause());
+                System.out.println(e.getStackTrace());
 
             }
 

@@ -49,8 +49,10 @@ public class VengaModMc {
         GameRegistry.registerTileEntity(TileEntityEnergyBase.class, Reference.MODID + "TileEntityEnergyBase");
         GameRegistry.registerTileEntity(TileEntityEnergyFurnace.class, Reference.MODID + "TileEntityEnergyFurnace");
         GameRegistry.registerTileEntity(TileEntityEnergyGenerator.class, Reference.MODID + "TileEntityEnergyGenerator");
-        GameRegistry.registerTileEntity(TileEntityHydroTank.class, Reference.MODID + "TileEntityHydroTank");
+        GameRegistry.registerTileEntity(TileEntityHydroNutrientTank.class, Reference.MODID + "TileEntityHydroNutrientTank");
+        GameRegistry.registerTileEntity(TileEntityHydroFishTank.class, Reference.MODID + "TileEntityHydroFishTank");
         GameRegistry.registerTileEntity(TileEntityHydroCropTub.class, Reference.MODID + "TileEntityHydroCropTub");
+        GameRegistry.registerTileEntity(TileEntityHome.class, Reference.MODID + "TileEntityHome");
         proxy.init(event);
     }
 

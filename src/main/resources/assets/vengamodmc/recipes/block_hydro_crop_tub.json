@@ -1,1 +1,23 @@
-//TODO me
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "pattern" : [
+    " P ",
+    "PHP",
+    " P "
+  ],
+
+  "key" : {
+    "P" : {
+      "item" : "minecraft:flower_pot"
+    },
+    "H" : {
+      "item" : "vengamodmc:item_energy_circuit"
+    }
+  },
+
+  "result" : {
+    "item" : "vengamodmc:block_hydro_crop_tub",
+    "count" : 1
+  }
+}

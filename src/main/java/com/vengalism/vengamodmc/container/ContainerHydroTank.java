@@ -2,7 +2,7 @@ package com.vengalism.vengamodmc.container;
 
 import com.vengalism.vengamodmc.container.slots.SlotItemHydroAirStone;
 import com.vengalism.vengamodmc.container.slots.SlotItemNutrient;
-import com.vengalism.vengamodmc.tileentities.TileEntityHydroTank;
+import com.vengalism.vengamodmc.tileentities.TileEntityHydroNutrientTank;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -10,7 +10,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class ContainerHydroTank extends CustomContainer {
 
-    public ContainerHydroTank(InventoryPlayer inventoryPlayer, TileEntityHydroTank hydroTankTileEntity){
+    public ContainerHydroTank(InventoryPlayer inventoryPlayer, TileEntityHydroNutrientTank hydroTankTileEntity){
         if (hydroTankTileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
             IItemHandler inventory = hydroTankTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
 

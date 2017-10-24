@@ -220,49 +220,52 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
 
     @Override
     public void update() {
-        if (!this.world.isRemote) {
-            sync++;
-            sync %= 20;
-            if (sync == 0) {
+        if (this.world != null) {
 
-                //take from adjacent blocks
-                int maxCanReceive = this.storage.getMaxCanReceive();
-                this.storage.receiveInternalEnergy(EnergyTransfer.takeAll(this.world, this.pos, maxCanReceive, false), false);
+            if (!this.world.isRemote) {
+                sync++;
+                sync %= 20;
+                if (sync == 0) {
 
-                //take from battery in slot 2
-                ItemStack item2 = this.invHandler.getStackInSlot(BATSLOT);
-                if (item2.getCount() > 0) {
-                    maxCanReceive = this.storage.getMaxCanReceive();
-                    if (maxCanReceive > 0) {
-                        this.storage.receiveEnergy(EnergyTransfer.takeEnergyFromItem(item2, maxCanReceive, false, null), false);
+                    //take from adjacent blocks
+                    int maxCanReceive = this.storage.getMaxCanReceive();
+                    this.storage.receiveInternalEnergy(EnergyTransfer.takeAll(this.world, this.pos, maxCanReceive, false), false);
+
+                    //take from battery in slot 2
+                    ItemStack item2 = this.invHandler.getStackInSlot(BATSLOT);
+                    if (item2.getCount() > 0) {
+                        maxCanReceive = this.storage.getMaxCanReceive();
+                        if (maxCanReceive > 0) {
+                            this.storage.receiveEnergy(EnergyTransfer.takeEnergyFromItem(item2, maxCanReceive, false, null), false);
+                        }
                     }
-                }
 
-                ItemStack input1 = this.invHandler.getStackInSlot(0);
-                ItemStack input2 = this.invHandler.getStackInSlot(3);
-                ItemStack input3 = this.invHandler.getStackInSlot(5);
-                ItemStack output1 = this.invHandler.getStackInSlot(1);
-                ItemStack output2 = this.invHandler.getStackInSlot(4);
-                ItemStack output3 = this.invHandler.getStackInSlot(6);
+                    ItemStack input1 = this.invHandler.getStackInSlot(0);
+                    ItemStack input2 = this.invHandler.getStackInSlot(3);
+                    ItemStack input3 = this.invHandler.getStackInSlot(5);
+                    ItemStack output1 = this.invHandler.getStackInSlot(1);
+                    ItemStack output2 = this.invHandler.getStackInSlot(4);
+                    ItemStack output3 = this.invHandler.getStackInSlot(6);
 
-                balanceInputSlots(input1, input2, input3);
+                    balanceInputSlots(input1, input2, input3);
 
-                ++this.count1;
-                ++this.count2;
-                ++this.count3;
+                    ++this.count1;
+                    ++this.count2;
+                    ++this.count3;
 
-                count1 = cookThese(input1, output1, count1, 1);
-                count2 = cookThese(input2, output2, count2, 4);
-                count3 = cookThese(input3, output3, count3, 6);
+                    count1 = cookThese(input1, output1, count1, 1);
+                    count2 = cookThese(input2, output2, count2, 4);
+                    count3 = cookThese(input3, output3, count3, 6);
 
-                if(output1.getCount() > 0){
-                    exportOutput(output1);
-                }
-                if(output2.getCount() > 0){
-                    exportOutput(output2);
-                }
-                if(output3.getCount() > 0){
-                    exportOutput(output3);
+                    if (output1.getCount() > 0) {
+                        exportOutput(output1);
+                    }
+                    if (output2.getCount() > 0) {
+                        exportOutput(output2);
+                    }
+                    if (output3.getCount() > 0) {
+                        exportOutput(output3);
+                    }
                 }
             }
 

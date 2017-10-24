@@ -1,0 +1,24 @@
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "pattern" : [
+    "SSS",
+    "W W",
+    "SSS"
+  ],
+
+  "key" : {
+    "W" : {
+      "item" : "minecraft:water_bucket"
+    },
+    "S" : {
+      "item" : "minecraft:stone_slab",
+      "data" : 0
+    }
+  },
+
+  "result" : {
+    "item" : "vengamodmc:block_hydro_nutrient_tank",
+    "count" : 1
+  }
+}

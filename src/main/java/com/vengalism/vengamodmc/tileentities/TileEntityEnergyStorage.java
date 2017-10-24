@@ -51,21 +51,25 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
 
     @Override
     public void update() {
+        if (this.world != null) {
 
-        extractToAdjacent();
+            if (!this.world.isRemote) {
+                extractToAdjacent();
 
-        receiveFromAdjacent();
+                receiveFromAdjacent();
 
-        //extract from item receive to me
-        ItemStack disItem = this.invHandler.getStackInSlot(DISCHARGESLOT);
-        if(disItem != ItemStack.EMPTY ){
-            receiveFromItem(disItem);
-        }
+                //extract from item receive to me
+                ItemStack disItem = this.invHandler.getStackInSlot(DISCHARGESLOT);
+                if (disItem != ItemStack.EMPTY) {
+                    receiveFromItem(disItem);
+                }
 
-        //receive to item aka give to item, extract from me
-        ItemStack recItem = this.invHandler.getStackInSlot(CHARGESLOT);
-        if(recItem != ItemStack.EMPTY ){
-            extractToItem(recItem);
+                //receive to item aka give to item, extract from me
+                ItemStack recItem = this.invHandler.getStackInSlot(CHARGESLOT);
+                if (recItem != ItemStack.EMPTY) {
+                    extractToItem(recItem);
+                }
+            }
         }
     }
 

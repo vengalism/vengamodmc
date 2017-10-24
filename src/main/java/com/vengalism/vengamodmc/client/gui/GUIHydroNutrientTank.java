@@ -5,26 +5,34 @@ import com.vengalism.vengamodmc.container.ContainerHydroTank;
 import com.vengalism.vengamodmc.energy.EnergyBar;
 import com.vengalism.vengamodmc.handlers.PacketHandler;
 import com.vengalism.vengamodmc.network.PacketGetFluid;
-import com.vengalism.vengamodmc.tileentities.TileEntityHydroTank;
+import com.vengalism.vengamodmc.tileentities.TileEntityHydroNutrientTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import java.awt.*;
 
-public class GUIHydroTank extends CustomEnergyGuiContainer {
 
-    private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/hydro_tank_gui.png");
-    private TileEntityHydroTank hydroTankTileEntity;
+public class GUIHydroNutrientTank extends CustomEnergyGuiContainer {
+
+    public static ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/hydro_tank_gui.png");
+    private TileEntityHydroNutrientTank hydroTankTileEntity;
     public static int waterFluidAmount = 0, waterCapacity = 0;
     public static int nutrientFluidAmount = 0, nutrientCapacity = 0;
     public static int fluidType = 0, waterFluidType = 0;
     private static int sync = 0;
-    private EnergyBar NutrientEnergyBar;
+    public EnergyBar NutrientEnergyBar;
 
-    public GUIHydroTank(InventoryPlayer player, TileEntityHydroTank hydroTankTileEntity) {
+
+    public GUIHydroNutrientTank(Container container){
+        super(container);
+
+    }
+
+    public GUIHydroNutrientTank(InventoryPlayer player, TileEntityHydroNutrientTank hydroTankTileEntity) {
         super(new ContainerHydroTank(player, hydroTankTileEntity));
         this.hydroTankTileEntity = hydroTankTileEntity;
         xSize = 176;
@@ -62,11 +70,11 @@ public class GUIHydroTank extends CustomEnergyGuiContainer {
         sync %= 20;
         if (sync == 0) {
             PacketHandler.INSTANCE.sendToServer(new PacketGetFluid(this.hydroTankTileEntity.getPos(),
-                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIHydroTank", "waterFluidAmount", "waterCapacity", "waterFluidType"));
+                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIHydroNutrientTank", "waterFluidAmount", "waterCapacity", "waterFluidType"));
             this.energyBar.updateEnergyBar(waterFluidAmount, waterCapacity);
 
             PacketHandler.INSTANCE.sendToServer(new PacketGetFluid(this.hydroTankTileEntity.getPos(),
-                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIHydroTank", "nutrientFluidAmount", "nutrientCapacity", "fluidType"));
+                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIHydroNutrientTank", "nutrientFluidAmount", "nutrientCapacity", "fluidType"));
             this.NutrientEnergyBar.updateEnergyBar(nutrientFluidAmount, nutrientCapacity);
         }
     }

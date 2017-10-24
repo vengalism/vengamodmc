@@ -164,23 +164,28 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
 
     @Override
     public void update() {
-        //receiveFromAdjacent();
-        extractToAdjacent();
+        if (this.world != null) {
 
-        sync++;
-        sync %= 20;
-        if(sync == 0){
-            drainNutrients(false);
-            //System.out.println(this.fluidTank.getFluid().getUnlocalizedName());
-            BlockPos above = new BlockPos(this.pos.getX(), this.pos.getY() + 1, this.pos.getZ());
-            IBlockState cropAbove = this.world.getBlockState(above);
-            this.world.scheduleBlockUpdate(above, cropAbove.getBlock(), this.getDelayBuffs(), 10);
-            if(!isOutputFull()){
-                this.harvestCropAbove(cropAbove, above);
-            }else{
-                for(int i = 0; i < this.invHandler.getSlots(); i++){
-                    if(this.invHandler.getStackInSlot(i).isEmpty()){
-                        this.outputFull = false;
+            if (!this.world.isRemote) {
+                //receiveFromAdjacent();
+                extractToAdjacent();
+
+                sync++;
+                sync %= 20;
+                if (sync == 0) {
+                    drainNutrients(false);
+                    //System.out.println(this.fluidTank.getFluid().getUnlocalizedName());
+                    BlockPos above = new BlockPos(this.pos.getX(), this.pos.getY() + 1, this.pos.getZ());
+                    IBlockState cropAbove = this.world.getBlockState(above);
+                    this.world.scheduleBlockUpdate(above, cropAbove.getBlock(), this.getDelayBuffs(), 10);
+                    if (!isOutputFull()) {
+                        this.harvestCropAbove(cropAbove, above);
+                    } else {
+                        for (int i = 0; i < this.invHandler.getSlots(); i++) {
+                            if (this.invHandler.getStackInSlot(i).isEmpty()) {
+                                this.outputFull = false;
+                            }
+                        }
                     }
                 }
             }

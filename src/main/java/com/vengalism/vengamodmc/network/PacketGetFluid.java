@@ -1,7 +1,8 @@
 package com.vengalism.vengamodmc.network;
 
 import com.vengalism.vengamodmc.handlers.PacketHandler;
-import com.vengalism.vengamodmc.tileentities.TileEntityHydroTank;
+import com.vengalism.vengamodmc.tileentities.TileEntityHydroFishTank;
+import com.vengalism.vengamodmc.tileentities.TileEntityHydroNutrientTank;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -82,6 +83,27 @@ public class PacketGetFluid implements IMessage {
             return null;
         }
 
+        void doSpecialStuff(IFluidTank fluidTank, PacketGetFluid message, MessageContext ctx) {
+            if (fluidTank != null) {
+                int fluidAmount = fluidTank.getFluidAmount();
+                int capacity = fluidTank.getCapacity();
+                int fluidType = 0;
+                String nutType;
+                if (fluidTank.getFluid() != null) {
+                    if (fluidTank.getFluid().getUnlocalizedName() != null) {
+                        nutType = fluidTank.getFluid().getUnlocalizedName();
+                        if (nutType != null) {
+                            if (nutType.contains("oxygenated"))
+                                fluidType = 1;
+                        }
+                    }
+
+                }
+                PacketHandler.INSTANCE.sendTo(new PacketReturnFluid(fluidAmount, capacity, message.className,
+                        message.fluidAmountFieldName, message.capacityFieldName, fluidType, message.fluidTypeName), ctx.getServerHandler().player);
+            }
+        }
+
         void processMessage(PacketGetFluid message, MessageContext ctx) {
 
             TileEntity te = ctx.getServerHandler().player.getServerWorld().getTileEntity(message.pos);
@@ -89,28 +111,18 @@ public class PacketGetFluid implements IMessage {
                 return;
             } else if (!te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
                 return;
-            } else if (te instanceof TileEntityHydroTank && message.fluidAmountFieldName.equals("nutrientFluidAmount")) {
+            } else if (te instanceof TileEntityHydroNutrientTank && message.fluidAmountFieldName.equals("nutrientFluidAmount")) {
 
-                TileEntityHydroTank hydroTankTileEntity = (TileEntityHydroTank) te;
+                TileEntityHydroNutrientTank hydroTankTileEntity = (TileEntityHydroNutrientTank) te;
                 IFluidTank fluidTank = hydroTankTileEntity.getNutrientTank();
-                if(fluidTank != null) {
-                    int fluidAmount = fluidTank.getFluidAmount();
-                    int capacity = fluidTank.getCapacity();
-                    int fluidType = 0;
-                    String nutType;
-                    if(fluidTank.getFluid() != null) {
-                        if(fluidTank.getFluid().getUnlocalizedName() != null){
-                            nutType = fluidTank.getFluid().getUnlocalizedName();
-                            if (nutType != null) {
-                                if (nutType.contains("oxygenated"))
-                                    fluidType = 1;
-                            }
-                        }
+                doSpecialStuff(fluidTank, message, ctx);
 
-                    }
-                    PacketHandler.INSTANCE.sendTo(new PacketReturnFluid(fluidAmount, capacity, message.className,
-                            message.fluidAmountFieldName, message.capacityFieldName, fluidType, message.fluidTypeName), ctx.getServerHandler().player);
-                }
+            }else if(te instanceof TileEntityHydroFishTank && message.fluidAmountFieldName.equals("nutrientFluidAmount")) {
+
+                TileEntityHydroFishTank hydroTankTileEntity = (TileEntityHydroFishTank) te;
+                IFluidTank fluidTank = hydroTankTileEntity.getNutrientTank();
+                doSpecialStuff(fluidTank, message, ctx);
+
             } else {
                 IFluidTank fluidTank = (IFluidTank)te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
                 if(fluidTank != null) {
