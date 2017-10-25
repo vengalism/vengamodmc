@@ -24,7 +24,7 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
     private ItemStackHandler invHandler;
 
     public TileEntityEnergyStorage() {
-        this(10000, 1000);
+        this(50000, 1000);
     }
 
     public TileEntityEnergyStorage(int capacity, int maxTransfer) {
