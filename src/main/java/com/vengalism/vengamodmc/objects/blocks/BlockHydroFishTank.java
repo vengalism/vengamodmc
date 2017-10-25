@@ -40,7 +40,6 @@ public class BlockHydroFishTank extends BlockBase {
         if(!(tileEntity instanceof TileEntityHydroFishTank)){
             return false;
         }
-        System.out.println("BLAH");
         playerIn.openGui(VengaModMc.instance, GuiHandler.hydroFishTankContainerID, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
