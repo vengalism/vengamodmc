@@ -1,5 +1,6 @@
 package com.vengalism.vengamodmc.tileentities;
 
+import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import com.vengalism.vengamodmc.objects.fluid.CustomFluidTank;
 import com.vengalism.vengamodmc.util.MyUtil;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,6 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -144,16 +146,9 @@ public class TileEntityFluidTankBase extends TileEntityBase{
         return this.fluidTank.canDrain();
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        this.fluidTank.readFromNBT(compound);
-    }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        this.fluidTank.writeToNBT(compound);
-        return compound;
+    public CustomFluidTank getFluidTank() {
+        return this.fluidTank;
     }
 }

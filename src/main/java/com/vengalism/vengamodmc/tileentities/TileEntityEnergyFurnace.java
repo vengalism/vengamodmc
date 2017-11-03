@@ -81,65 +81,7 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
         return super.getCapability(capability, facing);
     }
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        syncableWrite(compound);
-        return compound;
-    }
 
-    private void syncableWrite(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        compound.setInteger("furnaceBurnTime", furnaceBurnTime);
-        compound.setInteger("currentItemBurnTime", currentItemBurnTime);
-        compound.setInteger("cookTime", cookTime);
-        compound.setInteger("count1", count1);
-        compound.setInteger("count2", count2);
-        compound.setInteger("count3", count3);
-        this.storage.writeToNBT(compound);
-        compound.setTag("genInv", this.invHandler.serializeNBT());
-
-    }
-
-
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        syncableRead(compound);
-    }
-
-    public void syncableRead(NBTTagCompound compound) {
-
-        super.readFromNBT(compound);
-        this.furnaceBurnTime = compound.getInteger("furnaceBurnTime");
-        this.currentItemBurnTime = compound.getInteger("currentItemBurnTime");
-        this.cookTime = compound.getInteger("cookTime");
-        this.count1 = compound.getInteger("count1");
-        this.count2 = compound.getInteger("count2");
-        this.count3 = compound.getInteger("count3");
-        this.storage.readFromNBT(compound);
-        this.invHandler.deserializeNBT(compound.getCompoundTag("genInv"));
-    }
-
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-
-        ItemStack itemstack = this.invHandler.getStackInSlot(index);
-        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
-        this.invHandler.setStackInSlot(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit()) {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        if (index == 0 && !flag) {
-            //this.totalCookTime = this.getCookTime(stack);
-            this.totalCookTime = 125;
-            this.cookTime = 0;
-            this.markDirty();
-        }
-    }
 
     @Override
     public boolean isBurning() {
@@ -275,13 +217,11 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
     @Override
     public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
         return index == 1 || index == 4 || index == 6;
-
     }
 
     @Override
     public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
         return index == 0 || index == 3 || index == 5;
-
     }
 
     private void exportOutput(ItemStack output){
@@ -291,7 +231,6 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
             if(to != null){
                 ItemTransfer.giveItemToAdjacent(output, to);
             }
-
         }
     }
 
@@ -333,5 +272,49 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
         input.shrink(1);
     }
 
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
 
+        ItemStack itemstack = this.invHandler.getStackInSlot(index);
+        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
+        this.invHandler.setStackInSlot(index, stack);
+
+        if (stack.getCount() > this.getInventoryStackLimit()) {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        if (index == 0 && !flag) {
+            //this.totalCookTime = this.getCookTime(stack);
+            this.totalCookTime = 125;
+            this.cookTime = 0;
+            this.markDirty();
+        }
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        this.furnaceBurnTime = compound.getInteger("furnaceBurnTime");
+        this.currentItemBurnTime = compound.getInteger("currentItemBurnTime");
+        this.cookTime = compound.getInteger("cookTime");
+        this.count1 = compound.getInteger("count1");
+        this.count2 = compound.getInteger("count2");
+        this.count3 = compound.getInteger("count3");
+        this.storage.readFromNBT(compound);
+        this.invHandler.deserializeNBT(compound.getCompoundTag("genInv"));
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("furnaceBurnTime", furnaceBurnTime);
+        compound.setInteger("currentItemBurnTime", currentItemBurnTime);
+        compound.setInteger("cookTime", cookTime);
+        compound.setInteger("count1", count1);
+        compound.setInteger("count2", count2);
+        compound.setInteger("count3", count3);
+        this.storage.writeToNBT(compound);
+        compound.setTag("genInv", this.invHandler.serializeNBT());
+        return compound;
+    }
 }

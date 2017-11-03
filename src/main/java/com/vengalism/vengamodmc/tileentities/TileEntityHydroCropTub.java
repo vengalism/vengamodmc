@@ -3,11 +3,8 @@ package com.vengalism.vengamodmc.tileentities;
 import com.vengalism.vengamodmc.init.FluidInit;
 import com.vengalism.vengamodmc.objects.blocks.BlockHydroCropTub;
 import com.vengalism.vengamodmc.objects.fluid.CustomFluidTank;
-import com.vengalism.vengamodmc.objects.items.ItemHydroAirStone;
-import com.vengalism.vengamodmc.objects.items.ItemNutrientMixture;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +16,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -69,7 +65,8 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
         return super.getCapability(capability, facing);
     }
 
-    public FluidTank getFluidTank(){
+    @Override
+    public CustomFluidTank getFluidTank(){
         return this.fluidTank;
     }
 
@@ -222,17 +219,8 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
         return (oldState.getBlock()) != newSate.getBlock();
     }
 
-
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        this.invHandler.deserializeNBT(compound.getCompoundTag("invHandler"));
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        compound.setTag("invHandler", this.invHandler.serializeNBT());
-        return compound;
+    public ItemStackHandler getInvHandler() {
+        return this.invHandler;
     }
 }

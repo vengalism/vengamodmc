@@ -76,17 +76,15 @@ public class CustomFluidTank extends FluidTank {
     }
 
     //NBT done in super by default seems ok
-
-
     @Override
-    public FluidTank readFromNBT(NBTTagCompound nbt) {
-        this.justMade = nbt.getBoolean("justMade");
-        return super.readFromNBT(nbt);
+    public FluidTank readFromNBT(NBTTagCompound compound) {
+        this.justMade = compound.getBoolean("justMade");
+        return super.readFromNBT(compound);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        nbt.setBoolean("justMade", this.justMade);
-        return super.writeToNBT(nbt);
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        compound.setBoolean("justMade", this.justMade);
+        return super.writeToNBT(compound);
     }
 }

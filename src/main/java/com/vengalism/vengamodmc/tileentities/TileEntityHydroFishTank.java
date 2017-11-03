@@ -35,10 +35,6 @@ public class TileEntityHydroFishTank extends TileEntityHydroNutrientTank impleme
         return compound;
     }
 
-
-
-
-
     @Override
     public void update() {
         if (this.world != null) {

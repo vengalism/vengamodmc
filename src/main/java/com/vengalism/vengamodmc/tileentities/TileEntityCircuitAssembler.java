@@ -4,6 +4,7 @@
 
 package com.vengalism.vengamodmc.tileentities;
 
+import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -51,5 +52,13 @@ public class TileEntityCircuitAssembler extends TileEntityEnergyBase{
         }
     }
 
+    @Override
+    public ItemStackHandler getInvHandler() {
+        return this.invHandler;
+    }
 
+    @Override
+    public CustomForgeEnergyStorage getEnergyStorage() {
+        return this.storage;
+    }
 }

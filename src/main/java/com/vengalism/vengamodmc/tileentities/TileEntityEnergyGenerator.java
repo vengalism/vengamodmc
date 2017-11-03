@@ -129,43 +129,13 @@ public class TileEntityEnergyGenerator extends TileEntityEnergyBase implements I
 
     }
 
-    /*
-    @Nullable
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        int metadata = getBlockMetadata();
-
-        return new SPacketUpdateTileEntity(this.pos, metadata, nbtTagCompound);
+    public ItemStackHandler getInvHandler() {
+        return this.invHandler;
     }
 
     @Override
-    public NBTTagCompound getUpdateTag() {
-
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return nbtTagCompound;
+    public CustomForgeEnergyStorage getEnergyStorage() {
+        return this.storage;
     }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-
-        this.readFromNBT(pkt.getNbtCompound());
-    }
-
-    @Override
-    public void handleUpdateTag(NBTTagCompound tag) {
-
-        this.readFromNBT(tag);
-    }
-
-    @Override
-    public NBTTagCompound getTileData() {
-
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return nbtTagCompound;
-    }*/
 }

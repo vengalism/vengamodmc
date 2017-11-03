@@ -40,6 +40,7 @@ public class ToolPickaxeEnergy extends ToolEnergy {
         super(name, attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn, defaultEnergyStorage);
     }
 
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         return super.onItemRightClick(worldIn, playerIn, handIn);

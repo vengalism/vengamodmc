@@ -138,18 +138,18 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
         return 0;
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
-        this.justMade = nbt.getBoolean("justMadEe");
+    public void readFromNBT(NBTTagCompound compound) {
+        this.justMade = compound.getBoolean("justMadEe");
         if(!this.justMade){
-            this.setEnergy(nbt.getInteger("myEnergy"));
+            this.setEnergy(compound.getInteger("myEnergy"));
         }
         //this.setEnergy(nbt.getInteger("myEnergy"));
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        nbt.setInteger("myEnergy", this.getEnergyStored());
-        nbt.setBoolean("justMadEe", this.justMade);
-        return nbt;
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        compound.setInteger("myEnergy", this.getEnergyStored());
+        compound.setBoolean("justMadEe", this.justMade);
+        return compound;
     }
 
 }

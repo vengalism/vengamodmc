@@ -181,20 +181,22 @@ public class TileEntityHydroNutrientTank extends  TileEntityFluidTankBase implem
     }
 
     @Override
+    public ItemStackHandler getInvHandler() {
+        return this.invHandler;
+    }
+
+    //extra tank then normal, have to do nbt here for it instead of in base which wont know about it
+    @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.invHandler.deserializeNBT(compound.getCompoundTag("invHandler"));
         this.nutrientTank.readFromNBT(compound);
     }
 
+    //extra tank then normal, have to do nbt here for it instead of in base which wont know about it
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setTag("invHandler", this.invHandler.serializeNBT());
         this.nutrientTank.writeToNBT(compound);
         return compound;
     }
-
-
-
 }
