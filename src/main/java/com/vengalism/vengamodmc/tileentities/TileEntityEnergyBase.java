@@ -114,16 +114,7 @@ public class TileEntityEnergyBase extends TileEntityBase {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        this.storage.readFromNBT(compound);
+    public CustomForgeEnergyStorage getEnergyStorage() {
+        return this.storage;
     }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        this.storage.writeToNBT(compound);
-        return compound;
-    }
-
 }

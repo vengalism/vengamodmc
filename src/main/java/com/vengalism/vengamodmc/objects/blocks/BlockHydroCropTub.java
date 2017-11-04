@@ -101,53 +101,5 @@ public class BlockHydroCropTub extends BlockBase{
     public int getMetaFromState(IBlockState state) {
         return state.getValue(FLUIDLEVEL);
     }
-    //TODO re-evaluate this area
-
-    @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-
-        TileEntity te = worldIn.getTileEntity(pos);
-        if(te instanceof TileEntityHydroCropTub){
-            TileEntityHydroCropTub hydroTubTileEntity = (TileEntityHydroCropTub)te;
-            int level = 0;
-            int filledAmount = hydroTubTileEntity.getFluidTank().getFluidAmount();
-            if(filledAmount > 1500){
-                state = state.withProperty(FLUIDLEVEL, 3);
-                level = 3;
-            }else if(filledAmount > 1000 && filledAmount < 1500){
-                state = state.withProperty(FLUIDLEVEL, 2);
-                level = 2;
-            }else if(filledAmount > 500 && filledAmount < 1000){
-                state = state.withProperty(FLUIDLEVEL, 1);
-                level = 1;
-            }else if(filledAmount > 0 && filledAmount < 500){
-                state = state.withProperty(FLUIDLEVEL, 0);
-                level = 0;
-            }
-
-            //this.setWaterLevel(te.getWorld(), pos, state, level);
-        }
-
-        return state;
-    }
-
-
-    public void setFluidLevel(World worldIn, BlockPos pos, IBlockState state, int level){
-
-        if(!worldIn.isRemote){
-            TileEntity te = worldIn.getTileEntity(pos);
-            if(te != null) {
-                if (te instanceof TileEntityHydroCropTub) {
-                    TileEntityHydroCropTub tub = (TileEntityHydroCropTub) te;
-                    FluidStack fluidStack = tub.getFluidTank().getFluid();
-
-                    if(fluidStack != null){
-                        worldIn.setBlockState(pos, this.getActualState(state, worldIn, pos), level);
-                        worldIn.updateComparatorOutputLevel(pos, this);
-                    }
-                }
-            }
-        }
-    }
 
 }

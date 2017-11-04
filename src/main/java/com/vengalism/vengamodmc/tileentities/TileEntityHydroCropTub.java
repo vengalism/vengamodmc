@@ -184,6 +184,7 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
                             }
                         }
                     }
+                    setState(this.world, this.pos);
                 }
             }
         }
@@ -205,7 +206,8 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
             }
             TileEntityHydroCropTub hydroTubTileEntity = (TileEntityHydroCropTub)te;
             BlockHydroCropTub hydroTubBlock = (BlockHydroCropTub) hydroTubTileEntity.getBlockType();
-            hydroTubBlock.setFluidLevel(world, pos, hydroTubBlock.getDefaultState(), level);
+            //hydroTubBlock.setFluidLevel(world, pos, hydroTubBlock.getDefaultState(), level);
+            world.setBlockState(this.pos, hydroTubBlock.getStateFromMeta(level));
             this.markDirty();
         }
     }

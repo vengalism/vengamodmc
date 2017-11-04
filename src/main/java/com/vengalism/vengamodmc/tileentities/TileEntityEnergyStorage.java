@@ -74,15 +74,7 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        this.invHandler.deserializeNBT(compound.getCompoundTag("invHandler"));
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        compound.setTag("invHandler", this.invHandler.serializeNBT());
-        return super.writeToNBT(compound);
+    public ItemStackHandler getInvHandler() {
+        return this.invHandler;
     }
 }

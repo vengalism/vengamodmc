@@ -42,11 +42,6 @@ public class TileEntityEnergyGenerator extends TileEntityEnergyBase implements I
         this.storage.canReceive();
     }
 
-    public int getCooldown() {
-
-        return this.cooldown;
-    }
-
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 
@@ -66,37 +61,16 @@ public class TileEntityEnergyGenerator extends TileEntityEnergyBase implements I
         return super.getCapability(capability, facing);
     }
 
-    public CustomForgeEnergyStorage getStorageObj() {
-
-        return this.storage;
-    }
-
     public void setStorage(int energy) {
 
         this.storage.setEnergy(energy);
-    }
-
-
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        this.invHandler.deserializeNBT(compound.getCompoundTag("invHandlerG"));
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        compound.setTag("invHandlerG", this.invHandler.serializeNBT());
-        return super.writeToNBT(compound);
     }
 
     @Override
     public void update() {
 
         //int maxCanReceive = this.storage.getMaxCanReceive(); 000000000000
-
         //pass energy to adjacent blocks, do not receive from adjacent
-
         //check for item to  burn and generate energy
 
         if (this.world != null) {
@@ -109,24 +83,20 @@ public class TileEntityEnergyGenerator extends TileEntityEnergyBase implements I
                 if (sync == 0) {
                     //extractToAdjacent();
 
-                    ItemStack item0 = this.invHandler.getStackInSlot(BURNSLOT);
+                    ItemStack fuelItem = this.invHandler.getStackInSlot(BURNSLOT);
 
                     if (this.cooldown <= 0) {
-                        if (item0.getCount() > 0) {
-                            this.cooldown = TileEntityFurnace.getItemBurnTime(item0);
-                            item0.shrink(1);
+                        if (fuelItem.getCount() > 0) {
+                            this.cooldown = TileEntityFurnace.getItemBurnTime(fuelItem);
+                            fuelItem.shrink(1);
                         }
                     } else {
 
                         this.storage.receiveInternalEnergy(Config.energyGeneratorEnergyPerTick, false);
                     }
                 }
-
-
-
             }
         }
-
     }
 
     @Override

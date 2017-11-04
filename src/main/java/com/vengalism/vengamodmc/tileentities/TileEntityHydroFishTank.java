@@ -23,19 +23,6 @@ public class TileEntityHydroFishTank extends TileEntityHydroNutrientTank impleme
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        this.invHandler.deserializeNBT(compound.getCompoundTag("invHandlera"));
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        compound.setTag("invHandlera", this.invHandler.serializeNBT());
-        return compound;
-    }
-
-    @Override
     public void update() {
         if (this.world != null) {
             if (!this.world.isRemote) {

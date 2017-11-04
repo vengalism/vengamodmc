@@ -49,8 +49,6 @@ public class TileEntityHydroNutrientTank extends  TileEntityFluidTankBase implem
         this.nutrientTank.setFluidTypes(stacks);
         this.nutrientTank.setCanFill(false);
         this.nutrientTank.setCanDrain(true);
-
-
     }
 
     @Override
