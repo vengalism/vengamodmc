@@ -4,9 +4,9 @@
   "group" : "vengamodmc:energy",
 
   "pattern" : [
+    " I ",
     "IHI",
-    "FFF",
-    "CVC"
+    "IFI"
   ],
 
   "key" : {
@@ -17,12 +17,6 @@
       "item" : "vengamodmc:item_energy_circuit"
 
     },
-    "V" : {
-      "item" : "vengamodmc:item_energy_battery"
-    },
-    "C" : {
-      "item" : "minecraft:chest"
-    },
     "F" : {
       "item" : "minecraft:furnace"
     }
@@ -30,7 +24,7 @@
   },
 
   "result" : {
-    "item" : "vengamodmc:block_energy_furnace",
+    "item" : "vengamodmc:block_energy_generator_tier_1",
     "count" : 1
   }
 }

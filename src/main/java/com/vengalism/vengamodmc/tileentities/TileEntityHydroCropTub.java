@@ -1,8 +1,10 @@
 package com.vengalism.vengamodmc.tileentities;
 
+import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.init.FluidInit;
 import com.vengalism.vengamodmc.objects.blocks.BlockHydroCropTub;
 import com.vengalism.vengamodmc.objects.fluid.CustomFluidTank;
+import com.vengalism.vengamodmc.objects.fluid.FluidNutrient;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -71,18 +73,19 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
     }
 
     private int getDelayBuffs(){
-        int delay = 5000;
+        int delay = Config.hydroCropTubMaxDelay;
 
         if(isFluidEqual(this.fluidTank, FluidInit.fluid_nutrient)){
+
             if(getFluidTank().getFluidAmount() > 0){
-                delay -= 2700;
+                delay -= FluidInit.fluid_nutrient.getDelayBuff();
             }
         }else if(isFluidEqual(this.fluidTank, FluidInit.fluid_nutrient_oxygenated)){
             if(getFluidTank().getFluidAmount() > 0){
-                delay -= 3400;
+                delay -= FluidInit.fluid_nutrient_oxygenated.getDelayBuff();
             }
         }
-        return delay;
+        return delay > 0 ? delay : 1;
     }
 
 
@@ -98,12 +101,12 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
     private void drainNutrients(boolean harvested){
         FluidStack fluidType = this.fluidTank.getFluid();
         if(fluidType != null){
-            fluidType = new FluidStack(fluidType.getFluid(), 2);
+            fluidType = new FluidStack(fluidType.getFluid(), Config.hydroCropTubFluidUpkeep);
             this.fluidTank.drainInternal(fluidType, true);
         }
         if(harvested){
             if(fluidType != null) {
-                fluidType = new FluidStack(fluidType.getFluid(), 6);
+                fluidType = new FluidStack(fluidType.getFluid(), Config.hydroCropTubHarvestUpkeep);
                 this.fluidTank.drainInternal(fluidType, true);
             }
         }
@@ -129,7 +132,7 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
                         }
                     }
                     for(int i = 0; i < this.invHandler.getSlots(); i++){
-                        if(i != NUTRIENTMIXTURESLOT || i != AIRSTONESLOT) {
+                        if(i != NUTRIENTMIXTURESLOT && i != AIRSTONESLOT) {
                             if (!takenSeed && itemStack.getItem() instanceof IPlantable) {
                                 itemStack.shrink(1);
                                 takenSeed = true;
@@ -175,12 +178,15 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
                     BlockPos above = new BlockPos(this.pos.getX(), this.pos.getY() + 1, this.pos.getZ());
                     IBlockState cropAbove = this.world.getBlockState(above);
                     this.world.scheduleBlockUpdate(above, cropAbove.getBlock(), this.getDelayBuffs(), 10);
-                    if (!isOutputFull()) {
-                        this.harvestCropAbove(cropAbove, above);
-                    } else {
-                        for (int i = 0; i < this.invHandler.getSlots(); i++) {
-                            if (this.invHandler.getStackInSlot(i).isEmpty()) {
-                                this.outputFull = false;
+
+                    if(Config.hydroCropTubAutoHarvest) {
+                        if (!isOutputFull()) {
+                            this.harvestCropAbove(cropAbove, above);
+                        } else {
+                            for (int i = 0; i < this.invHandler.getSlots(); i++) {
+                                if (this.invHandler.getStackInSlot(i).isEmpty()) {
+                                    this.outputFull = false;
+                                }
                             }
                         }
                     }

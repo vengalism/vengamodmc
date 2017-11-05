@@ -32,6 +32,7 @@ public class GUIEnergyStorage extends CustomEnergyGuiContainer {
     public GUIEnergyStorage(InventoryPlayer player, TileEntityEnergyStorage tileEntityEnergyStorage) {
         super(new ContainerEnergyStorage(player, tileEntityEnergyStorage));
         this.tileEntityEnergyStorage = tileEntityEnergyStorage;
+
         xSize = 176;
         ySize = 166;
     }
@@ -48,7 +49,7 @@ public class GUIEnergyStorage extends CustomEnergyGuiContainer {
         if(this.energyBar.isMouseOver()){
             this.drawHoveringText(energy + " / " + maxEnergy, ebx, eby);
         }
-        fontRenderer.drawString(new TextComponentTranslation("Basic Energy Vault").getFormattedText(), 5, 5, Color.darkGray.getRGB());
+        fontRenderer.drawString(new TextComponentTranslation("Energy Storage " + this.tileEntityEnergyStorage.getMachinetier().getName()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
         sync++;
         sync %= 20;
         if (sync == 0) {

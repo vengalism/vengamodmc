@@ -34,6 +34,7 @@ public class ItemTransfer {
     public static void giveItemToAdjacent(ItemStack output, IItemHandler to){
         int beforeCount = output.getCount();
         if(to != null){
+
             for(int i = 0; i < to.getSlots(); i++){
 
                 ItemStack result = to.insertItem(i, output.copy(), false);

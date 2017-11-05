@@ -5,6 +5,7 @@
 package com.vengalism.vengamodmc.objects.tools;
 
 import com.google.common.collect.Sets;
+import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.util.IHasModel;
 import net.minecraft.block.Block;
@@ -25,14 +26,14 @@ public class AxeEnergyTool extends ToolEnergy{
     private static final float[] ATTACK_DAMAGES = new float[] {6.0F, 8.0F, 8.0F, 8.0F, 6.0F};
     private static final float[] ATTACK_SPEEDS = new float[] { -3.2F, -3.2F, -3.1F, -3.0F, -3.0F};
 
-    private static final int ENERGYPERUSE = 100;
+    private static final int ENERGYPERUSE = Config.axeEnergyPerUse;
 
     public AxeEnergyTool(String name, ToolMaterial materialIn){
-        this(name, materialIn, EFFECTIVE_ON, true );
+        this(name, materialIn, EFFECTIVE_ON);
     }
 
-    public AxeEnergyTool(String name, ToolMaterial materialIn, Set<Block> effectiveBlocksIn, boolean defaultEnergyStorage) {
-        super(name, materialIn, effectiveBlocksIn, defaultEnergyStorage);
+    public AxeEnergyTool(String name, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
+        super(name, materialIn, effectiveBlocksIn);
         this.attackDamage = ATTACK_DAMAGES[materialIn.ordinal()];
         this.attackSpeed = ATTACK_SPEEDS[materialIn.ordinal()];
         this.setHarvestLevel("axe", materialIn.getHarvestLevel());

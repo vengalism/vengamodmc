@@ -5,6 +5,7 @@
 package com.vengalism.vengamodmc.objects.tools;
 
 import com.google.common.collect.Sets;
+import com.vengalism.vengamodmc.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,7 +23,7 @@ import java.util.Set;
 public class ToolPickaxeEnergy extends ToolEnergy {
 
 
-    private static final int ENERGYPERUSE = 100;
+    private static final int ENERGYPERUSE = Config.pickaxeEnergyPerUse;
 
     //from MC ItemPickaxe,java
     public static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE,
@@ -33,11 +34,11 @@ public class ToolPickaxeEnergy extends ToolEnergy {
             Blocks.STONE_SLAB, Blocks.STONE_BUTTON, Blocks.STONE_PRESSURE_PLATE);
 
     public ToolPickaxeEnergy(String name, ToolMaterial materialIn){
-        this(name, 1.0F, -2.8F, materialIn, EFFECTIVE_ON, true);
+        this(name, 1.0F, -2.8F, materialIn, EFFECTIVE_ON);
     }
 
-    public ToolPickaxeEnergy(String name, float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn, boolean defaultEnergyStorage) {
-        super(name, attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn, defaultEnergyStorage);
+    public ToolPickaxeEnergy(String name, float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
+        super(name, attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
     }
 
 

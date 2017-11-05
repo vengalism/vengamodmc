@@ -4,6 +4,7 @@
 
 package com.vengalism.vengamodmc.init;
 
+import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.objects.items.*;
 import com.vengalism.vengamodmc.objects.tools.*;
 import net.minecraft.item.Item;
@@ -16,7 +17,7 @@ public class ItemInit {
 
 
     //HYDRO
-    public static final ItemHydroAirStone item_hydro_air_stone = new ItemHydroAirStone("item_hydro_air_stone", 1000, 5);
+    public static final ItemHydroAirStone item_hydro_air_stone = new ItemHydroAirStone("item_hydro_air_stone", 1000, Config.itemHydroAirStoneUpkeepCost);
     public static final ItemNutrient item_nutrient_a = new ItemNutrient("item_nutrient_a");
     public static final ItemNutrient item_nutrient_b = new ItemNutrient("item_nutrient_b");
     public static final ItemNutrientMixture item_nutrient_mixture = new ItemNutrientMixture("item_nutrient_mixture", new ArrayList<>(Arrays.asList((new ItemNutrient[]{item_nutrient_a, item_nutrient_a, item_nutrient_b, item_nutrient_b}))));
@@ -28,7 +29,9 @@ public class ItemInit {
     public static final ItemEnergyBatteryPart item_energy_battery_cap = new ItemEnergyBatteryPart("item_energy_battery_cap");
     public static final ItemEnergyBatteryPart item_energy_battery_body = new ItemEnergyBatteryPart("item_energy_battery_body");
     public static final ItemEnergyBatteryPart item_energy_battery_base = new ItemEnergyBatteryPart("item_energy_battery_base");
-    public static final ItemEnergyBattery item_energy_battery = new ItemEnergyBattery("item_energy_battery", 10000, 500, 500, 0);
+    public static final ItemEnergyBattery item_energy_battery = new ItemEnergyBattery("item_energy_battery", Config.itemEnergyBatteryCapacity, Config.itemEnergyBatteryMaxReceive, Config.itemEnergyBatteryMaxExtract, 0);
+
+    public static final ItemMultiTool item_multi_tool = new ItemMultiTool("item_multi_tool");
 
 
 

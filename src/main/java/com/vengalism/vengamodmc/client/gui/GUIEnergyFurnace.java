@@ -20,7 +20,7 @@ import java.awt.*;
 
 public class GUIEnergyFurnace extends CustomEnergyGuiContainer {
 
-    private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/energyfurnacegui.png");
+    private static ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/energyfurnacegui.png");
     public static int energy = 0, maxEnergy = 0;
     private static int sync = 0;
     private int storage = 0;
@@ -32,6 +32,20 @@ public class GUIEnergyFurnace extends CustomEnergyGuiContainer {
         this.tileEntityEnergyFurnace = tileEntityEnergyFurnace;
         xSize = 176;
         ySize = 166;
+        String tierguipath;
+        switch (tileEntityEnergyFurnace.getMachinetier()){
+            case THREE:
+                tierguipath = "energyfurnacet3gui";
+                break;
+            case TWO:
+                tierguipath = "energyfurnacet2gui";
+                break;
+            case ONE:
+            default:
+                tierguipath = "energyfurnacet1gui";
+                break;
+        }
+        texture = new ResourceLocation(Reference.MODID, "textures/gui/" + tierguipath + ".png");
     }
 
     @Override
@@ -48,7 +62,7 @@ public class GUIEnergyFurnace extends CustomEnergyGuiContainer {
             this.drawHoveringText(energy + " / " + maxEnergy, ebx, eby);
         }
 
-        fontRenderer.drawString(new TextComponentTranslation("Vault Furnace").getFormattedText(), 5, 5, Color.darkGray.getRGB());
+        fontRenderer.drawString(new TextComponentTranslation("Energy Furnace " + tileEntityEnergyFurnace.getMachinetier().getName()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
         sync++;
         sync %= 20;
         if (sync == 0) {

@@ -4,6 +4,7 @@
 
 package com.vengalism.vengamodmc.objects.tools;
 
+import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.capabilities.EnergyCapabilityProvider;
 import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import net.minecraft.block.Block;
@@ -27,23 +28,31 @@ public class ToolEnergy extends ToolBase {
     public int maxEnergyStored;
     public int maxExtract, maxReceive;
 
-    protected ToolEnergy(String name, float attackDamageIn, float attackSpeedIn, Item.ToolMaterial materialIn, Set<Block> effectiveBlocksIn, boolean defaultEnergyStorage) {
+    protected ToolEnergy(String name, float attackDamageIn, float attackSpeedIn, Item.ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
         super(name, attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
-        if(defaultEnergyStorage){
-            this.maxEnergyStored = 10000;
-            this.maxExtract = 100;
-            this.maxReceive = 1000;
-        }
+        setStorageAmounts(materialIn);
     }
 
 
-    public ToolEnergy(String name, Item.ToolMaterial materialIn, Set<Block> effectiveBlocksIn, boolean defaultEnergyStorage) {
+    public ToolEnergy(String name, Item.ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
         super(name, materialIn, effectiveBlocksIn);
-        if(defaultEnergyStorage){
-            this.maxEnergyStored = 10000;
-            this.maxExtract = 100;
-            this.maxReceive = 1000;
+        setStorageAmounts(materialIn);
+    }
+
+    private void setStorageAmounts(ToolMaterial materialIn){
+        int multiplier = Config.tierOneMultiplier;
+        if(materialIn == ToolMaterial.GOLD){
+            multiplier = Config.tierTwoMultiplier;
         }
+
+        if(materialIn == ToolMaterial.DIAMOND){
+            multiplier = Config.tierThreeMultiplier;
+        }
+
+        this.maxEnergyStored = Config.toolBaseCapacity * multiplier;
+        this.maxExtract = Config.toolBaseMaxExtract * multiplier;
+        this.maxReceive = Config.toolBaseMaxReceive * multiplier;
+
     }
 
     @Override

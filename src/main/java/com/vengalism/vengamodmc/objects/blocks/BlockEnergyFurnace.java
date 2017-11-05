@@ -7,6 +7,7 @@ package com.vengalism.vengamodmc.objects.blocks;
 import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.handlers.GuiHandler;
 import com.vengalism.vengamodmc.tileentities.TileEntityEnergyFurnace;
+import com.vengalism.vengamodmc.util.Enums;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -20,15 +21,26 @@ import net.minecraft.world.World;
 public class BlockEnergyFurnace extends BlockBase implements ITileEntityProvider {
 
     private static boolean isBurning = false;
+    private Enums.MACHINETIER machinetier;
 
-    public BlockEnergyFurnace(String name, boolean isBurning) {
+    public BlockEnergyFurnace(){
+        this("block_energy_furnace", false, Enums.MACHINETIER.ONE);
+    }
+    public BlockEnergyFurnace(String name, boolean isBurning){
+        this(name, isBurning, Enums.MACHINETIER.ONE);
+    }
+
+    public BlockEnergyFurnace(String name, boolean isBurning, Enums.MACHINETIER machinetier) {
         super(name, Material.IRON);
         BlockEnergyFurnace.isBurning = isBurning;
+        this.machinetier = machinetier;
     }
+
+
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityEnergyFurnace();
+        return new TileEntityEnergyFurnace(this.machinetier);
     }
 
     @Override

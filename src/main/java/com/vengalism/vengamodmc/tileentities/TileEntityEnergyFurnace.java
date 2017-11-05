@@ -4,8 +4,10 @@
 
 package com.vengalism.vengamodmc.tileentities;
 
+import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import com.vengalism.vengamodmc.energy.EnergyTransfer;
+import com.vengalism.vengamodmc.util.Enums;
 import com.vengalism.vengamodmc.util.ItemTransfer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -30,7 +32,6 @@ import java.util.ArrayList;
 
 public class TileEntityEnergyFurnace extends TileEntityFurnace {
 
-    private static final int COOKSPEED = 10;
     private static final int BATSLOT = 2;
 
     private int furnaceBurnTime;
@@ -40,22 +41,39 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
     private int sync = 0;
     private ItemStackHandler invHandler;
     private CustomForgeEnergyStorage storage;
+    private Enums.MACHINETIER machinetier;
 
     public TileEntityEnergyFurnace() {
+        this(Enums.MACHINETIER.ONE);
+    }
 
-        this.invHandler = new ItemStackHandler(7);
-        this.storage = new CustomForgeEnergyStorage(10000, 500, 0);
+    public TileEntityEnergyFurnace(Enums.MACHINETIER machinetier){
+        this.storage = new CustomForgeEnergyStorage(Config.energyFurnaceMaxEnergyStored, Config.energyFurnaceEnergyReceiveSpeed, 0);
+        this.machinetier = machinetier;
+        switch (machinetier){
+            case ONE:
+                this.invHandler = new ItemStackHandler(3);
+                break;
+            case TWO:
+                this.invHandler = new ItemStackHandler(5);
+                break;
+            case THREE:
+                this.invHandler = new ItemStackHandler(7);
+                break;
+            default:
+                this.invHandler = new ItemStackHandler(3);
+                break;
+        }
     }
 
     public boolean canExtract(ItemStack stack, int slot){
         return slot == 1 || slot == 4 || slot == 6;
     }
-
+/*
     @Override
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-
         return null;
-    }
+    }*/
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
@@ -81,8 +99,6 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
         return super.getCapability(capability, facing);
     }
 
-
-
     @Override
     public boolean isBurning() {
         return this.storage.getEnergyStored() > 0;
@@ -97,7 +113,7 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
                     this.currentItemBurnTime = this.furnaceBurnTime;
 
                     if (inputItem.getCount() > 0) {
-                        this.storage.extractInternalEnergy(5, false); //upkeep for burning
+                        this.storage.extractInternalEnergy(Config.energyFurnaceSmeltUpkeep, false); //upkeep for burning
                     }
 
                     if (this.isBurning()) {
@@ -113,7 +129,7 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
             }
 
             if (this.isBurning() && this.canSmelt(inputItem, outputItem)) {
-                if (countTime == COOKSPEED) {
+                if (countTime == Config.energyFurnaceCookSpeed) {
                     countTime = 0;
                     this.totalCookTime = this.getCookTime(inputItem);
                     this.smeltItem(inputItem, outputItem, slotNum);
@@ -126,38 +142,6 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
         }
 
         return countTime;
-    }
-
-    //split the load between the 3 slots to improve the overall machine efficiency.
-    private void balanceInputSlots(ItemStack input1, ItemStack input2, ItemStack input3){
-
-
-        if (input1.getCount() > 1) {
-            if (input2.isEmpty()) {
-                this.invHandler.setStackInSlot(3, input1.copy());
-                this.invHandler.getStackInSlot(3).setCount(1);
-                input1.shrink(1);
-            } else if (input2.getCount() + 1 <= input1.getCount()) {
-                if (input2.getItem() == input1.getItem()) {
-                    input2.grow(1);
-                    input1.shrink(1);
-                }
-            }
-
-            if (input3.isEmpty()) {
-                this.invHandler.setStackInSlot(5, input1.copy());
-                this.invHandler.getStackInSlot(5).setCount(1);
-                input1.shrink(1);
-
-            } else if (input3.getCount() + 1 <= input1.getCount()) {
-                if (input3.getItem() == input1.getItem()) {
-                    input3.grow(1);
-                    input1.shrink(1);
-                }
-
-            }
-        }
-
     }
 
     @Override
@@ -181,38 +165,48 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
                             this.storage.receiveEnergy(EnergyTransfer.takeEnergyFromItem(item2, maxCanReceive, false, null), false);
                         }
                     }
-
-                    ItemStack input1 = this.invHandler.getStackInSlot(0);
-                    ItemStack input2 = this.invHandler.getStackInSlot(3);
-                    ItemStack input3 = this.invHandler.getStackInSlot(5);
-                    ItemStack output1 = this.invHandler.getStackInSlot(1);
-                    ItemStack output2 = this.invHandler.getStackInSlot(4);
-                    ItemStack output3 = this.invHandler.getStackInSlot(6);
-
-                    balanceInputSlots(input1, input2, input3);
-
-                    ++this.count1;
-                    ++this.count2;
-                    ++this.count3;
-
-                    count1 = cookThese(input1, output1, count1, 1);
-                    count2 = cookThese(input2, output2, count2, 4);
-                    count3 = cookThese(input3, output3, count3, 6);
-
-                    if (output1.getCount() > 0) {
-                        exportOutput(output1);
+                    switch (machinetier){
+                        case THREE:
+                            //tier 3
+                            ItemStack input3 = this.invHandler.getStackInSlot(5);
+                            ItemStack output3 = this.invHandler.getStackInSlot(6);
+                            ++this.count3;
+                            count3 = cookThese(input3, output3, count3, 6);
+                            if (output3.getCount() > 0) {
+                                exportOutput(output3);
+                            }
+                        case TWO:
+                            //tier 2
+                            ItemStack input2 = this.invHandler.getStackInSlot(3);
+                            ItemStack output2 = this.invHandler.getStackInSlot(4);
+                            ++this.count2;
+                            count2 = cookThese(input2, output2, count2, 4);
+                            if (output2.getCount() > 0) {
+                                exportOutput(output2);
+                            }
+                        case ONE:
+                            //tier 1
+                            ItemStack input1 = this.invHandler.getStackInSlot(0);
+                            ItemStack output1 = this.invHandler.getStackInSlot(1);
+                            ++this.count1;
+                            count1 = cookThese(input1, output1, count1, 1);
+                            if (output1.getCount() > 0) {
+                                exportOutput(output1);
+                            }
+                            break;
+                        default:
+                            break;
                     }
-                    if (output2.getCount() > 0) {
-                        exportOutput(output2);
-                    }
-                    if (output3.getCount() > 0) {
-                        exportOutput(output3);
-                    }
+
+
+
                 }
             }
 
         }
     }
+
+
 
     @Override
     public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
@@ -224,12 +218,14 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
         return index == 0 || index == 3 || index == 5;
     }
 
-    private void exportOutput(ItemStack output){
-        ArrayList<TileEntity> adjacentBlocks = ItemTransfer.getTiles(this.world, this.pos, EnumFacing.NORTH);
-        for(TileEntity te : adjacentBlocks){
-            IItemHandler to = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
-            if(to != null){
-                ItemTransfer.giveItemToAdjacent(output, to);
+    private void exportOutput(ItemStack output){//TODO fix this, exports to everything
+        if(Config.energyFurnaceAutoExport) {
+            ArrayList<TileEntity> adjacentBlocks = ItemTransfer.getTiles(this.world, this.pos, EnumFacing.NORTH);
+            for (TileEntity te : adjacentBlocks) {
+                IItemHandler to = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
+                if (to != null) {
+                    ItemTransfer.giveItemToAdjacent(output, to);
+                }
             }
         }
     }
@@ -289,6 +285,10 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
             this.cookTime = 0;
             this.markDirty();
         }
+    }
+
+    public Enums.MACHINETIER getMachinetier() {
+        return this.machinetier;
     }
 
     @Override

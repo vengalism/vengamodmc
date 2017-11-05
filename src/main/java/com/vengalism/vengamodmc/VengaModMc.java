@@ -43,9 +43,8 @@ public class VengaModMc {
 
     @Mod.EventHandler
     public static void init(FMLInitializationEvent event){
-
         GuiHandler.init();
-        GameRegistry.registerTileEntity(TileEntityEnergyStorage.class, Reference.MODID + "TileEntityEnergyVault");
+        GameRegistry.registerTileEntity(TileEntityEnergyStorage.class, Reference.MODID + "TileEntityEnergyStorage");
         GameRegistry.registerTileEntity(TileEntityEnergyBase.class, Reference.MODID + "TileEntityEnergyBase");
         GameRegistry.registerTileEntity(TileEntityEnergyFurnace.class, Reference.MODID + "TileEntityEnergyFurnace");
         GameRegistry.registerTileEntity(TileEntityEnergyGenerator.class, Reference.MODID + "TileEntityEnergyGenerator");
@@ -58,7 +57,7 @@ public class VengaModMc {
 
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event){
-
         proxy.postInit(event);
+        System.out.println("PROXY POSTING");
     }
 }

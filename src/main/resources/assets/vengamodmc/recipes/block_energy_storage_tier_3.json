@@ -1,0 +1,24 @@
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "pattern" : [
+    "SHI"
+  ],
+
+  "key" : {
+    "S" : {
+      "item" : "vengamodmc:block_energy_storage_tier_1"
+    },
+    "H" : {
+      "item" : "vengamodmc:item_energy_circuit"
+    },
+    "I" : {
+      "item" : "vengamodmc:block_energy_storage_tier_2"
+    }
+  },
+
+  "result" : {
+    "item" : "vengamodmc:block_energy_storage_tier_3",
+    "count" : 1
+  }
+}

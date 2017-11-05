@@ -1,0 +1,26 @@
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "group" : "vengamodmc:energy",
+
+  "pattern" : [
+    "IHF"
+  ],
+
+  "key" : {
+    "I" : {
+      "item" : "vengamodmc:block_energy_generator_tier_1"
+    },
+    "H" : {
+      "item" : "vengamodmc:item_energy_circuit"
+    },
+    "F" : {
+      "item" : "vengamodmc:block_energy_generator_tier_2"
+    }
+  },
+
+  "result" : {
+    "item" : "vengamodmc:block_energy_generator_tier_3",
+    "count" : 1
+  }
+}

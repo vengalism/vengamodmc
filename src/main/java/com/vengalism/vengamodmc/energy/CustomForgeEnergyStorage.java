@@ -112,7 +112,10 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
         }
 
         int returnValue = Math.min(this.getEnergyStored(), maxExtract);
-        this.setEnergy(this.getEnergyStored() - returnValue);
+        if(!simulate){
+            this.setEnergy(this.getEnergyStored() - returnValue);
+        }
+
         return returnValue;
     }
 
@@ -121,7 +124,10 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
             IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
             if(storage instanceof CustomForgeEnergyStorage){
                 CustomForgeEnergyStorage forgeEnergyStorage = (CustomForgeEnergyStorage) storage;
-                return forgeEnergyStorage.receiveInternalEnergy(maxReceive, false);
+                if(!simulate){
+                    return forgeEnergyStorage.receiveInternalEnergy(maxReceive, false);
+                }
+
             }
         }
         return 0;
@@ -132,7 +138,10 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
             IEnergyStorage storage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
             if(storage instanceof CustomForgeEnergyStorage){
                 CustomForgeEnergyStorage forgeEnergyStorage = (CustomForgeEnergyStorage) storage;
-                return forgeEnergyStorage.extractInternalEnergy(maxExtract, false);
+                if(!simulate){
+                    return forgeEnergyStorage.extractInternalEnergy(maxExtract, false);
+                }
+
             }
         }
         return 0;
@@ -142,13 +151,14 @@ public class CustomForgeEnergyStorage extends EnergyStorage{
         this.justMade = compound.getBoolean("justMadEe");
         if(!this.justMade){
             this.setEnergy(compound.getInteger("myEnergy"));
+            this.energy = compound.getInteger("myEnergy");
         }
         //this.setEnergy(nbt.getInteger("myEnergy"));
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("myEnergy", this.getEnergyStored());
         compound.setBoolean("justMadEe", this.justMade);
+        compound.setInteger("myEnergy", this.getEnergyStored());
         return compound;
     }
 

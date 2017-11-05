@@ -5,6 +5,7 @@
 package com.vengalism.vengamodmc.objects.tools;
 
 import com.google.common.collect.Sets;
+import com.vengalism.vengamodmc.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.state.IBlockState;
@@ -25,14 +26,14 @@ import java.util.Set;
 public class ToolHoeEnergy extends ToolEnergy {
     private static final Set<Block> EMPTYSET = Sets.newHashSet(Blocks.AIR);
 
-    private static final int ENERGYPERUSE = 100;
+    private static final int ENERGYPERUSE = Config.hoeEnergyPerUse;
 
     public ToolHoeEnergy(String name, ToolMaterial materialIn){
-        this(name, materialIn, EMPTYSET, true);
+        this(name, materialIn, EMPTYSET);
     }
 
-    public ToolHoeEnergy(String name, ToolMaterial materialIn, Set<Block> effectiveBlocksIn, boolean defaultEnergyStorage) {
-        super(name, materialIn, effectiveBlocksIn, defaultEnergyStorage);
+    public ToolHoeEnergy(String name, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
+        super(name, materialIn, effectiveBlocksIn);
     }
 
     protected void setBlock(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, IBlockState state){

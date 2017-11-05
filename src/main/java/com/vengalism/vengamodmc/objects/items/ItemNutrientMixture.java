@@ -4,6 +4,7 @@
 
 package com.vengalism.vengamodmc.objects.items;
 
+import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.hydro.INutrient;
 import com.vengalism.vengamodmc.hydro.INutrientMixture;
 import com.vengalism.vengamodmc.init.FluidInit;
@@ -25,9 +26,11 @@ public class ItemNutrientMixture extends ItemFluid implements INutrientMixture {
 
     private List<INutrient> nutrients;
     private final int validWorth = 200;
+    private int upkeepCost = 1;
 
     public ItemNutrientMixture(String name, List<INutrient> nutrients){
-        super(name, 200, 0, 1);
+        super(name, 200, 0, Config.itemNutrientMixtureUpkeepCost);
+        this.upkeepCost = upkeepCost; //aka max extract
         this.setMaxStackSize(1);
         this.nutrients = nutrients;
         if(isValidMixture()){
@@ -94,6 +97,10 @@ public class ItemNutrientMixture extends ItemFluid implements INutrientMixture {
     public Fluid getFluidType() {
         return FluidInit.fluid_nutrient;
         //return FluidInit.nutrientFluid;
+    }
+
+    public int getUpkeepCost(){
+        return this.upkeepCost;
     }
 
 }

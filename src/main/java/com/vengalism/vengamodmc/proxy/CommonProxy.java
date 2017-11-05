@@ -4,6 +4,7 @@
 
 package com.vengalism.vengamodmc.proxy;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.vengalism.vengamodmc.Config;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,13 +19,11 @@ import java.io.File;
 public class CommonProxy implements prox{
 
 
-    public static Configuration config;
+
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        File directory = event.getModConfigurationDirectory();
-        config = new Configuration(new File(directory.getPath(), "vengamodmc.cfg"));
-        Config.readConfig();
+
     }
 
     @Override
@@ -34,9 +33,7 @@ public class CommonProxy implements prox{
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        if(config.hasChanged()){
-            config.save();
-        }
+
     }
 
     @Override

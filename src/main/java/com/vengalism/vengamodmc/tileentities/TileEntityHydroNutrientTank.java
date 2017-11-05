@@ -1,5 +1,6 @@
 package com.vengalism.vengamodmc.tileentities;
 
+import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.init.FluidInit;
 import com.vengalism.vengamodmc.init.ItemInit;
 import com.vengalism.vengamodmc.objects.fluid.CustomFluidTank;
@@ -74,7 +75,7 @@ public class TileEntityHydroNutrientTank extends  TileEntityFluidTankBase implem
         if(getNutrientMixture() != null){
             currFluid  = getNutrientMixture().getFluidType();
             amount = getNutrientMixture().getCurrentFluidStored(getStackInSlot(NUTRIENTMIXTURESLOT));
-            getNutrientMixture().setFluid(getStackInSlot(NUTRIENTMIXTURESLOT), new FluidStack(currFluid, amount - 1).copy());
+            getNutrientMixture().setFluid(getStackInSlot(NUTRIENTMIXTURESLOT), new FluidStack(currFluid, amount - getNutrientMixture().getUpkeepCost()).copy());
         }
 
         if(hasAirStone()) {
@@ -82,7 +83,7 @@ public class TileEntityHydroNutrientTank extends  TileEntityFluidTankBase implem
                 int currEnergy = getHydroAirStone().getEnergyStored(getStackInSlot(AIRSTONESLOT));
                 if(currEnergy > 0){
                     //System.out.println(currEnergy + " curren");
-                    getHydroAirStone().setEnergy(getStackInSlot(AIRSTONESLOT), currEnergy - 1);
+                    getHydroAirStone().setEnergy(getStackInSlot(AIRSTONESLOT), currEnergy - getHydroAirStone().getUpkeepCost());
                 }
             }
         }
@@ -107,19 +108,20 @@ public class TileEntityHydroNutrientTank extends  TileEntityFluidTankBase implem
                     //processing
                     if(hasNutrientMixture()){
 //                ItemNutrientMixture mixture = getNutrientMixture();
+                        int genAmount = Config.hydroNutrientTankFluidGen;
                         FluidStack proNutrient;
                         if(hasAirStone()){ //fill with oxygenated nutrient fluid
-                            proNutrient = new FluidStack(FluidInit.fluid_nutrient_oxygenated, 50);
+                            proNutrient = new FluidStack(FluidInit.fluid_nutrient_oxygenated, genAmount);
                         }else{ //fill with regular nutrient fluid
-                            proNutrient = new FluidStack(FluidInit.fluid_nutrient, 50);
+                            proNutrient = new FluidStack(FluidInit.fluid_nutrient, genAmount);
                         }
 
-                        if (this.fluidTank.getFluidAmount() >= 50) {
+                        if (this.fluidTank.getFluidAmount() >= genAmount) {
                             int after = this.nutrientTank.fillInternal(proNutrient.copy(), false);
                             //if 0 it didnt add more to the tank, so dont do upkeep
                             if(after != 0){
                                 this.nutrientTank.fillInternal(proNutrient.copy(), true);
-                                this.fluidTank.drain(50, true);
+                                this.fluidTank.drain(genAmount, true);
                                 upkeep();
                             }
 

@@ -1,5 +1,6 @@
 package com.vengalism.vengamodmc.init;
 
+import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.handlers.RegistryHandler;
 import com.vengalism.vengamodmc.objects.blocks.BlockFluidBase;
 import com.vengalism.vengamodmc.objects.fluid.FluidNutrient;
@@ -16,7 +17,7 @@ import net.minecraftforge.fluids.FluidRegistry;
  */
 public class FluidInit {
 
-    public static Fluid fluid_nutrient, fluid_nutrient_oxygenated;
+    public static FluidNutrient fluid_nutrient, fluid_nutrient_oxygenated;
 
     public static Block block_fluid_nutrient, block_fluid_nutrient_oxygenated;
 
@@ -24,10 +25,10 @@ public class FluidInit {
 
         FluidRegistry.enableUniversalBucket();
 
-        fluid_nutrient = new FluidNutrient("fluid_nutrient", "blocks/fluid_nutrient_still", "blocks/fluid_nutrient_flow");
+        fluid_nutrient = new FluidNutrient("fluid_nutrient", "blocks/fluid_nutrient_still", "blocks/fluid_nutrient_flow", Config.fluidNutrientDelay);
         registerFluid(fluid_nutrient);
 
-        fluid_nutrient_oxygenated = new FluidNutrient("fluid_nutrient_oxygenated", "blocks/fluid_nutrient_oxygenated_still", "blocks/fluid_nutrient_oxygenated_flow");
+        fluid_nutrient_oxygenated = new FluidNutrient("fluid_nutrient_oxygenated", "blocks/fluid_nutrient_oxygenated_still", "blocks/fluid_nutrient_oxygenated_flow", Config.fluidOxNutrientDelay);
         registerFluid(fluid_nutrient_oxygenated);
 
         block_fluid_nutrient = new BlockFluidBase("fluid_nutrient", fluid_nutrient, new LiquidNutrient(MapColor.GREEN));

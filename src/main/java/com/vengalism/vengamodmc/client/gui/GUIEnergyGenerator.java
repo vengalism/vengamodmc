@@ -52,7 +52,7 @@ public class GUIEnergyGenerator extends CustomEnergyGuiContainer {
             this.drawHoveringText(energy + " / " + maxEnergy, ebx, eby);
         }
 
-        fontRenderer.drawString(new TextComponentTranslation("Generator").getFormattedText(), 5, 5, Color.darkGray.getRGB());
+        fontRenderer.drawString(new TextComponentTranslation("Energy Generator " + generatorTileEntity.getMachinetier().getName()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
 
         sync++;
         sync %= 20;

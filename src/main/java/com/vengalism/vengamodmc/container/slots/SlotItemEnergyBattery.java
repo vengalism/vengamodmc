@@ -20,9 +20,9 @@ import javax.annotation.Nonnull;
 /**
  * Created by vengada on 16/07/2017.
  */
-public class SlotItemVaultBattery extends SlotItemHandler {
+public class SlotItemEnergyBattery extends SlotItemHandler {
 
-    public SlotItemVaultBattery(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+    public SlotItemEnergyBattery(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
     }
 

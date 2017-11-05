@@ -8,6 +8,7 @@ package com.vengalism.vengamodmc.objects.blocks;
 import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.handlers.GuiHandler;
 import com.vengalism.vengamodmc.tileentities.TileEntityEnergyGenerator;
+import com.vengalism.vengamodmc.util.Enums;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,15 +26,25 @@ import javax.annotation.Nullable;
  */
 public class BlockEnergyGenerator extends BlockBase implements ITileEntityProvider {
 
+    private Enums.MACHINETIER machinetier;
 
-    public BlockEnergyGenerator(String name) {
-        super(name, Material.IRON);
+    public BlockEnergyGenerator(String name){
+        this(name, Enums.MACHINETIER.ONE);
+    }
+
+    public BlockEnergyGenerator(String name, Enums.MACHINETIER machinetier) {
+        this(name, Material.IRON,machinetier);
+    }
+
+    public BlockEnergyGenerator(String name, Material material, Enums.MACHINETIER machinetier){
+        super(name, material);
+        this.machinetier = machinetier;
     }
 
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityEnergyGenerator();
+        return new TileEntityEnergyGenerator(machinetier);
     }
 
     @Override

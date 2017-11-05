@@ -20,9 +20,9 @@ import javax.annotation.Nonnull;
  * Created by vengada on 18/07/2017.
  */
 //basically the Default SlotFurnaceFuel from Minecraft core, main difference is this takes itemhandler instead of IInventory
-public class SlotVaultGenerator extends SlotItemHandler {
+public class SlotEnergyGenerator extends SlotItemHandler {
 
-    public SlotVaultGenerator(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+    public SlotEnergyGenerator(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
     }
 

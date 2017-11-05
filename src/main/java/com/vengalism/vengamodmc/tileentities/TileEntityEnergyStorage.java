@@ -4,6 +4,8 @@
 
 package com.vengalism.vengamodmc.tileentities;
 
+import com.vengalism.vengamodmc.Config;
+import com.vengalism.vengamodmc.util.Enums;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -22,14 +24,20 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
 
     private static final int DISCHARGESLOT = 0, CHARGESLOT = 1;
     private ItemStackHandler invHandler;
+    private Enums.MACHINETIER machinetier;
 
-    public TileEntityEnergyStorage() {
-        this(50000, 1000);
+    public TileEntityEnergyStorage(){
+        this(Enums.MACHINETIER.ONE);
     }
 
-    public TileEntityEnergyStorage(int capacity, int maxTransfer) {
-        super(capacity, maxTransfer);
+    public TileEntityEnergyStorage(Enums.MACHINETIER machinetier){
+        this(Config.energyStorageMaxeEnergyStored, Config.energyStorageMaxeReceive, Config.energyStorageMaxExtractSpeed, machinetier);
+    }
+
+    public TileEntityEnergyStorage(int capacity, int maxReceive, int maxExtract, Enums.MACHINETIER machinetier){
+        super(capacity * machinetier.getMultiplier(), maxReceive * machinetier.getMultiplier(), maxExtract * machinetier.getMultiplier());
         invHandler = new ItemStackHandler(2);
+        this.machinetier = machinetier;
     }
 
     @Override
@@ -71,6 +79,10 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
                 }
             }
         }
+    }
+
+    public Enums.MACHINETIER getMachinetier() {
+        return this.machinetier;
     }
 
     @Override

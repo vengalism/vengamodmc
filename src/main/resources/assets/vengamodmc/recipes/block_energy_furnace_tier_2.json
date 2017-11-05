@@ -1,0 +1,23 @@
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "group" : "vengamodmc:energy",
+
+  "pattern" : [
+    "IHI"
+  ],
+
+  "key" : {
+    "I" : {
+      "item" : "vengamodmc:block_energy_furnace_tier_1"
+    },
+    "H" : {
+      "item" : "vengamodmc:item_energy_circuit"
+    }
+  },
+
+  "result" : {
+    "item" : "vengamodmc:block_energy_furnace_tier_2",
+    "count" : 1
+  }
+}

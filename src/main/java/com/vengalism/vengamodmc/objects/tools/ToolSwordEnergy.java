@@ -5,6 +5,7 @@
 package com.vengalism.vengamodmc.objects.tools;
 
 import com.google.common.collect.Sets;
+import com.vengalism.vengamodmc.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,15 +20,15 @@ import java.util.Set;
 
 public class ToolSwordEnergy extends ToolEnergy {
 
-    private static final int ENERGYPERUSE = 100;
+    private static final int ENERGYPERUSE = Config.swordEnergyPerUse;
     private static final Set<Block> EMPTYSET = Sets.newHashSet(Blocks.AIR);
 
     public ToolSwordEnergy(String name, ToolMaterial materialIn){
-        this(name, materialIn, EMPTYSET, true);
+        this(name, materialIn, EMPTYSET);
     }
 
-    public ToolSwordEnergy(String name, ToolMaterial materialIn, Set<Block> effectiveBlocksIn, boolean defaultEnergyStorage) {
-        super(name, materialIn, effectiveBlocksIn, defaultEnergyStorage);
+    public ToolSwordEnergy(String name, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
+        super(name, materialIn, effectiveBlocksIn);
     }
 
     /**

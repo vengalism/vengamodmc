@@ -5,6 +5,7 @@
 package com.vengalism.vengamodmc.objects.tools;
 
 import com.google.common.collect.Sets;
+import com.vengalism.vengamodmc.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -26,17 +27,17 @@ import java.util.Set;
 
 public class ToolShovelEnergy extends ToolEnergy {
 
-    private static final int ENERGYPERUSE = 100;
+    private static final int ENERGYPERUSE = Config.shovelEnergyPerUse;
     public static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND,
             Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND,
             Blocks.GRASS_PATH, Blocks.CONCRETE_POWDER);
 
     public ToolShovelEnergy(String name, ToolMaterial materialIn){
-        this(name, 1.5F, -3.0F, materialIn, EFFECTIVE_ON, true);
+        this(name, 1.5F, -3.0F, materialIn, EFFECTIVE_ON);
     }
 
-    public ToolShovelEnergy(String name, float attackDamageIn, float attackSpeedIn, Item.ToolMaterial materialIn, Set<Block> effectiveBlocksIn, boolean defaultEnergyStorage) {
-        super(name, attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn, defaultEnergyStorage);
+    public ToolShovelEnergy(String name, float attackDamageIn, float attackSpeedIn, Item.ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
+        super(name, attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
     }
 
     /**

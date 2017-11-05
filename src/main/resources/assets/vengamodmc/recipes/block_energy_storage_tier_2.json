@@ -1,0 +1,21 @@
+{
+  "type" : "minecraft:crafting_shaped",
+
+  "pattern" : [
+    "SHS"
+  ],
+
+  "key" : {
+    "S" : {
+      "item" : "vengamodmc:block_energy_storage_tier_1"
+    },
+    "H" : {
+      "item" : "vengamodmc:item_energy_circuit"
+    }
+  },
+
+  "result" : {
+    "item" : "vengamodmc:block_energy_storage_tier_2",
+    "count" : 1
+  }
+}

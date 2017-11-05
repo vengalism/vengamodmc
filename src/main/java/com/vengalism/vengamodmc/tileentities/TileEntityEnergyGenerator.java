@@ -7,6 +7,7 @@ package com.vengalism.vengamodmc.tileentities;
 import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import com.vengalism.vengamodmc.energy.EnergyTransfer;
+import com.vengalism.vengamodmc.util.Enums;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -31,13 +32,19 @@ public class TileEntityEnergyGenerator extends TileEntityEnergyBase implements I
     //100k
     private ItemStackHandler invHandler;
     private int cooldown = 0;
+    private Enums.MACHINETIER machinetier;
 
     public TileEntityEnergyGenerator(){
-        this(20000, 0, 500);
+        this(Enums.MACHINETIER.ONE);
     }
 
-    public TileEntityEnergyGenerator(int capacity, int maxReceive, int maxExtract) {
-        super(capacity, maxReceive, maxExtract);
+    public TileEntityEnergyGenerator(Enums.MACHINETIER machinetier){
+        this(Config.energyGeneratorMaxEnergyStored, 0, Config.energyGeneratorEnergyExtractSpeed, machinetier);
+    }
+
+    public TileEntityEnergyGenerator(int capacity, int maxReceive, int maxExtract, Enums.MACHINETIER machinetier) {
+        super(capacity * machinetier.getMultiplier(), maxReceive * machinetier.getMultiplier(), maxExtract * machinetier.getMultiplier());
+        this.machinetier = machinetier;
         this.invHandler = new ItemStackHandler(1);
         this.storage.canReceive();
     }
@@ -92,11 +99,15 @@ public class TileEntityEnergyGenerator extends TileEntityEnergyBase implements I
                         }
                     } else {
 
-                        this.storage.receiveInternalEnergy(Config.energyGeneratorEnergyPerTick, false);
+                        this.storage.receiveInternalEnergy(Config.energyGeneratorEnergyPerTick * machinetier.getMultiplier(), false);
                     }
                 }
             }
         }
+    }
+
+    public Enums.MACHINETIER getMachinetier() {
+        return this.machinetier;
     }
 
     @Override

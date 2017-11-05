@@ -4,7 +4,7 @@
 
 package com.vengalism.vengamodmc.container;
 
-import com.vengalism.vengamodmc.container.slots.SlotVaultGenerator;
+import com.vengalism.vengamodmc.container.slots.SlotEnergyGenerator;
 import com.vengalism.vengamodmc.tileentities.TileEntityEnergyGenerator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumFacing;
@@ -20,7 +20,7 @@ public class ContainerEnergyGenerator extends CustomContainer {
         if (tileEntityEnergyGenerator.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
             IItemHandler inventory = tileEntityEnergyGenerator.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
 
-            addSlotToContainer(new SlotVaultGenerator(inventory, 0, 80, 35));
+            addSlotToContainer(new SlotEnergyGenerator(inventory, 0, 80, 35));
 
             addDefaultSlots(inventoryPlayer);
         }

@@ -1,8 +1,18 @@
 itemGroup.VengaModMc=VengaModMC
 
-tile.block_energy_storage.name=Energy Storage
-tile.block_energy_generator.name=Energy Generator
-tile.block_energy_furnace.name=Energy Furnace
+tile.block_energy_storage.name=Energy Storage Tier 1
+tile.block_energy_storage_tier_1.name=Energy Storage Tier 1
+tile.block_energy_storage_tier_2.name=Energy Storage Tier 2
+tile.block_energy_storage_tier_3.name=Energy Storage Tier 3
+tile.block_energy_generator.name=Energy Generator Tier 1
+tile.block_energy_generator_tier_1.name=Energy Generator Tier 1
+tile.block_energy_generator_tier_2.name=Energy Generator Tier 2
+tile.block_energy_generator_tier_3.name=Energy Generator Tier 3
+tile.block_energy_furnace.name=Energy Furnace Tier 1
+tile.block_energy_furnace_tier_1.name=Energy Furnace Tier 1
+tile.block_energy_furnace_tier_2.name=Energy Furnace Tier 2
+tile.block_energy_furnace_tier_3.name=Energy Furnace Tier 3
+tile.block_hydro_fish_tank.name=Hydro Fish Tank
 
 item.item_energy_battery_part_1.name=Part 1
 item.item_energy_battery_part_2.name=Part 2
@@ -11,6 +21,7 @@ item.item_energy_battery_cap.name=Energy Battery Cap
 item.item_energy_battery_body.name=Energy Battery Body
 item.item_energy_battery_base.name=Energy Battery Base
 item.item_energy_battery.name=Energy Battery
+item.item_multi_tool.name=Multi Tool
 
 item.item_nutrient_a.name=Nutrient Grow A
 item.item_nutrient_b.name=Nutrient Grow B
@@ -36,7 +47,7 @@ item.tool_sword_energy_diamond.name=Diamond Energy Sword
 
 
 fluid.vengamodmc:fluid_nutrient.name=Nutrient Fluid
-fluid.vengamodmc:fluid_oxygenated_nutrient.name=Oxygenated Nutrient Fluid
+fluid.vengamodmc:fluid_nutrient_oxygenated.name=Oxygenated Nutrient Fluid
 
 tile.block_hydro_nutrient_tank.name=Hydro Nutrient Tank
 tile.block_hydro_crop_tub.name=Hydro Crop Tub
