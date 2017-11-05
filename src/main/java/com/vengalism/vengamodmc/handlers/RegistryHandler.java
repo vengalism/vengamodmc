@@ -4,10 +4,12 @@
 
 package com.vengalism.vengamodmc.handlers;
 
+import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.init.BlockInit;
 import com.vengalism.vengamodmc.init.FluidInit;
 import com.vengalism.vengamodmc.init.ItemInit;
 import com.vengalism.vengamodmc.objects.fluid.FluidStateMapper;
+import com.vengalism.vengamodmc.proxy.ClientProxy;
 import com.vengalism.vengamodmc.util.IHasModel;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -78,19 +80,11 @@ public class RegistryHandler {
                ((IHasModel) fluid).registerModels();
                //FluidRegistry.registerFluid(fluid);
                FluidRegistry.addBucketForFluid(fluid);
-               registerCustomFluidBlockRenderer(fluid);
+               ClientProxy.registerCustomFluidBlockRenderer(fluid);
 
            }
         }
     }
 
-    private static void registerCustomFluidBlockRenderer(Fluid fluid){
-        Block block = fluid.getBlock();
-        Item item = Item.getItemFromBlock(block);
-        FluidStateMapper mapper = new FluidStateMapper(fluid);
-        ModelLoader.registerItemVariants(item);
-        ModelLoader.setCustomMeshDefinition(item, mapper);
-        ModelLoader.setCustomStateMapper(block, mapper);
-    }
 
 }

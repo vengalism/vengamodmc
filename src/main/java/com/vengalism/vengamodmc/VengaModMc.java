@@ -58,6 +58,6 @@ public class VengaModMc {
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event){
         proxy.postInit(event);
-        System.out.println("PROXY POSTING");
+        //System.out.println("PROXY POSTING");
     }
 }

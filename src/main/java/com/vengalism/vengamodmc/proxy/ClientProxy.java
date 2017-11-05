@@ -7,12 +7,15 @@ package com.vengalism.vengamodmc.proxy;
 import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.handlers.GuiHandler;
+import com.vengalism.vengamodmc.objects.fluid.FluidStateMapper;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -29,7 +32,7 @@ public class ClientProxy implements prox {
         File directory = event.getModConfigurationDirectory();
         config = new Configuration(new File(directory.getPath(), "vengamodmc.cfg"));
         Config.readConfig();
-        System.out.println("JUST READ CONFIG");
+        //System.out.println("JUST READ CONFIG");
     }
 
     @Override
@@ -40,7 +43,7 @@ public class ClientProxy implements prox {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         if(config.hasChanged()){
-            System.out.println("CONFIG CHANGED SAVING");
+            //System.out.println("CONFIG CHANGED SAVING");
             config.save();
         }
     }
@@ -53,5 +56,15 @@ public class ClientProxy implements prox {
     @Override
     public void registerItemRenderer(Item item, int meta, String id) {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), id));
+    }
+
+
+    public static void registerCustomFluidBlockRenderer(Fluid fluid){
+        Block block = fluid.getBlock();
+        Item item = Item.getItemFromBlock(block);
+        FluidStateMapper mapper = new FluidStateMapper(fluid);
+        ModelLoader.registerItemVariants(item);
+        ModelLoader.setCustomMeshDefinition(item, mapper);
+        ModelLoader.setCustomStateMapper(block, mapper);
     }
 }
