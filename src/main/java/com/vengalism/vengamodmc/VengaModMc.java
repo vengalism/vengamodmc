@@ -8,11 +8,13 @@ import com.vengalism.vengamodmc.handlers.GuiHandler;
 import com.vengalism.vengamodmc.handlers.PacketHandler;
 import com.vengalism.vengamodmc.handlers.RegistryHandler;
 import com.vengalism.vengamodmc.init.FluidInit;
+import com.vengalism.vengamodmc.objects.fluid.FluidNutrient;
 import com.vengalism.vengamodmc.proxy.prox;
 import com.vengalism.vengamodmc.tabs.VengamodmcTab;
 import com.vengalism.vengamodmc.tileentities.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -35,9 +37,13 @@ public class VengaModMc {
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event){
         MinecraftForge.EVENT_BUS.register(new RegistryHandler());
+        FluidRegistry.enableUniversalBucket();
+        FluidRegistry.addBucketForFluid(FluidInit.fluid_nutrient);
+        FluidRegistry.addBucketForFluid(FluidInit.fluid_nutrient_oxygenated);
         PacketHandler.init();
         FluidInit.init();
         proxy.preInit(event);
+
 
     }
 

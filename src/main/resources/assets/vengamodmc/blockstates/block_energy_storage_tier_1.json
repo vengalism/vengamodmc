@@ -1,7 +1,15 @@
 {
   "variants": {
-    "normal": {
-      "model": "vengamodmc:block_energy_storage_tier_1"
-    }
+    "fillamount=10" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_10"},
+    "fillamount=9" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_9"},
+    "fillamount=8" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_8"},
+    "fillamount=7" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_7"},
+    "fillamount=6" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_6"},
+    "fillamount=5" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_5"},
+    "fillamount=4" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_4"},
+    "fillamount=3" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_3"},
+    "fillamount=2" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_2"},
+    "fillamount=1" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_1"},
+    "fillamount=0" : {"model" : "vengamodmc:block_energy_storage/tier_1/fill_0"}
   }
 }

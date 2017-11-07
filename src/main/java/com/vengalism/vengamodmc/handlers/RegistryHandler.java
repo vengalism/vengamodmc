@@ -79,7 +79,7 @@ public class RegistryHandler {
            if(fluid instanceof IHasModel){
                ((IHasModel) fluid).registerModels();
                //FluidRegistry.registerFluid(fluid);
-               FluidRegistry.addBucketForFluid(fluid);
+
                ClientProxy.registerCustomFluidBlockRenderer(fluid);
 
            }

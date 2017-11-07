@@ -23,7 +23,7 @@ public class FluidInit {
 
     public static void init(){
 
-        FluidRegistry.enableUniversalBucket();
+
 
         fluid_nutrient = new FluidNutrient("fluid_nutrient", "blocks/fluid_nutrient_still", "blocks/fluid_nutrient_flow", Config.fluidNutrientDelay);
         registerFluid(fluid_nutrient);

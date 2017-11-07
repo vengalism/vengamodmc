@@ -5,11 +5,16 @@
 package com.vengalism.vengamodmc.tileentities;
 
 import com.vengalism.vengamodmc.Config;
+import com.vengalism.vengamodmc.objects.blocks.BlockEnergyStorage;
 import com.vengalism.vengamodmc.util.Enums;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -78,7 +83,68 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
                     extractToItem(recItem);
                 }
             }
+            sync++;
+            sync %= 20;
+            if(sync == 0){
+                setState();
+            }
+
         }
+    }
+
+    private void setState(){
+        if(!world.isRemote) {
+            TileEntity te = this.world.getTileEntity(this.pos);
+            if(te instanceof TileEntityEnergyStorage){
+                BlockEnergyStorage bes = (BlockEnergyStorage)te.getBlockType();
+                int per = this.getPercentFull();
+                world.setBlockState(this.pos, bes.getStateFromMeta(per));
+                this.markDirty();
+            }
+        }
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        if(!world.isRemote){
+            world.notifyBlockUpdate(pos, oldState, newSate, getPercentFull());
+
+        }
+        return oldState.getBlock() != newSate.getBlock();
+
+    }
+
+    public int getPercentFull(){
+
+        int capacity = this.storage.getMaxEnergyStored();
+        int nrg = this.storage.getEnergyStored();
+        int percent = ((nrg * 100) / capacity);
+
+        if (percent <= 9) {
+            return 0;
+        } else if (percent <= 19) {
+            return 1;
+        } else if (percent <= 29) {
+            return 2;
+        } else if (percent <= 39) {
+            return 3;
+        } else if (percent <= 49) {
+            return 4;
+        } else if (percent <= 59) {
+            return 5;
+        } else if (percent <= 69) {
+            return 6;
+        } else if (percent <= 79) {
+            return 7;
+        } else if (percent <= 89) {
+            return 8;
+        } else if (percent <= 99) {
+            return 9;
+        } else {
+            return 10;
+        }
+
+
     }
 
     public Enums.MACHINETIER getMachinetier() {
@@ -88,5 +154,9 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
     @Override
     public ItemStackHandler getInvHandler() {
         return this.invHandler;
+    }
+
+    public int getEnergyStored(){
+        return this.storage.getEnergyStored();
     }
 }

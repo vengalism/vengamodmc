@@ -31,9 +31,7 @@ public class ItemInit {
     public static final ItemEnergyBatteryPart item_energy_battery_base = new ItemEnergyBatteryPart("item_energy_battery_base");
     public static final ItemEnergyBattery item_energy_battery = new ItemEnergyBattery("item_energy_battery", Config.itemEnergyBatteryCapacity, Config.itemEnergyBatteryMaxReceive, Config.itemEnergyBatteryMaxExtract, 0);
 
-    public static final ItemMultiTool item_multi_tool = new ItemMultiTool("item_multi_tool");
-
-
+    //public static final ItemMultiTool item_multi_tool = new ItemMultiTool("item_multi_tool");
 
     //PRODUCTION
 
@@ -57,7 +55,6 @@ public class ItemInit {
 
 
     public static void init(){
-        //construct items in here, make public outside new way for naming scheme is ingot_copper
 
     }
 }

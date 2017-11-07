@@ -1,6 +1,12 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/cube",
   "textures": {
-    "all": "vengamodmc:blocks/block_energy_storage"
+    "particle": "vengamodmc:blocks/block_energy_storage",
+    "down": "vengamodmc:blocks/block_energy_storage",
+    "up": "vengamodmc:blocks/block_energy_storage",
+    "east": "vengamodmc:blocks/block_energy_storage",
+    "west": "vengamodmc:blocks/block_energy_storage",
+    "north": "vengamodmc:blocks/block_energy_storage",
+    "south": "vengamodmc:blocks/block_energy_storage"
   }
 }
