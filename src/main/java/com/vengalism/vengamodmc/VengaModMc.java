@@ -34,14 +34,18 @@ public class VengaModMc {
     @SidedProxy(clientSide = Reference.CLIENTPROXY, serverSide = Reference.COMMONPROXY)
     public static prox proxy;
 
+    static {
+        FluidRegistry.enableUniversalBucket();
+    }
+
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event){
         MinecraftForge.EVENT_BUS.register(new RegistryHandler());
-        FluidRegistry.enableUniversalBucket();
-        FluidRegistry.addBucketForFluid(FluidInit.fluid_nutrient);
-        FluidRegistry.addBucketForFluid(FluidInit.fluid_nutrient_oxygenated);
         PacketHandler.init();
         FluidInit.init();
+        FluidRegistry.addBucketForFluid(FluidInit.fluid_nutrient);
+        FluidRegistry.addBucketForFluid(FluidInit.fluid_nutrient_oxygenated);
+
         proxy.preInit(event);
 
 

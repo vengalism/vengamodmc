@@ -47,7 +47,9 @@ item.tool_sword_energy_diamond.name=Diamond Energy Sword
 
 
 fluid.vengamodmc:fluid_nutrient.name=Nutrient Fluid
+fluid.vengamodmc:fluid_nutrient Bucket=Nutrient Fluid Bucket
 fluid.vengamodmc:fluid_nutrient_oxygenated.name=Oxygenated Nutrient Fluid
+fluid.vengamodmc:fluid_nutrient_oxygenated Bucket=Oxygenated Nutrient Fluid Bucket
 
 tile.block_hydro_nutrient_tank.name=Hydro Nutrient Tank
 tile.block_hydro_crop_tub.name=Hydro Crop Tub
