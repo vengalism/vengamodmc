@@ -4,9 +4,9 @@
   "group" : "vengamodmc:energy",
 
   "pattern" : [
-    "IHI",
+    "IVI",
     "FFF",
-    "CVC"
+    "CHC"
   ],
 
   "key" : {
@@ -17,7 +17,7 @@
       "item" : "vengamodmc:item_energy_circuit"
     },
     "V" : {
-      "item" : "vengamodmc:item_energy_battery"
+      "item" : "vengamodmc:item_energy_battery_part_1"
     },
     "C" : {
       "item" : "minecraft:chest"

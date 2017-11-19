@@ -8,6 +8,7 @@ import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.hydro.INutrient;
 import com.vengalism.vengamodmc.hydro.INutrientMixture;
 import com.vengalism.vengamodmc.init.FluidInit;
+import com.vengalism.vengamodmc.init.ItemInit;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -16,7 +17,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 
+
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,6 +31,10 @@ public class ItemNutrientMixture extends ItemFluid implements INutrientMixture {
     private List<INutrient> nutrients;
     private final int validWorth = 200;
     private int upkeepCost = 1;
+
+    public ItemNutrientMixture(String name){
+        this(name, new ArrayList<>(Arrays.asList(new ItemNutrient[]{ItemInit.item_nutrient_a, ItemInit.item_nutrient_a, ItemInit.item_nutrient_b, ItemInit.item_nutrient_b})));
+    }
 
     public ItemNutrientMixture(String name, List<INutrient> nutrients){
         super(name, 200, 0, Config.itemNutrientMixtureUpkeepCost);

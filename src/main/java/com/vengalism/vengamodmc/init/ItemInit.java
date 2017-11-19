@@ -8,10 +8,6 @@ import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.objects.items.*;
 import com.vengalism.vengamodmc.objects.tools.*;
 import net.minecraft.item.Item;
-import scala.actors.threadpool.Arrays;
-
-import java.util.ArrayList;
-
 
 public class ItemInit {
 
@@ -20,7 +16,7 @@ public class ItemInit {
     public static final ItemHydroAirStone item_hydro_air_stone = new ItemHydroAirStone("item_hydro_air_stone", 1000, Config.itemHydroAirStoneUpkeepCost);
     public static final ItemNutrient item_nutrient_a = new ItemNutrient("item_nutrient_a");
     public static final ItemNutrient item_nutrient_b = new ItemNutrient("item_nutrient_b");
-    public static final ItemNutrientMixture item_nutrient_mixture = new ItemNutrientMixture("item_nutrient_mixture", new ArrayList<>(Arrays.asList((new ItemNutrient[]{item_nutrient_a, item_nutrient_a, item_nutrient_b, item_nutrient_b}))));
+    public static ItemNutrientMixture item_nutrient_mixture = new ItemNutrientMixture("item_nutrient_mixture");
 
     //ENERGY
     public static final ItemEnergyBatteryPart item_energy_battery_part_1 = new ItemEnergyBatteryPart("item_energy_battery_part_1");
@@ -54,7 +50,5 @@ public class ItemInit {
     public static final ToolSwordEnergy tool_sword_energy_diamond = new ToolSwordEnergy("tool_sword_energy_diamond", Item.ToolMaterial.DIAMOND);
 
 
-    public static void init(){
-
-    }
+    public static void init(){ }
 }
