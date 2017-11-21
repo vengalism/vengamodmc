@@ -36,7 +36,7 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
     }
 
     public TileEntityEnergyStorage(Enums.MACHINETIER machinetier){
-        this(Config.energyStorageMaxeEnergyStored, Config.energyStorageMaxeReceive, Config.energyStorageMaxExtractSpeed, machinetier);
+        this(Config.energyStorageMaxEnergyStored, Config.energyStorageMaxReceive, Config.energyStorageMaxExtractSpeed, machinetier);
     }
 
     public TileEntityEnergyStorage(int capacity, int maxReceive, int maxExtract, Enums.MACHINETIER machinetier){
@@ -70,6 +70,8 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
                 extractToAdjacent();
 
                 receiveFromAdjacent();
+
+                extractToAdjacentRF();
 
                 //extract from item receive to me
                 ItemStack disItem = this.invHandler.getStackInSlot(DISCHARGESLOT);

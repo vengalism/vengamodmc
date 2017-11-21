@@ -14,7 +14,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketHandler {
-
+//TODO is it possible to use JSON objects to send over network and then have the gui fetch data from JSON object, would
+    //allow for 1 type of packetGetter and Return right? maybe, maybe not
 
     public static SimpleNetworkWrapper INSTANCE;
 

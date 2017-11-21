@@ -4,6 +4,8 @@
 
 package com.vengalism.vengamodmc.tileentities;
 
+
+import cofh.redstoneflux.api.IEnergyReceiver;
 import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import com.vengalism.vengamodmc.util.MyUtil;
 import net.minecraft.item.ItemStack;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by vengada at 15/10/2017
  */
-public class TileEntityEnergyBase extends TileEntityBase {
+public class TileEntityEnergyBase extends TileEntityBase implements cofh.redstoneflux.api.IEnergyStorage{
 
     protected CustomForgeEnergyStorage storage;
 
@@ -57,6 +59,23 @@ public class TileEntityEnergyBase extends TileEntityBase {
             return (T) this.storage;
         }
         return super.getCapability(capability, facing);
+    }
+
+    private void exchangeRF(IEnergyStorage from, IEnergyReceiver to, int energy){
+        int extractedAmount = from.extractEnergy(energy, true);
+        if(extractedAmount > 0){
+            int filled = to.receiveEnergy(EnumFacing.NORTH, extractedAmount, false);
+            from.extractEnergy(filled, false);
+        }
+    }
+
+
+    public void extractToAdjacentRF(){
+        for(IEnergyReceiver ier : getRFRecTilesAdjacent()){
+            if(ier != null){
+                exchangeRF(this.storage, ier, this.storage.getMaxCanExtract());
+            }
+        }
     }
 
     private void exchangeEnergy(IEnergyStorage from, IEnergyStorage to, int energy){
@@ -100,6 +119,20 @@ public class TileEntityEnergyBase extends TileEntityBase {
         }
     }
 
+    private ArrayList<IEnergyReceiver> getRFRecTilesAdjacent(){
+        ArrayList<IEnergyReceiver> adjacentIER = new ArrayList<>();
+        for(TileEntity tileEntity : MyUtil.getAdjacentBlocks(this.world, this.pos)){
+            if(tileEntity != null) {
+                if(tileEntity instanceof IEnergyReceiver){
+                    IEnergyReceiver iEnergyReceiver = (IEnergyReceiver)tileEntity;
+                    adjacentIER.add(iEnergyReceiver);
+                }
+            }
+        }
+        return adjacentIER;
+
+    }
+
     private ArrayList<IEnergyStorage> getIESTilesAdjacent(){
         ArrayList<IEnergyStorage> adjacentIES = new ArrayList<>();
         for(TileEntity tileEntity : MyUtil.getAdjacentBlocks(this.world, this.pos)){
@@ -116,5 +149,27 @@ public class TileEntityEnergyBase extends TileEntityBase {
     @Override
     public CustomForgeEnergyStorage getEnergyStorage() {
         return this.storage;
+    }
+
+
+    //RF stuff
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        return this.storage.receiveEnergy(maxReceive, simulate);
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        return this.storage.extractEnergy(maxExtract, simulate);
+    }
+
+    @Override
+    public int getEnergyStored() {
+        return this.storage.getEnergyStored();
+    }
+
+    @Override
+    public int getMaxEnergyStored() {
+        return this.storage.getMaxEnergyStored();
     }
 }

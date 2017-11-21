@@ -25,11 +25,11 @@ public class Config {
     // This values below you can access elsewhere in your mod:
     //public static boolean isThisAGoodTutorial = true;
     //public static String yourRealName = "Steve";
-    public static int tierOneMultiplier = 1, tierTwoMultiplier = 2, tierThreeMultiplier = 3;
+    public static int tierOneMultiplier = 1, tierTwoMultiplier = 10, tierThreeMultiplier = 20;
     public static int energyGeneratorEnergyPerTick = 50, energyGeneratorMaxEnergyStored = 20000, energyGeneratorEnergyExtractSpeed = 500;
     public static int energyFurnaceCookSpeed = 10, energyFurnaceMaxEnergyStored = 10000, energyFurnaceEnergyReceiveSpeed = 500, energyFurnaceSmeltUpkeep = 5;
     public static boolean energyFurnaceAutoExport = false;
-    public static int energyStorageMaxeEnergyStored = 50000, energyStorageMaxExtractSpeed = 1000, energyStorageMaxeReceive = 1000;
+    public static int energyStorageMaxEnergyStored = 50000, energyStorageMaxExtractSpeed = 1000, energyStorageMaxReceive = 1000;
     public static int hydroFishTankMaxTime = 1000, hydroFishTankFluidGen = 50;
     public static int hydroCropTubMaxDelay = 5000, hydroCropTubFluidUpkeep = 2, hydroCropTubHarvestUpkeep = 6;
     public static int fluidNutrientDelay = 2700, fluidOxNutrientDelay = 3400;
@@ -78,9 +78,9 @@ public class Config {
         energyFurnaceSmeltUpkeep = cfg.getInt("Energy Furnace: Smelt Upkeep", CATEGORY_ENERGY, energyFurnaceSmeltUpkeep, 1, 1000, "Amount to drain when successfully smelts an item");
         energyFurnaceAutoExport = cfg.getBoolean("Energy Furnace: Auto Export", CATEGORY_ENERGY, energyFurnaceAutoExport, "Enable/Disable auto export of items from the furnace. Note, not quite working as intended yet");
 
-        energyStorageMaxeEnergyStored = cfg.getInt("Energy Storage: Capacity", CATEGORY_ENERGY, energyStorageMaxeEnergyStored, 1000, 1000000, "Amount of Energy the Energy storage Stores before multiplier from type");
+        energyStorageMaxEnergyStored = cfg.getInt("Energy Storage: Capacity", CATEGORY_ENERGY, energyStorageMaxEnergyStored, 1000, 1000000, "Amount of Energy the Energy storage Stores before multiplier from type");
         energyStorageMaxExtractSpeed = cfg.getInt("Energy Storage: Max Extract", CATEGORY_ENERGY, energyStorageMaxExtractSpeed, 1, 5000, "Amount of Energy the Energy storage extracts before multiplier from type");
-        energyStorageMaxeReceive = cfg.getInt("Energy Storage: Max Receive", CATEGORY_ENERGY, energyStorageMaxeReceive, 1, 5000, "Amount of Energy the Energy storage receives before multiplier from type");
+        energyStorageMaxReceive = cfg.getInt("Energy Storage: Max Receive", CATEGORY_ENERGY, energyStorageMaxReceive, 1, 5000, "Amount of Energy the Energy storage receives before multiplier from type");
 
 
 
