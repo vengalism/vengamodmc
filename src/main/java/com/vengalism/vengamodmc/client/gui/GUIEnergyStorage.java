@@ -49,27 +49,27 @@ public class GUIEnergyStorage extends CustomEnergyGuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+    public void displayPacketInfo() {
         if(data.has("valid")){
             if (data.get("valid").getAsBoolean()) {
                 JsonObject energyStorage = data.getAsJsonObject("energyStorage");
                 if (this.energyBar.isMouseOver()) {
-                    //this.drawHoveringText(data.get(energy) + " / " + data.get(maxEnergy), ebx, eby);
-
                     this.drawHoveringText(energyStorage.get("energy") + " / " + energyStorage.get("maxEnergy"), ebx, eby);
                 }
                 JsonObject blockInfo = data.getAsJsonObject("blockInfo");
                 fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.DARK_GRAY.getRGB());
-                //fontRenderer.drawString(new TextComponentTranslation("Energy Storage " + this.tileEntityEnergyStorage.getMachineTier().getName()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
 
                 this.energyBar.updateEnergyBar(energyStorage.get("energy").getAsInt(), energyStorage.get("maxEnergy").getAsInt());
             }
         }
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        displayPacketInfo();
         sync++;
         sync %= 20;
         if (sync == 0) {
-            //PacketHandler.INSTANCE.sendToServer(new PacketGetEnergy(this.tileEntityEnergyStorage.getPos(),
-            //        EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIEnergyStorage", "energy", "maxEnergy"));
             PacketHandler.INSTANCE.sendToServer(new PacketGetData(this.tileEntityEnergyStorage.getPos(),
                     EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIEnergyStorage", "data"));
         }

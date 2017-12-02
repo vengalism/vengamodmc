@@ -46,8 +46,7 @@ public class GUIHydroCropTub extends CustomEnergyGuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-
+    public void displayPacketInfo() {
         if(data.has("valid")){
             if(data.get("valid").getAsBoolean()){
                 JsonObject fluidStorage = data.getAsJsonObject("fluidStorage");
@@ -61,6 +60,11 @@ public class GUIHydroCropTub extends CustomEnergyGuiContainer {
                 this.energyBar.updateEnergyBar(fluidStorage.get("fluidAmount").getAsInt(), fluidStorage.get("fluidMaxAmount").getAsInt());
             }
         }
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        displayPacketInfo();
         sync++;
         sync %= 20;
         if (sync == 0) {

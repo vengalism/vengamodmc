@@ -33,4 +33,6 @@ public class CustomEnergyGuiContainer extends GuiContainer {
         eby = this.height /2 - this.ySize/2;
         return new EnergyBar(1,  ebx + 152-20, eby +11, 18, 60, 0, 0 );
     }
+
+    public void displayPacketInfo(){}
 }

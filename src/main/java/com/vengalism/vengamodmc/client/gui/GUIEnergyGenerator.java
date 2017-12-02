@@ -51,7 +51,7 @@ public class GUIEnergyGenerator extends CustomEnergyGuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+    public void displayPacketInfo() {
         if(data.has("valid")){
             if(data.get("valid").getAsBoolean()){
                 JsonObject energyStorage = data.getAsJsonObject("energyStorage");
@@ -61,9 +61,14 @@ public class GUIEnergyGenerator extends CustomEnergyGuiContainer {
                 JsonObject blockInfo = data.getAsJsonObject("blockInfo");
                 fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
 
-                this.energyBar.updateEnergyBar(energyStorage.get("energy").getAsInt(), energyStorage.get("maxEnergy").getAsInt());
+
             }
         }
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        displayPacketInfo();
 
         sync++;
         sync %= 20;

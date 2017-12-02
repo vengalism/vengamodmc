@@ -56,13 +56,17 @@ public class GUIEnergyFurnace extends CustomEnergyGuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-
+    public void displayPacketInfo() {
         if(this.energyBar.isMouseOver()){
             this.drawHoveringText(energy + " / " + maxEnergy, ebx, eby);
         }
 
         fontRenderer.drawString(new TextComponentTranslation("Energy Furnace " + tileEntityEnergyFurnace.getMachinetier().getName()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        displayPacketInfo();
         sync++;
         sync %= 20;
         if (sync == 0) {

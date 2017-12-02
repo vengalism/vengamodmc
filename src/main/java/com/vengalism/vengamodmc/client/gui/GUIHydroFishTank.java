@@ -40,29 +40,9 @@ public class GUIHydroFishTank extends GUIHydroNutrientTank{
         data.addProperty("valid", false);
     }
 
-
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-
-        if(data.has("valid")){//TODO perhaps add to base gui like tileentitybase for getpacket data, slee now!
-            if(data.get("valid").getAsBoolean()){
-                JsonObject fluidStorage = data.getAsJsonObject("fluidStorage");
-                if(this.energyBar.isMouseOver()){
-                    this.drawHoveringText(fluidStorage.get("fluidAmount") + " / " + fluidStorage.get("fluidMaxAmount") + " " + fluidStorage.get("fluidName") , ebx, eby);
-                }
-                JsonObject extraTank = data.getAsJsonObject("extraTank");
-                if(this.NutrientEnergyBar.isMouseOver()){
-                    this.drawHoveringText(extraTank.get("fluidAmount") + " / " + extraTank.get("fluidMaxAmount") + " " + extraTank.get("fluidName") , ebx, eby);
-                }
-
-                JsonObject blockInfo = data.getAsJsonObject("blockInfo");
-                fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
-
-                this.energyBar.updateEnergyBar(fluidStorage.get("fluidAmount").getAsInt(), fluidStorage.get("fluidMaxAmount").getAsInt());
-                this.NutrientEnergyBar.updateEnergyBar(extraTank.get("fluidAmount").getAsInt(), extraTank.get("fluidMaxAmount").getAsInt());
-
-            }
-        }
+        displayPacketInfo();
 
         synca++;
         synca %= 20;

@@ -55,8 +55,7 @@ public class GUIHydroNutrientTank extends CustomEnergyGuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-
+    public void displayPacketInfo() {
         if(data.has("valid")){
             if(data.get("valid").getAsBoolean()){
                 JsonObject fluidStorage = data.getAsJsonObject("fluidStorage");
@@ -76,6 +75,11 @@ public class GUIHydroNutrientTank extends CustomEnergyGuiContainer {
 
             }
         }
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        displayPacketInfo();
 
         sync++;
         sync %= 20;
