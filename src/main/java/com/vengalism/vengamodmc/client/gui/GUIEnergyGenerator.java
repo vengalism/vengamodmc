@@ -4,10 +4,12 @@
 
 package com.vengalism.vengamodmc.client.gui;
 
+import com.google.gson.JsonObject;
 import com.vengalism.vengamodmc.Reference;
 import com.vengalism.vengamodmc.container.ContainerEnergyGenerator;
 import com.vengalism.vengamodmc.container.ContainerEnergyStorage;
 import com.vengalism.vengamodmc.energy.EnergyBar;
+import com.vengalism.vengamodmc.network.PacketGetData;
 import com.vengalism.vengamodmc.network.PacketGetEnergy;
 import com.vengalism.vengamodmc.handlers.PacketHandler;
 import com.vengalism.vengamodmc.tileentities.TileEntityEnergyGenerator;
@@ -26,6 +28,7 @@ public class GUIEnergyGenerator extends CustomEnergyGuiContainer {
 
     private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/energygeneratorgui.png");
     public static int energy = 0, maxEnergy = 0;
+    public static JsonObject data = new JsonObject();
     private static int sync = 0;
     private TileEntityEnergyGenerator generatorTileEntity;
     private EnergyBar energyBar;
@@ -37,6 +40,7 @@ public class GUIEnergyGenerator extends CustomEnergyGuiContainer {
         this.ySize = 166;
         this.ebx = this.width /2 - this.xSize /2;
         this.eby = this.height /2 - this.ySize/2;
+        data.addProperty("valid", false);
     }
 
     @Override
@@ -48,18 +52,25 @@ public class GUIEnergyGenerator extends CustomEnergyGuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        if(this.energyBar.isMouseOver()){
-            this.drawHoveringText(energy + " / " + maxEnergy, ebx, eby);
-        }
+        if(data.has("valid")){
+            if(data.get("valid").getAsBoolean()){
+                JsonObject energyStorage = data.getAsJsonObject("energyStorage");
+                if(this.energyBar.isMouseOver()){
+                    this.drawHoveringText(energyStorage.get("energy") + " / " + energyStorage.get("maxEnergy"), ebx, eby);
+                }
+                JsonObject blockInfo = data.getAsJsonObject("blockInfo");
+                fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
 
-        fontRenderer.drawString(new TextComponentTranslation("Energy Generator " + generatorTileEntity.getMachinetier().getName()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
+                this.energyBar.updateEnergyBar(energyStorage.get("energy").getAsInt(), energyStorage.get("maxEnergy").getAsInt());
+            }
+        }
 
         sync++;
         sync %= 20;
         if (sync == 0) {
-            PacketHandler.INSTANCE.sendToServer(new PacketGetEnergy(this.generatorTileEntity.getPos(),
-                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIEnergyGenerator", "energy", "maxEnergy"));
-            this.energyBar.updateEnergyBar(energy, maxEnergy);
+            PacketHandler.INSTANCE.sendToServer(new PacketGetData(this.generatorTileEntity.getPos(),
+                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIEnergyGenerator", "data"));
+
         }
     }
 

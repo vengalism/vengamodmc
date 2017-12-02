@@ -50,6 +50,10 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
     public TileEntityEnergyFurnace(Enums.MACHINETIER machinetier){
         this.storage = new CustomForgeEnergyStorage(Config.energyFurnaceMaxEnergyStored, Config.energyFurnaceEnergyReceiveSpeed, 0);
         this.machinetier = machinetier;
+        updateMachineTier();
+    }
+
+    private void updateMachineTier(){
         switch (machinetier){
             case ONE:
                 this.invHandler = new ItemStackHandler(3);
@@ -156,6 +160,8 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
                     //take from adjacent blocks
                     int maxCanReceive = this.storage.getMaxCanReceive();
                     this.storage.receiveInternalEnergy(EnergyTransfer.takeAll(this.world, this.pos, maxCanReceive, false), false);
+
+
 
                     //take from battery in slot 2
                     ItemStack item2 = this.invHandler.getStackInSlot(BATSLOT);
@@ -302,6 +308,9 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
         this.count3 = compound.getInteger("count3");
         this.storage.readFromNBT(compound);
         this.invHandler.deserializeNBT(compound.getCompoundTag("genInv"));
+        String tierName = compound.getString("machTier");
+        this.machinetier = Enums.MACHINETIER.valueOf(tierName);
+        updateMachineTier();
     }
 
     @Override
@@ -315,6 +324,7 @@ public class TileEntityEnergyFurnace extends TileEntityFurnace {
         compound.setInteger("count3", count3);
         this.storage.writeToNBT(compound);
         compound.setTag("genInv", this.invHandler.serializeNBT());
+        compound.setString("machTier", this.machinetier.getName());
         return compound;
     }
 }

@@ -5,7 +5,9 @@
 package com.vengalism.vengamodmc.tileentities;
 
 
+import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.api.IEnergyReceiver;
+import com.google.gson.JsonObject;
 import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import com.vengalism.vengamodmc.util.MyUtil;
 import net.minecraft.item.ItemStack;
@@ -69,11 +71,26 @@ public class TileEntityEnergyBase extends TileEntityBase implements cofh.redston
         }
     }
 
-
     public void extractToAdjacentRF(){
         for(IEnergyReceiver ier : getRFRecTilesAdjacent()){
             if(ier != null){
                 exchangeRF(this.storage, ier, this.storage.getMaxCanExtract());
+            }
+        }
+    }
+
+    private void exchangeRFR(IEnergyProvider from, IEnergyStorage to, int energy){
+        int receiveAmount = from.extractEnergy(EnumFacing.NORTH, energy, true);
+        if(receiveAmount > 0){
+            int received = to.receiveEnergy(receiveAmount, false);
+            from.extractEnergy(EnumFacing.NORTH, received, false);
+        }
+    }
+
+    public void receiveFromAdjacentRF(){
+        for(IEnergyProvider ier : getRFPecTilesAdjacent()){
+            if(ier != null){
+                exchangeRFR(ier, this.storage, this.storage.getMaxCanReceive());
             }
         }
     }
@@ -130,7 +147,19 @@ public class TileEntityEnergyBase extends TileEntityBase implements cofh.redston
             }
         }
         return adjacentIER;
+    }
 
+    private ArrayList<IEnergyProvider> getRFPecTilesAdjacent(){
+        ArrayList<IEnergyProvider> adjacentIER = new ArrayList<>();
+        for(TileEntity tileEntity : MyUtil.getAdjacentBlocks(this.world, this.pos)){
+            if(tileEntity != null) {
+                if(tileEntity instanceof IEnergyProvider){
+                    IEnergyProvider iEnergyProvider = (IEnergyProvider)tileEntity;
+                    adjacentIER.add(iEnergyProvider);
+                }
+            }
+        }
+        return adjacentIER;
     }
 
     private ArrayList<IEnergyStorage> getIESTilesAdjacent(){
@@ -172,4 +201,5 @@ public class TileEntityEnergyBase extends TileEntityBase implements cofh.redston
     public int getMaxEnergyStored() {
         return this.storage.getMaxEnergyStored();
     }
+
 }

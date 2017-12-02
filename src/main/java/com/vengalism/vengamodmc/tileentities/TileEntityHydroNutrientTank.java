@@ -1,5 +1,6 @@
 package com.vengalism.vengamodmc.tileentities;
 
+import com.google.gson.JsonObject;
 import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.init.FluidInit;
 import com.vengalism.vengamodmc.init.ItemInit;
@@ -198,5 +199,19 @@ public class TileEntityHydroNutrientTank extends  TileEntityFluidTankBase implem
         super.writeToNBT(compound);
         this.nutrientTank.writeToNBT(compound);
         return compound;
+    }
+
+    @Override
+    public JsonObject getPacketData() {
+        JsonObject superJo = super.getPacketData();
+        JsonObject extraTank = new JsonObject();
+        FluidStack fluid = nutrientTank.getFluid();
+        if(fluid != null){
+            extraTank.addProperty("fluidName", nutrientTank.getFluid().getLocalizedName());
+            extraTank.addProperty("fluidAmount", nutrientTank.getFluidAmount());
+            extraTank.addProperty("fluidMaxAmount", nutrientTank.getCapacity());
+            superJo.add("extraTank", extraTank);
+        }
+        return superJo;
     }
 }

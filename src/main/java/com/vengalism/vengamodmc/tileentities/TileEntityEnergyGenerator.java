@@ -83,12 +83,13 @@ public class TileEntityEnergyGenerator extends TileEntityEnergyBase implements I
         if (this.world != null) {
 
             if (!this.world.isRemote) {
+                extractToAdjacent();
+                extractToAdjacentRF();
                 this.cooldown--;
 
                 sync++;
                 sync %= 20;
                 if (sync == 0) {
-                    //extractToAdjacent();
 
                     ItemStack fuelItem = this.invHandler.getStackInSlot(BURNSLOT);
 
@@ -106,7 +107,8 @@ public class TileEntityEnergyGenerator extends TileEntityEnergyBase implements I
         }
     }
 
-    public Enums.MACHINETIER getMachinetier() {
+    @Override
+    public Enums.MACHINETIER getMachineTier() {
         return this.machinetier;
     }
 

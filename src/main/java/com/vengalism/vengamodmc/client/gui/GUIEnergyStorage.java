@@ -4,9 +4,11 @@
 
 package com.vengalism.vengamodmc.client.gui;
 
+import com.google.gson.JsonObject;
 import com.vengalism.vengamodmc.Reference;
 import com.vengalism.vengamodmc.container.ContainerEnergyStorage;
 import com.vengalism.vengamodmc.energy.EnergyBar;
+import com.vengalism.vengamodmc.network.PacketGetData;
 import com.vengalism.vengamodmc.network.PacketGetEnergy;
 import com.vengalism.vengamodmc.handlers.PacketHandler;
 import com.vengalism.vengamodmc.tileentities.TileEntityEnergyStorage;
@@ -28,9 +30,11 @@ public class GUIEnergyStorage extends CustomEnergyGuiContainer {
     private static int sync = 0;
     private TileEntityEnergyStorage tileEntityEnergyStorage;
     private EnergyBar energyBar;
+    public static JsonObject data = new JsonObject();
 
     public GUIEnergyStorage(InventoryPlayer player, TileEntityEnergyStorage tileEntityEnergyStorage) {
         super(new ContainerEnergyStorage(player, tileEntityEnergyStorage));
+        data.addProperty("valid", false);
         this.tileEntityEnergyStorage = tileEntityEnergyStorage;
 
         xSize = 176;
@@ -46,17 +50,30 @@ public class GUIEnergyStorage extends CustomEnergyGuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        if(this.energyBar.isMouseOver()){
-            this.drawHoveringText(energy + " / " + maxEnergy, ebx, eby);
+        if(data.has("valid")){
+            if (data.get("valid").getAsBoolean()) {
+                JsonObject energyStorage = data.getAsJsonObject("energyStorage");
+                if (this.energyBar.isMouseOver()) {
+                    //this.drawHoveringText(data.get(energy) + " / " + data.get(maxEnergy), ebx, eby);
+
+                    this.drawHoveringText(energyStorage.get("energy") + " / " + energyStorage.get("maxEnergy"), ebx, eby);
+                }
+                JsonObject blockInfo = data.getAsJsonObject("blockInfo");
+                fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.DARK_GRAY.getRGB());
+                //fontRenderer.drawString(new TextComponentTranslation("Energy Storage " + this.tileEntityEnergyStorage.getMachineTier().getName()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
+
+                this.energyBar.updateEnergyBar(energyStorage.get("energy").getAsInt(), energyStorage.get("maxEnergy").getAsInt());
+            }
         }
-        fontRenderer.drawString(new TextComponentTranslation("Energy Storage " + this.tileEntityEnergyStorage.getMachinetier().getName()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
         sync++;
         sync %= 20;
         if (sync == 0) {
-            PacketHandler.INSTANCE.sendToServer(new PacketGetEnergy(this.tileEntityEnergyStorage.getPos(),
-                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIEnergyStorage", "energy", "maxEnergy"));
+            //PacketHandler.INSTANCE.sendToServer(new PacketGetEnergy(this.tileEntityEnergyStorage.getPos(),
+            //        EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIEnergyStorage", "energy", "maxEnergy"));
+            PacketHandler.INSTANCE.sendToServer(new PacketGetData(this.tileEntityEnergyStorage.getPos(),
+                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIEnergyStorage", "data"));
         }
-        energyBar.updateEnergyBar(energy, maxEnergy);
+
     }
 
     @Override

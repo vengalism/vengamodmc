@@ -1,9 +1,11 @@
 package com.vengalism.vengamodmc.client.gui;
 
+import com.google.gson.JsonObject;
 import com.vengalism.vengamodmc.Reference;
 import com.vengalism.vengamodmc.container.ContainerHydroCropTub;
 import com.vengalism.vengamodmc.container.CustomContainer;
 import com.vengalism.vengamodmc.handlers.PacketHandler;
+import com.vengalism.vengamodmc.network.PacketGetData;
 import com.vengalism.vengamodmc.network.PacketGetFluid;
 import com.vengalism.vengamodmc.tileentities.TileEntityHydroCropTub;
 import net.minecraft.client.Minecraft;
@@ -24,6 +26,7 @@ public class GUIHydroCropTub extends CustomEnergyGuiContainer {
     private int sync = 0;
     public static int fluidAmount = 0, capacity = 0;
     public static int fluidType = 0;
+    public static JsonObject data = new JsonObject();
     private TileEntityHydroCropTub tileEntityHydroCropTub;
 
     public GUIHydroCropTub(InventoryPlayer player, TileEntityHydroCropTub tileEntityHydroCropTub) {
@@ -31,6 +34,7 @@ public class GUIHydroCropTub extends CustomEnergyGuiContainer {
         this.tileEntityHydroCropTub = tileEntityHydroCropTub;
         xSize = 176;
         ySize = 166;
+        data.addProperty("valid", false);
     }
 
 
@@ -44,23 +48,24 @@ public class GUIHydroCropTub extends CustomEnergyGuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 
-        String nutType = "Nutrient Fluid";
-        if(fluidType != 0){
-            nutType = "Oxygenated Nutrient Fluid";
+        if(data.has("valid")){
+            if(data.get("valid").getAsBoolean()){
+                JsonObject fluidStorage = data.getAsJsonObject("fluidStorage");
+                if(this.energyBar.isMouseOver()){
+                    this.drawHoveringText(fluidStorage.get("fluidAmount") + " / " + fluidStorage.get("fluidMaxAmount") + " " + fluidStorage.get("fluidName") , ebx, eby);
+                }
+
+                JsonObject blockInfo = data.getAsJsonObject("blockInfo");
+                fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
+
+                this.energyBar.updateEnergyBar(fluidStorage.get("fluidAmount").getAsInt(), fluidStorage.get("fluidMaxAmount").getAsInt());
+            }
         }
-
-        if(this.energyBar.isMouseOver()){
-            this.drawHoveringText(fluidAmount + " / " + capacity + " " + nutType , ebx, eby);
-        }
-
-        fontRenderer.drawString(new TextComponentTranslation("Hydro Crop Tub").getFormattedText(), 5, 5, Color.darkGray.getRGB());
-
         sync++;
         sync %= 20;
         if (sync == 0) {
-            PacketHandler.INSTANCE.sendToServer(new PacketGetFluid(this.tileEntityHydroCropTub.getPos(),
-                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIHydroCropTub", "fluidAmount", "capacity", "fluidType"));
-            this.energyBar.updateEnergyBar(fluidAmount, capacity);
+            PacketHandler.INSTANCE.sendToServer(new PacketGetData(this.tileEntityHydroCropTub.getPos(),
+                    EnumFacing.NORTH, "com.vengalism.vengamodmc.client.gui.GUIHydroCropTub", "data"));
         }
     }
 

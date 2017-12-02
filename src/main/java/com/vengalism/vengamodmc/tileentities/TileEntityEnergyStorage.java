@@ -4,6 +4,9 @@
 
 package com.vengalism.vengamodmc.tileentities;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.objects.blocks.BlockEnergyStorage;
 import com.vengalism.vengamodmc.util.Enums;
@@ -72,6 +75,8 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
                 receiveFromAdjacent();
 
                 extractToAdjacentRF();
+
+                receiveFromAdjacentRF();
 
                 //extract from item receive to me
                 ItemStack disItem = this.invHandler.getStackInSlot(DISCHARGESLOT);
@@ -145,11 +150,10 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
         } else {
             return 10;
         }
-
-
     }
 
-    public Enums.MACHINETIER getMachinetier() {
+    @Override
+    public Enums.MACHINETIER getMachineTier() {
         return this.machinetier;
     }
 
@@ -161,4 +165,5 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
     public int getEnergyStored(){
         return this.storage.getEnergyStored();
     }
+
 }

@@ -5,10 +5,7 @@
 package com.vengalism.vengamodmc.handlers;
 
 import com.vengalism.vengamodmc.Reference;
-import com.vengalism.vengamodmc.network.PacketGetEnergy;
-import com.vengalism.vengamodmc.network.PacketGetFluid;
-import com.vengalism.vengamodmc.network.PacketReturnEnergy;
-import com.vengalism.vengamodmc.network.PacketReturnFluid;
+import com.vengalism.vengamodmc.network.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,5 +22,8 @@ public class PacketHandler {
         INSTANCE.registerMessage(PacketGetEnergy.Handler.class, PacketGetEnergy.class, 1, Side.SERVER);
         INSTANCE.registerMessage(PacketReturnFluid.Handler.class, PacketReturnFluid.class, 2, Side.CLIENT);
         INSTANCE.registerMessage(PacketGetFluid.Handler.class, PacketGetFluid.class, 3, Side.SERVER);
+        INSTANCE.registerMessage(PacketReturnData.Handler.class, PacketReturnData.class, 4, Side.CLIENT);
+        INSTANCE.registerMessage(PacketGetData.Handler.class, PacketGetData.class, 5, Side.SERVER);
+
     }
 }
