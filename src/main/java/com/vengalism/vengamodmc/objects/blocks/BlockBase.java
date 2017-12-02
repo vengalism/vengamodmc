@@ -28,12 +28,14 @@ public class BlockBase extends Block implements IHasModel, ITileEntityProvider{
 
 
     public BlockBase(String name, Material material) {
-        this(name, Material.IRON, true);
+        this(name, material, true);
     }
 
     //Block block, Item itemBlock, String name, boolean addTab
     public BlockBase(String name, Material material, boolean addTab){
         super(material);
+        setHardness(5.0f);
+        setHarvestLevel("pickaxe", 2);
         BlockUtil.registerBlock(this, getItemBlock(this), name, addTab);
 
     }
@@ -58,6 +60,7 @@ public class BlockBase extends Block implements IHasModel, ITileEntityProvider{
                     for(int i = 0; i < invHandler.getSlots(); i++){
                         InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() +1, pos.getZ(), invHandler.getStackInSlot(i));
                     }
+                    worldIn.removeTileEntity(pos);
                 }
             }
         }
