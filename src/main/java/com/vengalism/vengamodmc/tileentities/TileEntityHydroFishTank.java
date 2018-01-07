@@ -2,11 +2,10 @@ package com.vengalism.vengamodmc.tileentities;
 
 import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.init.FluidInit;
-import com.vengalism.vengamodmc.init.ItemInit;
+import com.vengalism.vengamodmc.objects.blocks.BlockHydroFishTank;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -33,33 +32,35 @@ public class TileEntityHydroFishTank extends TileEntityHydroNutrientTank impleme
                 sync++;
                 sync %= 20;
                 if(sync == 0) {
-
-                    //processing
-                    if(this.fluidTank.getFluidAmount() > 0){
-                        if (hasFish() > 0) {
-                            processingTime++;
-                            this.getNutrientTank().fillInternal(new FluidStack(FluidInit.fluid_nutrient, Config.hydroFishTankFluidGen), true);
-                        }
-                    }
-
-                    if(processingTime == Config.hydroFishTankMaxTime){
-                        //do fish stuff
-                        Random chance = new Random();
-
-                        //breed a fish
-                        int luck = chance.nextInt(5);
-                        if(luck > 4){
-                            luck = chance.nextInt(hasFish());
-                            manageFish(luck, true);
+                    BlockHydroFishTank blockHydroFishTank = (BlockHydroFishTank)world.getBlockState(pos).getBlock();
+                    if(blockHydroFishTank.isPowered(world, pos)){
+                        //processing
+                        if(this.fluidTank.getFluidAmount() > 0){
+                            if (hasFish() > 0) {
+                                processingTime++;
+                                this.getNutrientTank().fillInternal(new FluidStack(FluidInit.fluid_nutrient, Config.hydroFishTankFluidGen), true);
+                            }
                         }
 
-                        //kill a fish
-                        luck = chance.nextInt(10);
-                        if(luck > 9){
-                            luck = chance.nextInt(hasFish());
-                            manageFish(luck, false);
+                        if(processingTime == Config.hydroFishTankMaxTime) {
+                            //do fish stuff
+                            Random chance = new Random();
+
+                            //breed a fish
+                            int luck = chance.nextInt(5);
+                            if (luck > 4) {
+                                luck = chance.nextInt(hasFish());
+                                manageFish(luck, true);
+                            }
+
+                            //kill a fish
+                            luck = chance.nextInt(10);
+                            if (luck > 9) {
+                                luck = chance.nextInt(hasFish());
+                                manageFish(luck, false);
+                            }
+                            processingTime = 0;
                         }
-                        processingTime = 0;
                     }
                 }
 

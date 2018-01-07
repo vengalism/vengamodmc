@@ -27,8 +27,7 @@ import javax.annotation.Nullable;
 public class BlockBase extends Block implements IHasModel, ITileEntityProvider{
 
     private boolean keepInventory = false;
-
-
+    public boolean requireRedstone = false;
     public BlockBase(String name, Material material) {
         this(name, material, true);
     }
@@ -86,5 +85,20 @@ public class BlockBase extends Block implements IHasModel, ITileEntityProvider{
                 (float)(entity.posY - clickedBlock.getY()),
                 (float)(entity.posZ - clickedBlock.getZ())
             );
+    }
+
+    public boolean isPowered(World worldIn, BlockPos pos){
+        if(requireRedstone) {
+            for (EnumFacing face : EnumFacing.VALUES) {
+                BlockPos neighPos = pos.offset(face);
+                if (worldIn.getRedstonePower(neighPos, face) > 1) {
+                    return true;
+                }
+            }
+            return false;
+        }else{
+            return true;
+        }
+
     }
 }

@@ -6,5 +6,5 @@ package com.vengalism.vengamodmc.util;
 
 public interface IHasModel {
 
-    public void registerModels();
+    void registerModels();
 }

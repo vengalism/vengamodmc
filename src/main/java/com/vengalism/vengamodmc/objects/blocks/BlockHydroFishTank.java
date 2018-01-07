@@ -3,14 +3,16 @@ package com.vengalism.vengamodmc.objects.blocks;
 import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.handlers.GuiHandler;
 import com.vengalism.vengamodmc.tileentities.TileEntityHydroFishTank;
-import com.vengalism.vengamodmc.tileentities.TileEntityHydroNutrientTank;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -40,6 +42,13 @@ public class BlockHydroFishTank extends BlockBase {
         if(!(tileEntity instanceof TileEntityHydroFishTank)){
             return false;
         }
+
+        if(playerIn.getHeldItem(hand).getItem() == Item.getItemFromBlock(Blocks.REDSTONE_TORCH)) {
+            requireRedstone = !requireRedstone;
+            playerIn.sendMessage(new TextComponentTranslation("Requires Redstone: " + requireRedstone));
+            return true;
+        }
+
         playerIn.openGui(VengaModMc.instance, GuiHandler.hydroFishTankContainerID, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }

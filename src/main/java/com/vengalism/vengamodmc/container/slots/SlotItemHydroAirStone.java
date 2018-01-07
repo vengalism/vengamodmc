@@ -22,9 +22,6 @@ public class SlotItemHydroAirStone extends SlotItemHandler {
     public boolean isItemValid(@Nonnull ItemStack stack) {
         if(stack.getItem() == ItemInit.item_hydro_air_stone){
             return true;
-        }else if(stack.getItem() instanceof ItemHydroAirStone){
-            return true;
-        }
-        return false;
+        }else return stack.getItem() instanceof ItemHydroAirStone;
     }
 }

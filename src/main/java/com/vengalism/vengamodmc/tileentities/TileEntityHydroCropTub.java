@@ -4,11 +4,9 @@ import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.init.FluidInit;
 import com.vengalism.vengamodmc.objects.blocks.BlockHydroCropTub;
 import com.vengalism.vengamodmc.objects.fluid.CustomFluidTank;
-import com.vengalism.vengamodmc.objects.fluid.FluidNutrient;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -172,25 +170,28 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
 
                 sync++;
                 sync %= 20;
-                if (sync == 0) {
-                    drainNutrients(false);
-                    //System.out.println(this.fluidTank.getFluid().getUnlocalizedName());
-                    BlockPos above = new BlockPos(this.pos.getX(), this.pos.getY() + 1, this.pos.getZ());
-                    IBlockState cropAbove = this.world.getBlockState(above);
-                    this.world.scheduleBlockUpdate(above, cropAbove.getBlock(), this.getDelayBuffs(), 10);
+                if(sync == 0) {
+                    BlockHydroCropTub hydroCropTub = (BlockHydroCropTub) world.getBlockState(pos).getBlock();
+                    if (hydroCropTub.isPowered(world, pos)) {
+                        drainNutrients(false);
+                        //System.out.println(this.fluidTank.getFluid().getUnlocalizedName());
+                        BlockPos above = new BlockPos(this.pos.getX(), this.pos.getY() + 1, this.pos.getZ());
+                        IBlockState cropAbove = this.world.getBlockState(above);
+                        this.world.scheduleBlockUpdate(above, cropAbove.getBlock(), this.getDelayBuffs(), 10);
 
-                    if(Config.hydroCropTubAutoHarvest) {
-                        if (!isOutputFull()) {
-                            this.harvestCropAbove(cropAbove, above);
-                        } else {
-                            for (int i = 0; i < this.invHandler.getSlots(); i++) {
-                                if (this.invHandler.getStackInSlot(i).isEmpty()) {
-                                    this.outputFull = false;
+                        if (Config.hydroCropTubAutoHarvest) {
+                            if (!isOutputFull()) {
+                                this.harvestCropAbove(cropAbove, above);
+                            } else {
+                                for (int i = 0; i < this.invHandler.getSlots(); i++) {
+                                    if (this.invHandler.getStackInSlot(i).isEmpty()) {
+                                        this.outputFull = false;
+                                    }
                                 }
                             }
                         }
+                        setState(this.world, this.pos);
                     }
-                    setState(this.world, this.pos);
                 }
             }
         }

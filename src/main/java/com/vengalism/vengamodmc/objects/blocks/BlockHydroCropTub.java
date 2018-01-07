@@ -4,19 +4,20 @@ import com.vengalism.vengamodmc.VengaModMc;
 import com.vengalism.vengamodmc.handlers.GuiHandler;
 import com.vengalism.vengamodmc.tileentities.TileEntityHydroCropTub;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 
@@ -48,6 +49,12 @@ public class BlockHydroCropTub extends BlockBase{
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if(!(tileEntity instanceof TileEntityHydroCropTub)){
             return false;
+        }
+
+        if(playerIn.getHeldItem(hand).getItem() == Item.getItemFromBlock(Blocks.REDSTONE_TORCH)) {
+            requireRedstone = !requireRedstone;
+            playerIn.sendMessage(new TextComponentTranslation("Requires Redstone: " + requireRedstone));
+            return true;
         }
 
         //TODO update gui for this block
@@ -101,5 +108,7 @@ public class BlockHydroCropTub extends BlockBase{
     public int getMetaFromState(IBlockState state) {
         return state.getValue(FLUIDLEVEL);
     }
+
+
 
 }

@@ -9,11 +9,14 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -25,6 +28,7 @@ public class BlockDigger extends BlockBase{
 
     private static final PropertyDirection FACING = PropertyDirection.create("facing");
     private EnumFacing faceAtPlace = EnumFacing.NORTH;
+
 
     public BlockDigger(String name) {
         super(name, Material.IRON);
@@ -43,6 +47,7 @@ public class BlockDigger extends BlockBase{
         worldIn.setBlockState(pos, state.withProperty(FACING, faceAtPlace));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
@@ -64,7 +69,6 @@ public class BlockDigger extends BlockBase{
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-
         if(worldIn.isRemote){
             return true;
         }
@@ -72,6 +76,12 @@ public class BlockDigger extends BlockBase{
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if(!(tileEntity instanceof TileEntityDigger)){
             return false;
+        }
+
+        if(playerIn.getHeldItem(hand).getItem() == Item.getItemFromBlock(Blocks.REDSTONE_TORCH)) {
+            requireRedstone = !requireRedstone;
+            playerIn.sendMessage(new TextComponentTranslation("Requires Redstone: " + requireRedstone));
+            return true;
         }
 
         playerIn.openGui(VengaModMc.instance, GuiHandler.diggerContainerID, worldIn, pos.getX(), pos.getY(), pos.getZ());

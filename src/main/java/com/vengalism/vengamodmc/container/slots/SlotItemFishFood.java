@@ -19,10 +19,7 @@ public class SlotItemFishFood extends SlotItemHandler {
 
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack) {
-        if(stack.getItem() instanceof ItemFishFood){
-            return true;
-        }
-        return false;
+        return stack.getItem() instanceof ItemFishFood;
     }
 
 }

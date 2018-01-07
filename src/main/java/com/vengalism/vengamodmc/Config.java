@@ -5,7 +5,6 @@
 package com.vengalism.vengamodmc;
 
 import com.vengalism.vengamodmc.proxy.ClientProxy;
-import com.vengalism.vengamodmc.proxy.CommonProxy;
 import net.minecraftforge.common.config.Configuration;
 
 //TODO this for config
@@ -21,6 +20,7 @@ public class Config {
     private static final String CATEGORY_ENERGY = "Energy";
     private static final String CATEGORY_HYDRO = "Hydro";
     private static final String CATEGORY_ITEM = "Items";
+    private static final String CATEGORY_MACHINE = "Machine";
 
     // This values below you can access elsewhere in your mod:
     //public static boolean isThisAGoodTutorial = true;
@@ -33,6 +33,7 @@ public class Config {
     public static int hydroFishTankMaxTime = 1000, hydroFishTankFluidGen = 50;
     public static int hydroCropTubMaxDelay = 5000, hydroCropTubFluidUpkeep = 2, hydroCropTubHarvestUpkeep = 6;
     public static int fluidNutrientDelay = 2700, fluidOxNutrientDelay = 3400;
+    public static int diggerMaxCoolDown = 20, diggerMaxEnergyStored = 10000, diggerReceiveSpeed = 500, diggerEnergyPerUse = 100, diggerMaxMove = 16;
     public static boolean hydroCropTubAutoHarvest = true;
 
     public static int hydroNutrientTankFluidGen = 50;
@@ -115,6 +116,15 @@ public class Config {
         toolBaseCapacity = cfg.getInt("Tool Base: Capacity", CATEGORY_ITEM, toolBaseCapacity, 1000, 50000, "Base amount before tier multiplier");
         toolBaseMaxExtract = cfg.getInt("Tool Base: Max Extract", CATEGORY_ITEM, toolBaseMaxExtract, 1, 1000, "Base amount before tier multiplier");
         toolBaseMaxReceive = cfg.getInt("Tool Base: Max Receive", CATEGORY_ITEM, toolBaseMaxReceive, 1, 1000, "Base amount before tier multiplier");
+
+        cfg.addCustomCategoryComment(CATEGORY_MACHINE, "Other Machines");
+        diggerEnergyPerUse = cfg.getInt("Digger: Energy Per Use", CATEGORY_MACHINE, diggerEnergyPerUse, 1, 10000, "Amount of Energy used per dig of the digger");
+        diggerMaxCoolDown = cfg.getInt("Digger: Max Cooldown", CATEGORY_MACHINE, diggerMaxCoolDown, 1, 10000, "The number of ticks before next dig. 20 ticks = 1 second");
+        diggerMaxEnergyStored = cfg.getInt("Digger: Capacity", CATEGORY_MACHINE, diggerMaxEnergyStored, 1000, 50000, "Amount of Energy the Digger can store");
+        diggerReceiveSpeed = cfg.getInt("Digger: Max Receive", CATEGORY_MACHINE, diggerReceiveSpeed, 1, 1000, "The max amount of energy the Digger can receive per interaction");
+        diggerMaxMove = cfg.getInt("Digger: Max Move", CATEGORY_MACHINE, diggerMaxMove, 1, 1000, "The size of the square the digger will dig");
+
+
 
     }
 

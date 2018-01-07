@@ -15,8 +15,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class ItemNutrientMixture extends ItemFluid implements INutrientMixture {
     private int upkeepCost = 1;
 
     public ItemNutrientMixture(String name){
-        this(name, new ArrayList<>(Arrays.asList(new ItemNutrient[]{ItemInit.item_nutrient_a, ItemInit.item_nutrient_a, ItemInit.item_nutrient_b, ItemInit.item_nutrient_b})));
+        this(name, new ArrayList<>(Arrays.asList(ItemInit.item_nutrient_a, ItemInit.item_nutrient_a, ItemInit.item_nutrient_b, ItemInit.item_nutrient_b)));
     }
 
     public ItemNutrientMixture(String name, List<INutrient> nutrients){

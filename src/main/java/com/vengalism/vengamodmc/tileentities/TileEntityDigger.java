@@ -1,6 +1,7 @@
 package com.vengalism.vengamodmc.tileentities;
 
 import com.google.gson.JsonObject;
+import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.objects.blocks.BlockDigger;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -21,27 +22,27 @@ import javax.annotation.Nullable;
  */
 public class TileEntityDigger extends TileEntityEnergyBase implements ITickable {
 
-    //private TileEntityDiggerController controller;
     private int cooldown = 20; //ticks
-    private static final int maxCooldown = 20;
-    private static final int ENERGYPERUSE = 100;
+    private int maxCooldown = 20;
+    private int energyPerUse = 100;
     private int moved = 1, maxMove = 16, col = 0, why = 0;
     private ItemStackHandler invHandler;
-    private final int WHY = 1;
-    private BlockPos lastExcavatedPos;
     private BlockDigger blockDigger;
-    private BlockPos startPos;
     private boolean done = false;
     private String errormsg = "";
 
     public TileEntityDigger() {
-        this(10000);
+        this(Config.diggerMaxEnergyStored);
     }
 
     public TileEntityDigger(int capacity) {
         super(capacity);
         this.invHandler = new ItemStackHandler(24);
         this.storage.canReceive();
+        this.maxMove = Config.diggerMaxMove;
+        this.maxCooldown = Config.diggerMaxCoolDown;
+        this.energyPerUse = Config.diggerEnergyPerUse;
+        this.cooldown = this.maxCooldown;
     }
 
     @Override
@@ -72,23 +73,18 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
 
     private boolean canHarvest() {
         if (!done) {
-            //System.out.println("not done");
-            if (this.storage.getEnergyStored() > ENERGYPERUSE) {
-                //System.out.println("has energy");
+            if (this.storage.getEnergyStored() > energyPerUse) {
                 if (hasEmptyInvSlot()) {
-                    //System.out.println("has slots");
                     errormsg = "";
                     return true;
                 } else {
                     errormsg = "No Empty Inventory Slots";
                     return false;
-
                 }
             } else {
                 errormsg = "Not Enough Energy";
                 return false;
             }
-
         } else {
             errormsg = "All Done!!";
             return false;
@@ -96,13 +92,13 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
     }
 
     private void harvestNext(BlockPos nextPos) {
-        System.out.println(nextPos + " next pos");
         Block block = world.getBlockState(nextPos).getBlock();
         if ((block != Blocks.AIR) && (block != Blocks.BEDROCK)) {
-            giveItemToController(new ItemStack(Item.getItemFromBlock(block), 1), 0);
-            //block.breakBlock(world, nextPos, block.getDefaultState());
-            this.storage.extractEnergy(ENERGYPERUSE, false);
-            world.setBlockState(nextPos, Blocks.AIR.getDefaultState());
+            //if we cant add item to inventory, dont break the block / turn to air
+            if(giveItemToContainer(new ItemStack(Item.getItemFromBlock(block), 1), 0)){
+                this.storage.extractEnergy(energyPerUse, false);
+                world.setBlockState(nextPos, Blocks.AIR.getDefaultState());
+            }
         }
         moved++;
         if (moved > maxMove) {
@@ -114,6 +110,7 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
                 moved = 1;
                 if (pos.getY() - why <= 1) {
                     done = true;
+                    errormsg = "All Done";
                 }
             }
         }
@@ -123,69 +120,64 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
     public void update() {
         if (this.world != null) {
             if (!this.world.isRemote) {
-                receiveFromAdjacent();
-                receiveFromAdjacentRF();
+                if(!done) {//no point receiving if done
+                    receiveFromAdjacent();
+                    receiveFromAdjacentRF();
+                }
                 if (blockDigger == null) {
                     blockDigger = (BlockDigger) world.getBlockState(pos).getBlock();
                 }
 
-
-                if (startPos == null) {
-                    startPos = this.pos;
-                }
-
                 EnumFacing facing = blockDigger.getFacing();
 
-                if (canHarvest()) {
-                    //System.out.println(cooldown + " cooldown");
-                    if (cooldown == 0) {
-                        //System.out.println(facing + " facing");
+                if(blockDigger.isPowered(world, pos)) {
+                    if (canHarvest()) {
+                        if (cooldown == 0) {
+                            if (facing == EnumFacing.NORTH) {//z decreases
+                                BlockPos nextPos = new BlockPos(pos.getX() + col, pos.getY() - why, pos.getZ() - moved);
+                                harvestNext(nextPos);
+                            }
+                            if (facing == EnumFacing.SOUTH) {//z increases
+                                BlockPos nextPos = new BlockPos(pos.getX() - col, pos.getY() - why, pos.getZ() + moved);
+                                harvestNext(nextPos);
+                            }
+                            if (facing == EnumFacing.WEST) {//x is reduced
+                                BlockPos nextPos = new BlockPos(pos.getX() - moved, pos.getY() - why, pos.getZ() - col);
+                                harvestNext(nextPos);
+                            }
 
-                        if (facing == EnumFacing.NORTH) {//z decreases
-                            BlockPos nextPos = new BlockPos(pos.getX() + col, pos.getY() - why, pos.getZ() - moved);
-                            harvestNext(nextPos);
+                            if (facing == EnumFacing.EAST) {//x is increased
+                                BlockPos nextPos = new BlockPos(pos.getX() + moved, pos.getY() - why, pos.getZ() + col);
+                                harvestNext(nextPos);
+                            }
+                            cooldown = maxCooldown;
+                        } else {
+                            cooldown--;
                         }
-                        if (facing == EnumFacing.SOUTH) {//z increases
-                            BlockPos nextPos = new BlockPos(pos.getX() - col, pos.getY() - why, pos.getZ() + moved);
-                            harvestNext(nextPos);
-                        }
-                        if (facing == EnumFacing.WEST) {//x is reduced
-                            BlockPos nextPos = new BlockPos(pos.getX() - moved, pos.getY() - why, pos.getZ() - col);
-                            harvestNext(nextPos);
-                        }
-
-                        if (facing == EnumFacing.EAST) {//x is increased
-                            BlockPos nextPos = new BlockPos(pos.getX() + moved, pos.getY() - why, pos.getZ() + col);
-                            harvestNext(nextPos);
-                        }
-                        cooldown = maxCooldown;
-                    } else {
-                        cooldown--;
                     }
+                }else{
+                    errormsg = "No Redstone Signal";
                 }
             }
         }
     }
 
-    private boolean giveItemToController(ItemStack itemStack, int slot) {
-        ItemStack result = ItemStack.EMPTY;
+    private boolean giveItemToContainer(ItemStack itemStack, int slot) {
+        ItemStack result;
         if (invHandler != null) {
             result = invHandler.insertItem(slot, itemStack.copy(), false);
             if (result.isEmpty()) {
                 return true;
             } else {
                 int nextSlot = slot + 1;
-                System.out.println(nextSlot + " next slot, slot: " + slot);
-                System.out.println(result.getItem().getUnlocalizedName() + " count " + result.getCount() + " result");
                 if (nextSlot < invHandler.getSlots()) {
-                    return giveItemToController(result, nextSlot);
+                    return giveItemToContainer(result, nextSlot);
                 } else {
                     return false;
                 }
 
             }
         }
-
         return false;
     }
 
