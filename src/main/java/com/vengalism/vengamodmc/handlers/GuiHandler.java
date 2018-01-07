@@ -25,6 +25,8 @@ public class GuiHandler implements IGuiHandler {
     public static final int energyStorageContainerID  = 0, energyGeneratorContainerID = 1, energyFurnaceContainerID = 3,
         hydroTubContainerID = 5, hydroTankContainerID = 6, homeContainerID = 7, hydroFishTankContainerID = 8;
 
+    public static final int diggerContainerID = 9, diggerControllerContainerID = 10;
+
     public static void init() {
         NetworkRegistry.INSTANCE.registerGuiHandler(VengaModMc.instance, new GuiHandler());
     }
@@ -46,6 +48,8 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerHydroCropTub(player.inventory, (TileEntityHydroCropTub) te);
             case hydroFishTankContainerID:
                 return new ContainerHydroFishTank(player.inventory, (TileEntityHydroFishTank) te);
+            case diggerContainerID:
+                return new ContainerDigger(player.inventory, (TileEntityDigger)te);
             default:
                 return null;
         }
@@ -68,6 +72,8 @@ public class GuiHandler implements IGuiHandler {
                 return new GUIHydroCropTub(player.inventory, (TileEntityHydroCropTub) te);
             case hydroFishTankContainerID:
                 return new GUIHydroFishTank(player.inventory, (TileEntityHydroFishTank)te);
+            case diggerContainerID:
+                return new GUIDigger(player.inventory, (TileEntityDigger)te);
             default:
                 return null;
         }

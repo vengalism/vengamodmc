@@ -28,6 +28,8 @@ public class BlockInit {
     public static final BlockHydroTank block_hydro_nutrient_tank = new BlockHydroTank("block_hydro_nutrient_tank");
     public static final BlockHydroFishTank block_hydro_fish_tank = new BlockHydroFishTank("block_hydro_fish_tank");
     public static final BlockHydroCropTub block_hydro_crop_tub = new BlockHydroCropTub("block_hydro_crop_tub");
+    public static final BlockEnergyFloor block_energy_floor = new BlockEnergyFloor("block_energy_floor");
+    public static final BlockDigger block_digger = new BlockDigger("block_digger");
     //public static final BlockHome block_home = new BlockHome("block_home");
 
 

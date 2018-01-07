@@ -11,10 +11,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -75,5 +77,14 @@ public class BlockBase extends Block implements IHasModel, ITileEntityProvider{
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return null;
+    }
+
+    //<3 mcjty
+    public static EnumFacing getFacingFromEntity(BlockPos clickedBlock, EntityLivingBase entity){
+        return EnumFacing.getFacingFromVector(
+                (float)(entity.posX - clickedBlock.getX()),
+                (float)(entity.posY - clickedBlock.getY()),
+                (float)(entity.posZ - clickedBlock.getZ())
+            );
     }
 }

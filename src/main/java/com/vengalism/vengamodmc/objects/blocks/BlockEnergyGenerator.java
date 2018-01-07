@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 /**
  * Created by vengada on 18/07/2017.
  */
-public class BlockEnergyGenerator extends BlockBase implements ITileEntityProvider {
+public class BlockEnergyGenerator extends BlockBase{
 
     private Enums.MACHINETIER machinetier;
 

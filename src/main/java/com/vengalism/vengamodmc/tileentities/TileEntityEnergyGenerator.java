@@ -117,8 +117,8 @@ public class TileEntityEnergyGenerator extends TileEntityEnergyBase implements I
         return this.invHandler;
     }
 
-    @Override
-    public CustomForgeEnergyStorage getEnergyStorage() {
-        return this.storage;
-    }
+    //@Override
+    //public CustomForgeEnergyStorage getEnergyStorage() {
+      //  return this.storage;
+    //}
 }

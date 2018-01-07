@@ -94,7 +94,7 @@ public class TileEntityBase extends TileEntity {
         JsonObject data = new JsonObject();
 
         JsonObject blockInfo = new JsonObject();
-        blockInfo.addProperty("name", this.getBlockType().getUnlocalizedName());
+        blockInfo.addProperty("name", this.getBlockType().getLocalizedName());
         if(hasMachineTier()){
             blockInfo.addProperty("machineTier", getMachineTier().getName());
         }

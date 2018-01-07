@@ -54,8 +54,9 @@ fluid.vengamodmc:fluid_nutrient_oxygenated Bucket=Oxygenated Nutrient Fluid Buck
 tile.block_hydro_nutrient_tank.name=Hydro Nutrient Tank
 tile.block_hydro_crop_tub.name=Hydro Crop Tub
 
-tile_block_home.name=Home Block
+tile.block_home.name=Home Block
 
+tile.block_digger.name=Dodgey Digger
 
 
 

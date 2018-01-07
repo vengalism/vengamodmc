@@ -31,6 +31,7 @@ public class GUIEnergyStorage extends CustomEnergyGuiContainer {
     private TileEntityEnergyStorage tileEntityEnergyStorage;
     private EnergyBar energyBar;
     public static JsonObject data = new JsonObject();
+    private int mx, my;
 
     public GUIEnergyStorage(InventoryPlayer player, TileEntityEnergyStorage tileEntityEnergyStorage) {
         super(new ContainerEnergyStorage(player, tileEntityEnergyStorage));
@@ -54,7 +55,7 @@ public class GUIEnergyStorage extends CustomEnergyGuiContainer {
             if (data.get("valid").getAsBoolean()) {
                 JsonObject energyStorage = data.getAsJsonObject("energyStorage");
                 if (this.energyBar.isMouseOver()) {
-                    this.drawHoveringText(energyStorage.get("energy") + " / " + energyStorage.get("maxEnergy"), ebx, eby);
+                    this.drawHoveringText(energyStorage.get("energy") + " / " + energyStorage.get("maxEnergy"),ebx, eby);
                 }
                 JsonObject blockInfo = data.getAsJsonObject("blockInfo");
                 fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.DARK_GRAY.getRGB());
@@ -66,6 +67,8 @@ public class GUIEnergyStorage extends CustomEnergyGuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        mx = mouseX;
+        my = mouseY;
         displayPacketInfo();
         sync++;
         sync %= 20;

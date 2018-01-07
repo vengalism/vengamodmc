@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "vengamodmc:blocks/block_digger",
+    "down": "vengamodmc:blocks/block_digger",
+    "up": "vengamodmc:blocks/block_digger",
+    "east": "vengamodmc:blocks/block_digger",
+    "west": "vengamodmc:blocks/block_digger",
+    "north": "vengamodmc:blocks/block_digger",
+    "south": "vengamodmc:blocks/block_digger"
+  }
+}

@@ -62,6 +62,8 @@ public class VengaModMc {
         GameRegistry.registerTileEntity(TileEntityHydroFishTank.class, Reference.MODID + "TileEntityHydroFishTank");
         GameRegistry.registerTileEntity(TileEntityHydroCropTub.class, Reference.MODID + "TileEntityHydroCropTub");
         GameRegistry.registerTileEntity(TileEntityHome.class, Reference.MODID + "TileEntityHome");
+        GameRegistry.registerTileEntity(TileEntityEnergyFloor.class, Reference.MODID + "TileEntityEnergyFloor");
+        GameRegistry.registerTileEntity(TileEntityDigger.class, Reference.MODID + "TileEntityDigger");
         proxy.init(event);
     }
 
