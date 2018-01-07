@@ -35,6 +35,7 @@ public class GUIDigger extends CustomEnergyGuiContainer {
         this.ebx = this.width /2 - this.xSize /2;
         this.eby = this.height /2 - this.ySize/2;
         data.addProperty("valid", false);
+
     }
 
     @Override

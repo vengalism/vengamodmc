@@ -1,4 +1,7 @@
 recent changes
+
+Digger implemented - which digs a 16x16 area all the way down to y level 1 in front of it and always to the right
+
 added support for RF
 buffed default multiplier from 1, 2, 3, to 1, 10, 20
 
