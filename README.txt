@@ -1,3 +1,10 @@
+VengaModMc
+Just a random mod I've made while teaching myself the ins and outs of Minecraft Modding. I hope you find something you enjoy in it.
+
+plans
+a renewable way to generate energy, solely relying on coal isn't enough!!!!
+Circuit Assembler machine thingy (makes parts twice as good as manually)
+
 recent changes (newest first)
 
 Some Blocks now respond to redstone signals Digger, Crop Tub and Fish Tank:
@@ -12,12 +19,7 @@ minor changes
 typos in code
 nbt tier name
 
-
 Updated to 1.4.1 check out the new Tier System!!!
 
-VengaModMc
-Just a random mod I've made while teaching myself the ins and outs of Minecraft Modding. I hope you find something you enjoy in it.
 
-plans
-a renewable way to generate energy, solely relying on coal isn't enough!!!!
-Circuit Assembler machine thingy (makes parts twice as good as manually)
+

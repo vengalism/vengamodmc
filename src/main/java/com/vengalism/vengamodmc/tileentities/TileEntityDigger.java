@@ -5,14 +5,16 @@ import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.objects.blocks.BlockDigger;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -91,15 +93,7 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
         }
     }
 
-    private void harvestNext(BlockPos nextPos) {
-        Block block = world.getBlockState(nextPos).getBlock();
-        if ((block != Blocks.AIR) && (block != Blocks.BEDROCK)) {
-            //if we cant add item to inventory, dont break the block / turn to air
-            if(giveItemToContainer(new ItemStack(Item.getItemFromBlock(block), 1), 0)){
-                this.storage.extractEnergy(energyPerUse, false);
-                world.setBlockState(nextPos, Blocks.AIR.getDefaultState());
-            }
-        }
+    private void move(){
         moved++;
         if (moved > maxMove) {
             col++;
@@ -114,6 +108,44 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
                 }
             }
         }
+    }
+
+    private void harvestNext(BlockPos nextPos) {
+        Block block = world.getBlockState(nextPos).getBlock();
+        if ((block != Blocks.AIR) && (block != Blocks.BEDROCK )) {
+            //if we cant add item to inventory, dont break the block / turn to air
+            NonNullList<ItemStack> drops = NonNullList.create();
+
+            //extract inventory of the block before breaking it
+            if(block.hasTileEntity(world.getBlockState(nextPos))){
+                TileEntity te = world.getTileEntity(nextPos);
+                if(te != null){
+                    for(EnumFacing face : EnumFacing.VALUES){
+                        if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face)){
+                            IItemHandler blockInvHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face);
+                            if (blockInvHandler != null) {
+                                for(int i = 0; i < blockInvHandler.getSlots(); i++){
+                                    giveItemToContainer(blockInvHandler.getStackInSlot(i), 0);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //get the drops of the block
+            block.getDrops(drops, world, nextPos, world.getBlockState(nextPos), 0);
+            for(ItemStack stack : drops){
+                if(giveItemToContainer(stack, 0)){
+                    this.storage.extractEnergy(energyPerUse, false);
+                    world.setBlockState(nextPos, Blocks.AIR.getDefaultState());
+                    if(block.hasTileEntity(world.getBlockState(nextPos))){
+                        world.removeTileEntity(nextPos);
+                    }
+                }
+            }
+        }
+        this.move();
     }
 
     @Override
@@ -145,7 +177,6 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
                                 BlockPos nextPos = new BlockPos(pos.getX() - moved, pos.getY() - why, pos.getZ() - col);
                                 harvestNext(nextPos);
                             }
-
                             if (facing == EnumFacing.EAST) {//x is increased
                                 BlockPos nextPos = new BlockPos(pos.getX() + moved, pos.getY() - why, pos.getZ() + col);
                                 harvestNext(nextPos);

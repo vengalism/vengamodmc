@@ -6,7 +6,7 @@
     "up": "vengamodmc:blocks/block_digger",
     "east": "vengamodmc:blocks/block_digger",
     "west": "vengamodmc:blocks/block_digger",
-    "north": "vengamodmc:blocks/block_digger",
+    "north": "vengamodmc:blocks/block_digger_front",
     "south": "vengamodmc:blocks/block_digger"
   }
 }

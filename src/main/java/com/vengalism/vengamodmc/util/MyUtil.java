@@ -5,6 +5,7 @@
 package com.vengalism.vengamodmc.util;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -17,26 +18,27 @@ public class MyUtil {
         ArrayList<TileEntity> cleanedTilesToCheck = new ArrayList<>();
         tilesToCheck.clear();
         if(world != null && !world.isRemote) {
-            //System.out.println("ET world not null");
+            BlockPos neigh;
+
             if(horiz){
-                tilesToCheck.add(world.getTileEntity(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ())));
-                tilesToCheck.add(world.getTileEntity(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ())));
-                tilesToCheck.add(world.getTileEntity(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1)));
-                tilesToCheck.add(world.getTileEntity(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1)));
+                for(EnumFacing facing : EnumFacing.HORIZONTALS){
+                    neigh = pos.offset(facing);
+                    tilesToCheck.add(world.getTileEntity(neigh));
+                }
             }
 
             if(vert){
-                tilesToCheck.add(world.getTileEntity(new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ())));
-                tilesToCheck.add(world.getTileEntity(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ())));
+                for(EnumFacing facing : EnumFacing.VALUES){
+                    neigh = pos.offset(facing);
+                    tilesToCheck.add(world.getTileEntity(neigh));
+                }
             }
-
 
             for(TileEntity te : tilesToCheck){
                 if(!(cleanedTilesToCheck.contains(te) && te != null)){
                     cleanedTilesToCheck.add(te);
                 }
             }
-
         }
         return cleanedTilesToCheck;
     }
@@ -44,7 +46,4 @@ public class MyUtil {
     public static ArrayList<TileEntity> getAdjacentBlocks(World world, BlockPos pos){
         return getAdjacentBlocks(world, pos, true, true);
     }
-
-
-
 }

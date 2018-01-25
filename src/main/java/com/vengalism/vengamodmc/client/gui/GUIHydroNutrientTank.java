@@ -6,7 +6,6 @@ import com.vengalism.vengamodmc.container.ContainerHydroTank;
 import com.vengalism.vengamodmc.energy.EnergyBar;
 import com.vengalism.vengamodmc.handlers.PacketHandler;
 import com.vengalism.vengamodmc.network.PacketGetData;
-import com.vengalism.vengamodmc.network.PacketGetFluid;
 import com.vengalism.vengamodmc.tileentities.TileEntityHydroNutrientTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -59,19 +58,27 @@ public class GUIHydroNutrientTank extends CustomEnergyGuiContainer {
         if(data.has("valid")){
             if(data.get("valid").getAsBoolean()){
                 JsonObject fluidStorage = data.getAsJsonObject("fluidStorage");
-                if(this.energyBar.isMouseOver()){
-                    this.drawHoveringText(fluidStorage.get("fluidAmount") + " / " + fluidStorage.get("fluidMaxAmount") + " " + fluidStorage.get("fluidName") , ebx, eby);
-                }
+
                 JsonObject extraTank = data.getAsJsonObject("extraTank");
-                if(this.NutrientEnergyBar.isMouseOver()){
-                    this.drawHoveringText(extraTank.get("fluidAmount") + " / " + extraTank.get("fluidMaxAmount") + " " + extraTank.get("fluidName") , ebx, eby);
+                if(extraTank != null){
+                    if(this.NutrientEnergyBar.isMouseOver()){
+                        this.drawHoveringText(extraTank.get("fluidAmount") + " / " + extraTank.get("fluidMaxAmount") + " " + extraTank.get("fluidName") , ebx, eby);
+                        this.NutrientEnergyBar.updateEnergyBar(extraTank.get("fluidAmount").getAsInt(), extraTank.get("fluidMaxAmount").getAsInt());
+                    }
+                }
+
+                if(fluidStorage != null){
+                    if(this.energyBar.isMouseOver()){
+                        this.drawHoveringText(fluidStorage.get("fluidAmount") + " / " + fluidStorage.get("fluidMaxAmount") + " " + fluidStorage.get("fluidName") , ebx, eby);
+                        this.energyBar.updateEnergyBar(fluidStorage.get("fluidAmount").getAsInt(), fluidStorage.get("fluidMaxAmount").getAsInt());
+                    }
                 }
 
                 JsonObject blockInfo = data.getAsJsonObject("blockInfo");
                 fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
 
-                this.energyBar.updateEnergyBar(fluidStorage.get("fluidAmount").getAsInt(), fluidStorage.get("fluidMaxAmount").getAsInt());
-                this.NutrientEnergyBar.updateEnergyBar(extraTank.get("fluidAmount").getAsInt(), extraTank.get("fluidMaxAmount").getAsInt());
+
+
 
             }
         }

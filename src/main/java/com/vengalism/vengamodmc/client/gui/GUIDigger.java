@@ -57,7 +57,10 @@ public class GUIDigger extends CustomEnergyGuiContainer {
                 fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
 
                 JsonObject errors = data.getAsJsonObject("errors");
-                fontRenderer.drawString(new TextComponentTranslation(errors.get("errormsg").toString()).getFormattedText(), 5, 70, Color.red.getRGB());
+                if(!errors.get("errormsg").toString().equals("")){
+                    fontRenderer.drawString(new TextComponentTranslation(errors.get("errormsg").toString()).getFormattedText(), 5, 70, Color.red.getRGB());
+                }
+
             }
         }
     }

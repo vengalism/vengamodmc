@@ -3,14 +3,11 @@ package com.vengalism.vengamodmc.client.gui;
 import com.google.gson.JsonObject;
 import com.vengalism.vengamodmc.Reference;
 import com.vengalism.vengamodmc.container.ContainerHydroCropTub;
-import com.vengalism.vengamodmc.container.CustomContainer;
 import com.vengalism.vengamodmc.handlers.PacketHandler;
 import com.vengalism.vengamodmc.network.PacketGetData;
-import com.vengalism.vengamodmc.network.PacketGetFluid;
 import com.vengalism.vengamodmc.tileentities.TileEntityHydroCropTub;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -50,14 +47,17 @@ public class GUIHydroCropTub extends CustomEnergyGuiContainer {
         if(data.has("valid")){
             if(data.get("valid").getAsBoolean()){
                 JsonObject fluidStorage = data.getAsJsonObject("fluidStorage");
-                if(this.energyBar.isMouseOver()){
-                    this.drawHoveringText(fluidStorage.get("fluidAmount") + " / " + fluidStorage.get("fluidMaxAmount") + " " + fluidStorage.get("fluidName") , ebx, eby);
-                }
 
                 JsonObject blockInfo = data.getAsJsonObject("blockInfo");
                 fontRenderer.drawString(new TextComponentTranslation(blockInfo.get("name").toString()).getFormattedText(), 5, 5, Color.darkGray.getRGB());
 
-                this.energyBar.updateEnergyBar(fluidStorage.get("fluidAmount").getAsInt(), fluidStorage.get("fluidMaxAmount").getAsInt());
+                if(fluidStorage != null){
+                    if(this.energyBar.isMouseOver()){
+                        this.drawHoveringText(fluidStorage.get("fluidAmount") + " / " + fluidStorage.get("fluidMaxAmount") + " " + fluidStorage.get("fluidName") , ebx, eby);
+                    }
+                    this.energyBar.updateEnergyBar(fluidStorage.get("fluidAmount").getAsInt(), fluidStorage.get("fluidMaxAmount").getAsInt());
+                }
+
             }
         }
     }
