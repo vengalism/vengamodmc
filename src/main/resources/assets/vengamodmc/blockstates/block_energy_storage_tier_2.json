@@ -1,15 +1,34 @@
 {
+  "forge_marker": 1,
+  "defaults": {
+    "model": "vengamodmc:block_energy_storage/tier_2/fill_0",
+    "textures": {
+      "front": "vengamodmc:blocks/block_energy_storage/tier_2/side"
+    }
+  },
   "variants": {
-    "fillamount=10" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_10"},
-    "fillamount=9" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_9"},
-    "fillamount=8" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_8"},
-    "fillamount=7" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_7"},
-    "fillamount=6" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_6"},
-    "fillamount=5" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_5"},
-    "fillamount=4" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_4"},
-    "fillamount=3" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_3"},
-    "fillamount=2" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_2"},
-    "fillamount=1" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_1"},
-    "fillamount=0" : {"model" : "vengamodmc:block_energy_storage/tier_2/fill_0"}
+    "normal": [{}],
+    "inventory": [{}],
+    "facing": {
+      "north": {},
+      "south": {"y": 180},
+      "west": {"y": 270},
+      "east": {"y": 90},
+      "up": {"x": -90},
+      "down": {"x": 90}
+    },
+    "fillamount" :{
+      "0" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_0"}},
+      "1" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_1"}},
+      "2" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_2"}},
+      "3" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_3"}},
+      "4" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_4"}},
+      "5" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_5"}},
+      "6" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_6"}},
+      "7" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_7"}},
+      "8" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_8"}},
+      "9" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_9"}},
+      "10" : {"textures" : {"front" : "vengamodmc:blocks/block_energy_storage/tier_2/fill_10"}}
+    }
   }
 }

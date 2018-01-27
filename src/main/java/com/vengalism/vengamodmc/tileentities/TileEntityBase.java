@@ -4,15 +4,14 @@
 
 package com.vengalism.vengamodmc.tileentities;
 
+import com.google.gson.JsonObject;
 import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import com.vengalism.vengamodmc.objects.fluid.CustomFluidTank;
 import com.vengalism.vengamodmc.util.Enums;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
-import com.google.gson.JsonObject;
 
 
 /**
@@ -21,6 +20,7 @@ import com.google.gson.JsonObject;
 public class TileEntityBase extends TileEntity {
 
     public int sync = 0;
+    public String errormsg = "";
 
     public boolean hasMachineTier(){
         return getMachineTier() != null;
@@ -120,6 +120,10 @@ public class TileEntityBase extends TileEntity {
 
         }
         data.addProperty("valid", true);
+
+        JsonObject errors = new JsonObject();
+        errors.addProperty("errormsg", errormsg);
+        data.add("errors", errors);
 
         return data;
     }

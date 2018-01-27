@@ -4,9 +4,7 @@
 
 package com.vengalism.vengamodmc.objects.blocks;
 
-import akka.japi.pf.FI;
 import com.vengalism.vengamodmc.VengaModMc;
-import com.vengalism.vengamodmc.energy.CustomForgeEnergyStorage;
 import com.vengalism.vengamodmc.handlers.GuiHandler;
 import com.vengalism.vengamodmc.tileentities.TileEntityEnergyStorage;
 import com.vengalism.vengamodmc.util.Enums;
@@ -23,7 +21,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -34,8 +31,10 @@ import javax.annotation.Nullable;
 public class BlockEnergyStorage extends BlockBase implements ITileEntityProvider {
 
     private Enums.MACHINETIER machinetier;
-    //private static final PropertyDirection FACING = PropertyDirection.create("facing");
+    private static final PropertyDirection FACING = PropertyDirection.create("facing");
     private static final PropertyInteger FILL = PropertyInteger.create("fillamount", 0, 10);
+    private EnumFacing faceAtPlace = EnumFacing.NORTH;
+    private int percentFull = 0;
 
     public BlockEnergyStorage(String name) {
         this(name, Enums.MACHINETIER.ONE);
@@ -44,22 +43,18 @@ public class BlockEnergyStorage extends BlockBase implements ITileEntityProvider
     public BlockEnergyStorage(String name, Enums.MACHINETIER machinetier) {
         super(name, Material.IRON);
         this.machinetier = machinetier;
-        setDefaultState(blockState.getBaseState().withProperty(FILL, 0));
+        this.setDefaultState(blockState.getBaseState().withProperty(FILL, 0).withProperty(FACING, EnumFacing.NORTH));
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos, state.withProperty(FILL, getPercentFull(worldIn, pos)));
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        this.faceAtPlace = getFacingFromEntity(pos, placer);
     }
 
-    public int getPercentFull(World world, BlockPos pos) {
-        TileEntity te = world.getTileEntity(pos);
-        if(te != null){
-            TileEntityEnergyStorage tileEntityEnergyStorage = (TileEntityEnergyStorage)te;
-            return tileEntityEnergyStorage.getPercentFull();
-        }
-        return 0;
-
+    public void updateState(World world, BlockPos pos, int percentFull){
+        this.percentFull = percentFull;
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(FILL, percentFull));
     }
 
     @Nullable
@@ -85,18 +80,25 @@ public class BlockEnergyStorage extends BlockBase implements ITileEntityProvider
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FILL);
+        return new BlockStateContainer(this, FILL, FACING);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FILL, meta);
+        return getDefaultState().withProperty(FILL, this.percentFull).withProperty(FACING, EnumFacing.getFront(faceAtPlace.getIndex()));
     }
+
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(FILL);
+        return (state.getValue(FILL)) + state.getValue(FACING).getIndex();
+        /*int i = 0;
+
+        i |= (state.getValue(FACING)).getIndex();
+        i |= (state.getValue(FILL) < 10) ? state.getValue(FILL) : percentFull;
+
+        return i;*/
     }
 
 

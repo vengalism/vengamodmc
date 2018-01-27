@@ -28,6 +28,8 @@ public class BlockBase extends Block implements IHasModel, ITileEntityProvider{
 
     private boolean keepInventory = false;
     public boolean requireRedstone = false;
+
+
     public BlockBase(String name, Material material) {
         this(name, material, true);
     }
@@ -35,10 +37,9 @@ public class BlockBase extends Block implements IHasModel, ITileEntityProvider{
     //Block block, Item itemBlock, String name, boolean addTab
     public BlockBase(String name, Material material, boolean addTab){
         super(material);
-        setHardness(5.0f);
+        setHardness(4.0f);
         setHarvestLevel("pickaxe", 2);
         BlockUtil.registerBlock(this, getItemBlock(this), name, addTab);
-
     }
 
     private Item getItemBlock(Block block){
@@ -101,4 +102,7 @@ public class BlockBase extends Block implements IHasModel, ITileEntityProvider{
         }
 
     }
+
+
+
 }

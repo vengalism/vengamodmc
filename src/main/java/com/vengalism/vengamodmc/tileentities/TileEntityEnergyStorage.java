@@ -4,16 +4,12 @@
 
 package com.vengalism.vengamodmc.tileentities;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.objects.blocks.BlockEnergyStorage;
 import com.vengalism.vengamodmc.util.Enums;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -70,6 +66,9 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
         if (this.world != null) {
 
             if (!this.world.isRemote) {
+                if(this.machinetier == Enums.MACHINETIER.FOUR){
+                    this.storage.setEnergy(this.storage.getMaxEnergyStored());
+                }
                 extractToAdjacent();
 
                 receiveFromAdjacent();
@@ -93,7 +92,7 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
             sync++;
             sync %= 20;
             if(sync == 0){
-                setState();
+                this.setState();
             }
 
         }
@@ -101,11 +100,11 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
 
     private void setState(){
         if(!world.isRemote) {
-            TileEntity te = this.world.getTileEntity(this.pos);
-            if(te instanceof TileEntityEnergyStorage){
-                BlockEnergyStorage bes = (BlockEnergyStorage)te.getBlockType();
-                int per = this.getPercentFull();
-                world.setBlockState(this.pos, bes.getStateFromMeta(per));
+            Block te = this.world.getBlockState(pos).getBlock();
+            if(te instanceof BlockEnergyStorage){
+                BlockEnergyStorage bes = (BlockEnergyStorage) world.getBlockState(pos).getBlock();
+                bes.updateState(world, pos, getPercentFull());
+
                 this.markDirty();
             }
         }
@@ -115,41 +114,16 @@ public class TileEntityEnergyStorage extends TileEntityEnergyBase implements ICa
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         if(!world.isRemote){
             world.notifyBlockUpdate(pos, oldState, newSate, getPercentFull());
-
         }
         return oldState.getBlock() != newSate.getBlock();
 
     }
 
-    public int getPercentFull(){
+    private int getPercentFull(){
 
         int capacity = this.storage.getMaxEnergyStored();
         int nrg = this.storage.getEnergyStored();
-        int percent = ((nrg * 100) / capacity);
-
-        if (percent <= 9) {
-            return 0;
-        } else if (percent <= 19) {
-            return 1;
-        } else if (percent <= 29) {
-            return 2;
-        } else if (percent <= 39) {
-            return 3;
-        } else if (percent <= 49) {
-            return 4;
-        } else if (percent <= 59) {
-            return 5;
-        } else if (percent <= 69) {
-            return 6;
-        } else if (percent <= 79) {
-            return 7;
-        } else if (percent <= 89) {
-            return 8;
-        } else if (percent <= 99) {
-            return 9;
-        } else {
-            return 10;
-        }
+        return ((nrg * 10) / capacity);
     }
 
     @Override

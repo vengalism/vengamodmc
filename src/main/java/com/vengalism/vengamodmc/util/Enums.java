@@ -9,7 +9,7 @@ public class Enums {
 
 
 
-    public enum MACHINETIER{ONE("Tier 1", Config.tierOneMultiplier), TWO("Tier 2", Config.tierTwoMultiplier), THREE("Tier 3", Config.tierThreeMultiplier);
+    public enum MACHINETIER{ONE("Tier 1", Config.tierOneMultiplier), TWO("Tier 2", Config.tierTwoMultiplier), THREE("Tier 3", Config.tierThreeMultiplier), FOUR("Creative", Config.tierThreeMultiplier);
 
         private String name = "Tier 1";
         private int multiplier = 1;

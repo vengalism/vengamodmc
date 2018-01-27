@@ -36,8 +36,6 @@ public class BlockEnergyFurnace extends BlockBase implements ITileEntityProvider
         this.machinetier = machinetier;
     }
 
-
-
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityEnergyFurnace(this.machinetier);

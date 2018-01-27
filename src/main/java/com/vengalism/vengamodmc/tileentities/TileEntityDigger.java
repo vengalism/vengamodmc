@@ -1,8 +1,8 @@
 package com.vengalism.vengamodmc.tileentities;
 
-import com.google.gson.JsonObject;
 import com.vengalism.vengamodmc.Config;
 import com.vengalism.vengamodmc.objects.blocks.BlockDigger;
+import com.vengalism.vengamodmc.util.ItemUtil;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -31,7 +31,6 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
     private ItemStackHandler invHandler;
     private BlockDigger blockDigger;
     private boolean done = false;
-    private String errormsg = "";
 
     public TileEntityDigger() {
         this(Config.diggerMaxEnergyStored);
@@ -125,7 +124,7 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
                             IItemHandler blockInvHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face);
                             if (blockInvHandler != null) {
                                 for(int i = 0; i < blockInvHandler.getSlots(); i++){
-                                    giveItemToContainer(blockInvHandler.getStackInSlot(i), 0);
+                                    ItemUtil.giveItemToContainer(blockInvHandler.getStackInSlot(i), 0, this.invHandler);
                                 }
                             }
                         }
@@ -136,7 +135,7 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
             //get the drops of the block
             block.getDrops(drops, world, nextPos, world.getBlockState(nextPos), 0);
             for(ItemStack stack : drops){
-                if(giveItemToContainer(stack, 0)){
+                if(ItemUtil.giveItemToContainer(stack, 0, this.invHandler)){
                     this.storage.extractEnergy(energyPerUse, false);
                     world.setBlockState(nextPos, Blocks.AIR.getDefaultState());
                     if(block.hasTileEntity(world.getBlockState(nextPos))){
@@ -193,25 +192,6 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
         }
     }
 
-    private boolean giveItemToContainer(ItemStack itemStack, int slot) {
-        ItemStack result;
-        if (invHandler != null) {
-            result = invHandler.insertItem(slot, itemStack.copy(), false);
-            if (result.isEmpty()) {
-                return true;
-            } else {
-                int nextSlot = slot + 1;
-                if (nextSlot < invHandler.getSlots()) {
-                    return giveItemToContainer(result, nextSlot);
-                } else {
-                    return false;
-                }
-
-            }
-        }
-        return false;
-    }
-
     @Override
     public ItemStackHandler getInvHandler() {
         return this.invHandler;
@@ -232,14 +212,5 @@ public class TileEntityDigger extends TileEntityEnergyBase implements ITickable 
         compound.setInteger("col", col);
         compound.setInteger("why", why);
         return compound;
-    }
-
-    @Override
-    public JsonObject getPacketData() {
-        JsonObject superJo = super.getPacketData();
-        JsonObject errors = new JsonObject();
-        errors.addProperty("errormsg", errormsg);
-        superJo.add("errors", errors);
-        return superJo;
     }
 }

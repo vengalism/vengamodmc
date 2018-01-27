@@ -1,35 +1,31 @@
 package com.vengalism.vengamodmc.objects.blocks;
 
-import com.vengalism.vengamodmc.VengaModMc;
-import com.vengalism.vengamodmc.handlers.GuiHandler;
-import com.vengalism.vengamodmc.tileentities.TileEntityDigger;
+import com.vengalism.vengamodmc.tileentities.TileEntityEnergyStorage;
+import com.vengalism.vengamodmc.tileentities.TileEntityHarvester;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 /**
- * Created by vengada at 6/01/2018
+ * Created by vengada at 26/01/2018
  */
-public class BlockDigger extends BlockBase{
+public class BlockHarvester extends BlockBase {
 
     private static final PropertyDirection FACING = PropertyDirection.create("facing");
     private EnumFacing faceAtPlace = EnumFacing.NORTH;
 
-    public BlockDigger(String name) {
+    public BlockHarvester(String name) {
         super(name, Material.IRON);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
@@ -37,29 +33,21 @@ public class BlockDigger extends BlockBase{
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityDigger();
+        return new TileEntityHarvester();
     }
+
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(worldIn.isRemote){
+
+        if (worldIn.isRemote) {
             return true;
         }
 
         TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(!(tileEntity instanceof TileEntityDigger)){
-            return false;
-        }
-
-        if(playerIn.getHeldItem(hand).getItem() == Item.getItemFromBlock(Blocks.REDSTONE_TORCH)) {
-            requireRedstone = !requireRedstone;
-            playerIn.sendMessage(new TextComponentTranslation("Requires Redstone: " + requireRedstone));
-            return true;
-        }
-
-        playerIn.openGui(VengaModMc.instance, GuiHandler.diggerContainerID, worldIn, pos.getX(), pos.getY(), pos.getZ());
-        return true;
+        return tileEntity instanceof TileEntityEnergyStorage;
     }
+
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
@@ -87,7 +75,4 @@ public class BlockDigger extends BlockBase{
         return faceAtPlace.getOpposite();
     }
 
-    public PropertyDirection getFacingProp(){
-        return FACING;
-    }
 }

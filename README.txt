@@ -7,6 +7,8 @@ Circuit Assembler machine thingy (makes parts twice as good as manually)
 
 recent changes (newest first)
 
+Harvester, harvests  crops in a grid in front of it (kinda centered, harvests blocks on both left and right)
+
 Some Blocks now respond to redstone signals Digger, Crop Tub and Fish Tank:
 by default they dont require redstone, but right clicking the block with a redstone torch with toggle the requirement
 

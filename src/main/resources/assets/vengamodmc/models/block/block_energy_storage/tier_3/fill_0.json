@@ -1,21 +1,12 @@
 {
+  "parent": "block/cube",
   "textures": {
-    "0": "vengamodmc:blocks/block_energy_storage/tier_3/fill_0",
-    "1": "vengamodmc:blocks/block_energy_storage/tier_3/fill_0"
-  },
-  "elements": [
-    {
-      "name": "Cube",
-      "from": [ 0.0, 0.0, 0.0 ],
-      "to": [ 16.0, 16.0, 16.0 ],
-      "faces": {
-        "north": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-        "east": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-        "south": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-        "west": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-        "up": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-        "down": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
-      }
-    }
-  ]
+    "particle": "vengamodmc:blocks/block_energy_storage/tier_3/side",
+    "down": "vengamodmc:blocks/block_energy_storage/tier_3/side",
+    "up": "vengamodmc:blocks/block_energy_storage/tier_3/side",
+    "east": "vengamodmc:blocks/block_energy_storage/tier_3/side",
+    "west": "vengamodmc:blocks/block_energy_storage/tier_3/side",
+    "north": "#front",
+    "south": "vengamodmc:blocks/block_energy_storage/tier_3/side"
+  }
 }

@@ -7,9 +7,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -27,9 +29,11 @@ import javax.annotation.Nullable;
 public class BlockHydroCropTub extends BlockBase{
 
     private static final PropertyInteger FLUIDLEVEL = PropertyInteger.create("fluidlevel", 0, 3);
+    private int level = 0;
 
     public BlockHydroCropTub(String name) {
         super(name, Material.IRON);
+        //this.setDefaultState(this.getDefaultState().withProperty(FLUIDLEVEL, 0));
         this.setDefaultState(this.blockState.getBaseState().withProperty(FLUIDLEVEL, 0));
     }
 
@@ -94,6 +98,14 @@ public class BlockHydroCropTub extends BlockBase{
     }
 
 
+    //TODO multiple properties for blocks, something like this, or further research into statemappers
+
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+    }
+
     @Override
     protected BlockStateContainer createBlockState(){
         return new BlockStateContainer(this, FLUIDLEVEL);
@@ -101,7 +113,7 @@ public class BlockHydroCropTub extends BlockBase{
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FLUIDLEVEL, meta);
+        return this.getDefaultState().withProperty(FLUIDLEVEL, level);
     }
 
     @Override
@@ -109,6 +121,8 @@ public class BlockHydroCropTub extends BlockBase{
         return state.getValue(FLUIDLEVEL);
     }
 
-
+    public void setFillLevel(int level){
+        this.level = level;
+    }
 
 }

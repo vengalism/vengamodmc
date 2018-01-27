@@ -200,23 +200,28 @@ public class TileEntityHydroCropTub extends TileEntityFluidTankBase implements I
     private void setState(World world, BlockPos pos){
         TileEntity te = world.getTileEntity(pos);
         if(te instanceof TileEntityHydroCropTub){
-            int level = 0;
-            int filledAmount = this.getFluidTank().getFluidAmount();
-            if(filledAmount > 1500){
-                level = 3;
-            }else if(filledAmount > 1000 && filledAmount < 1500){
-                level = 2;
-            }else if(filledAmount > 500 && filledAmount < 1000){
-                level = 1;
-            }else if(filledAmount > 0 && filledAmount < 500){
-                level = 0;
-            }
             TileEntityHydroCropTub hydroTubTileEntity = (TileEntityHydroCropTub)te;
             BlockHydroCropTub hydroTubBlock = (BlockHydroCropTub) hydroTubTileEntity.getBlockType();
             //hydroTubBlock.setFluidLevel(world, pos, hydroTubBlock.getDefaultState(), level);
-            world.setBlockState(this.pos, hydroTubBlock.getStateFromMeta(level));
+            world.setBlockState(this.pos, hydroTubBlock.getStateFromMeta(getFilledAmount()));
+            hydroTubBlock.setFillLevel(getFilledAmount());
             this.markDirty();
         }
+    }
+
+    public int getFilledAmount(){
+        int level = 0;
+        int filledAmount = this.getFluidTank().getFluidAmount();
+        if(filledAmount > 1500){
+            level = 3;
+        }else if(filledAmount > 1000 && filledAmount < 1500){
+            level = 2;
+        }else if(filledAmount > 500 && filledAmount < 1000){
+            level = 1;
+        }else if(filledAmount > 0 && filledAmount < 500){
+            level = 0;
+        }
+        return level;
     }
 
     private boolean isOutputFull(){

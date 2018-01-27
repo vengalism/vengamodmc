@@ -4,6 +4,7 @@ tile.block_energy_storage.name=Energy Storage Tier 1
 tile.block_energy_storage_tier_1.name=Energy Storage Tier 1
 tile.block_energy_storage_tier_2.name=Energy Storage Tier 2
 tile.block_energy_storage_tier_3.name=Energy Storage Tier 3
+tile.block_energy_storage_tier_4.name=Creative Energy Storage
 tile.block_energy_generator.name=Energy Generator Tier 1
 tile.block_energy_generator_tier_1.name=Energy Generator Tier 1
 tile.block_energy_generator_tier_2.name=Energy Generator Tier 2
@@ -47,7 +48,7 @@ item.tool_sword_energy_diamond.name=Diamond Energy Sword
 
 
 fluid.vengamodmc:fluid_nutrient.name=Nutrient Fluid
-fluid.vengamodmc:fluid_nutrient Bucket=Nutrient Fluid Bucket
+fluid.vengamodmc:fluid_nutrient_bucket=Nutrient Fluid Bucket
 fluid.vengamodmc:fluid_nutrient_oxygenated.name=Oxygenated Nutrient Fluid
 fluid.vengamodmc:fluid_nutrient_oxygenated Bucket=Oxygenated Nutrient Fluid Bucket
 
